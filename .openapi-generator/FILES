@@ -1,4 +1,5 @@
 .gitignore
+.openapi-generator-ignore
 .travis.yml
 README.md
 api/openapi.yaml
@@ -164,4 +165,9 @@ model_update_container_group_problem_type.go
 model_update_recipe_deployment.go
 model_update_recipe_deployment_problem_type.go
 response.go
+test/api_container_groups_test.go
+test/api_organization_data_test.go
+test/api_quotas_test.go
+test/api_recipe_deployments_test.go
+test/api_recipes_test.go
 utils.go
