@@ -1,0 +1,5973 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: support@salad.com
+    name: Salad Support
+    url: https://support.salad.com
+  description: The SaladCloud Public API.
+  termsOfService: https://salad.com/terms
+  title: SaladCloud Public API
+  version: 1.0.0-alpha.56
+servers:
+- url: https://api.salad.com/api/public
+security:
+- ApiKeyAuth: []
+tags:
+- description: Container Groups
+  name: container_groups
+- description: Auxiliary organization data and info
+  name: organization_data
+- description: quotas
+  name: quotas
+paths:
+  /organizations/{organization_name}/projects/{project_name}/containers:
+    description: Operations for container groups
+    get:
+      description: Gets the list of container groups
+      operationId: list_container_groups
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    items:
+                    - id: 500dec9c-aaf3-4a0b-aa7f-de6483d0b9b1
+                      name: sim1
+                      display_name: Simulation 1
+                      container:
+                        image: acme-corp/anvil-drop-simulator:v65535
+                        resources:
+                          cpu: 1
+                          memory: 2048
+                        command: []
+                      restart_policy: always
+                      replicas: 1
+                      current_state:
+                        status: stopped
+                        start_time: 2020-07-04T19:00:00Z
+                        finish_time: 2020-07-04T19:00:00Z
+                        instance_status_counts:
+                          allocating_count: 1
+                          creating_count: 1
+                          running_count: 1
+                      create_time: 2020-07-04T19:00:00Z
+                      update_time: 2020-07-04T19:00:00Z
+                    - id: b697f678-b987-4992-bbbf-d6dda171b34a
+                      name: sim2
+                      display_name: Simulation 2
+                      container:
+                        image: acme-corp/anvil-drop-simulator:v65536
+                        resources:
+                          cpu: 1
+                          memory: 2048
+                        command: []
+                      restart_policy: always
+                      replicas: 1
+                      current_state:
+                        status: stopped
+                        start_time: 2020-07-04T19:00:00Z
+                        finish_time: 2020-07-04T19:00:00Z
+                        instance_status_counts:
+                          allocating_count: 1
+                          creating_count: 1
+                          running_count: 1
+                      create_time: 2020-07-04T19:00:00Z
+                      update_time: 2020-07-04T19:00:00Z
+              schema:
+                $ref: '#/components/schemas/ContainerGroupList'
+          description: OK
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: List Container Groups
+      tags:
+      - container_groups
+    post:
+      description: Creates a new container group
+      operationId: create_container_group
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/CreateContainerGroup'
+      responses:
+        "201":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    id: 500dec9c-aaf3-4a0b-aa7f-de6483d0b9b1
+                    name: sim1
+                    display_name: Simulation 1
+                    container:
+                      image: acme-corp/anvil-drop-simulator:v65535
+                      resources:
+                        cpu: 1
+                        memory: 2048
+                      command: []
+                    restart_policy: always
+                    replicas: 1
+                    current_state:
+                      status: stopped
+                      start_time: 2020-07-04T19:00:00Z
+                      finish_time: 2020-07-04T19:00:00Z
+                      instance_status_counts:
+                        allocating_count: 1
+                        creating_count: 1
+                        running_count: 1
+                    create_time: 2020-07-04T19:00:00Z
+                    update_time: 2020-07-04T19:00:00Z
+              schema:
+                $ref: '#/components/schemas/ContainerGroup'
+          description: Created
+          headers:
+            Location:
+              explode: false
+              schema:
+                example: /organizations/acme-corp/projects/anvil-drop-simulator/containers/sim1
+                type: string
+              style: simple
+          links:
+            get_container_group_by_name:
+              operationId: get_container_group
+              parameters:
+                container_group_name: $response.body#/name
+        "400":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Bad Request
+                    status: 400
+                    detail: Bad Request
+                    instance: 60907fdc
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Forbidden
+                    status: 403
+                    detail: Forbidden
+                    instance: 962fc00e
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: Create a Container Group
+      tags:
+      - container_groups
+    summary: Container Groups
+  /organizations/{organization_name}/projects/{project_name}/containers/{container_group_name}:
+    delete:
+      description: Deletes a container group
+      operationId: delete_container_group
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique container group name
+        explode: false
+        in: path
+        name: container_group_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      responses:
+        "202":
+          description: Accepted
+        "403":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Forbidden
+                    status: 403
+                    detail: Forbidden
+                    instance: 962fc00e
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Not Found
+                    status: 404
+                    detail: Not Found
+                    instance: 72ea5f29
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: Delete a Container Group
+      tags:
+      - container_groups
+    description: Operations for a container group
+    get:
+      description: Gets a container group
+      operationId: get_container_group
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique container group name
+        explode: false
+        in: path
+        name: container_group_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    id: 500dec9c-aaf3-4a0b-aa7f-de6483d0b9b1
+                    name: sim1
+                    display_name: Simulation 1
+                    container:
+                      image: acme-corp/anvil-drop-simulator:v65535
+                      resources:
+                        cpu: 1
+                        memory: 2048
+                      command: []
+                    restart_policy: always
+                    replicas: 1
+                    current_state:
+                      status: stopped
+                      start_time: 2020-07-04T19:00:00Z
+                      finish_time: 2020-07-04T19:00:00Z
+                      instance_status_counts:
+                        allocating_count: 1
+                        creating_count: 1
+                        running_count: 1
+                    create_time: 2020-07-04T19:00:00Z
+                    update_time: 2020-07-04T19:00:00Z
+              schema:
+                $ref: '#/components/schemas/ContainerGroup'
+          description: OK
+        "404":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Not Found
+                    status: 404
+                    detail: Not Found
+                    instance: 72ea5f29
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: Get a Container Group
+      tags:
+      - container_groups
+    patch:
+      description: Updates a container group
+      operationId: update_container_group
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique container group name
+        explode: false
+        in: path
+        name: container_group_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateContainerGroup'
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    id: 500dec9c-aaf3-4a0b-aa7f-de6483d0b9b1
+                    name: sim1
+                    display_name: Simulation 1
+                    container:
+                      image: acme-corp/anvil-drop-simulator:v65535
+                      resources:
+                        cpu: 1
+                        memory: 2048
+                      command: []
+                    restart_policy: always
+                    replicas: 1
+                    current_state:
+                      status: stopped
+                      start_time: 2020-07-04T19:00:00Z
+                      finish_time: 2020-07-04T19:00:00Z
+                      instance_status_counts:
+                        allocating_count: 1
+                        creating_count: 1
+                        running_count: 1
+                    create_time: 2020-07-04T19:00:00Z
+                    update_time: 2020-07-04T19:00:00Z
+              schema:
+                $ref: '#/components/schemas/ContainerGroup'
+          description: OK
+        "400":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Bad Request
+                    status: 400
+                    detail: Bad Request
+                    instance: 60907fdc
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Forbidden
+                    status: 403
+                    detail: Forbidden
+                    instance: 962fc00e
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Not Found
+                    status: 404
+                    detail: Not Found
+                    instance: 72ea5f29
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: Update a Container Group
+      tags:
+      - container_groups
+    summary: Container Group
+  /organizations/{organization_name}/projects/{project_name}/containers/{container_group_name}/start:
+    description: Operations for a container group
+    post:
+      description: Starts a container group
+      operationId: start_container_group
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique container group name
+        explode: false
+        in: path
+        name: container_group_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      responses:
+        "202":
+          description: Accepted
+        "400":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Bad Request
+                    status: 400
+                    detail: Bad Request
+                    instance: 60907fdc
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Forbidden
+                    status: 403
+                    detail: Forbidden
+                    instance: 962fc00e
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: Start a Container Group
+      tags:
+      - container_groups
+    summary: Container Group
+  /organizations/{organization_name}/projects/{project_name}/containers/{container_group_name}/restart:
+    description: Operations for a container group
+    post:
+      description: Restarts a container group
+      operationId: restart_container_group
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique container group name
+        explode: false
+        in: path
+        name: container_group_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      responses:
+        "202":
+          description: Accepted
+        "400":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Bad Request
+                    status: 400
+                    detail: Bad Request
+                    instance: 60907fdc
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Forbidden
+                    status: 403
+                    detail: Forbidden
+                    instance: 962fc00e
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: Restart a Container Group
+      tags:
+      - container_groups
+    summary: Container Group
+  /organizations/{organization_name}/projects/{project_name}/containers/{container_group_name}/stop:
+    description: Operations for a container group
+    post:
+      description: Stops a container group
+      operationId: stop_container_group
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique container group name
+        explode: false
+        in: path
+        name: container_group_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      responses:
+        "202":
+          description: Accepted
+        "400":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Bad Request
+                    status: 400
+                    detail: Bad Request
+                    instance: 60907fdc
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Forbidden
+                    status: 403
+                    detail: Forbidden
+                    instance: 962fc00e
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: Stop a Container Group
+      tags:
+      - container_groups
+    summary: Container Group
+  /organizations/{organization_name}/projects/{project_name}/containers/{container_group_name}/instances:
+    description: Operations for a container group
+    get:
+      description: Retrieves a list of container group instances
+      operationId: list_container_group_instances
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique container group name
+        explode: false
+        in: path
+        name: container_group_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                instances:
+                - machine_id: 5ebfa363-6e0b-4db1-b9be-70ed4995d0b1
+                  state: running
+                  update_time: 2023-05-04T05:41:05Z
+                - machine_id: a6c2e6d5-6c5a-4b3b-a4d4-4b13c2b634ad
+                  state: creating
+                  update_time: 2023-05-04T05:38:12Z
+              schema:
+                $ref: '#/components/schemas/ContainerGroupInstances'
+          description: OK
+        "404":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Not Found
+                    status: 404
+                    detail: Not Found
+                    instance: 72ea5f29
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: List Container Group Instances
+      tags:
+      - container_groups
+    summary: Container Group
+  /organizations/{organization_name}/projects/{project_name}/containers/{container_group_name}/instances/{machine_id}/reallocate:
+    description: Operations for a container group
+    post:
+      description: Remove a node from a workload and reallocate the workload to a
+        different node
+      operationId: container_group_instance_reallocate
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique container group name
+        explode: false
+        in: path
+        name: container_group_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique machine identifier
+        explode: false
+        in: path
+        name: machine_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "202":
+          description: Accepted
+        "404":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Not Found
+                    status: 404
+                    detail: Not Found
+                    instance: 72ea5f29
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: Reallocate container group instance to another node
+      tags:
+      - container_groups
+    summary: Container Group
+  /organizations/{organization_name}/projects/{project_name}/containers/{container_group_name}/instances/{machine_id}/recreate:
+    description: Operations for a container group
+    post:
+      description: "Stops a container, destroys it, creates a new one without requiring\
+        \ the image to be downloaded again on a different node"
+      operationId: container_group_instance_recreate
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique container group name
+        explode: false
+        in: path
+        name: container_group_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique machine identifier
+        explode: false
+        in: path
+        name: machine_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "202":
+          description: Accepted
+        "404":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Not Found
+                    status: 404
+                    detail: Not Found
+                    instance: 72ea5f29
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: Recreate container on a node
+      tags:
+      - container_groups
+    summary: Container Group
+  /organizations/{organization_name}/projects/{project_name}/containers/{container_group_name}/instances/{machine_id}/restart:
+    description: Operations for a container group
+    post:
+      description: Restarts a workload on a node without reallocating it
+      operationId: container_group_instance_restart
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique container group name
+        explode: false
+        in: path
+        name: container_group_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique machine identifier
+        explode: false
+        in: path
+        name: machine_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "202":
+          description: Accepted
+        "404":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Not Found
+                    status: 404
+                    detail: Not Found
+                    instance: 72ea5f29
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: Restart container on a node
+      tags:
+      - container_groups
+    summary: Container Group
+  /organizations/{organization_name}/quotas:
+    description: Operations for quotas
+    get:
+      description: Gets the organization quotas
+      operationId: get_quotas
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    container_group_quotas:
+                      max_created_container_groups: 10
+                      container_instance_quota: 10
+                    create_time: 2020-07-04T19:00:00Z
+                    recipes_quotas:
+                      max_created_recipe_deployments: 10
+                      recipe_instance_quota: 10
+                    update_time: 2020-07-04T19:00:00Z
+              schema:
+                $ref: '#/components/schemas/Quotas'
+          description: OK
+        "404":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Not Found
+                    status: 404
+                    detail: Not Found
+                    instance: 72ea5f29
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: Get Quotas
+      tags:
+      - quotas
+    summary: Quotas
+  /organizations/{organization_name}/projects/{project_name}/recipe-deployments:
+    description: Operations for recipe deployments
+    get:
+      description: Gets the list of all recipe deployments
+      operationId: list_recipe_deployments
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    items:
+                    - id: 500dec9c-aaf3-4a0b-aa7f-de6483d0b9b1
+                      name: sim1
+                      display_name: Simulation 1
+                      replicas: 1
+                      current_state:
+                        status: stopped
+                        start_time: 2020-07-04T19:00:00Z
+                        finish_time: 2020-07-04T19:00:00Z
+                        instance_status_counts:
+                          allocating_count: 1
+                          creating_count: 1
+                          running_count: 1
+                      recipe:
+                        id: 3cc0c401-4159-4760-a1e1-b2dec9c2440e
+                        name: anvil-drop-simulator
+                        display_name: null
+                        readme: test-readme
+                        resources:
+                          cpu: 1
+                          ram: 1
+                          gpu_class: high
+                    - id: b697f678-b987-4992-bbbf-d6dda171b34a
+                      name: sim2
+                      display_name: Simulation 2
+                      replicas: 1
+                      current_state:
+                        status: stopped
+                        start_time: 2020-07-04T19:00:00Z
+                        finish_time: 2020-07-04T19:00:00Z
+                        instance_status_counts:
+                          allocating_count: 1
+                          creating_count: 1
+                          running_count: 1
+                      recipe:
+                        id: 3cc0c401-4159-4760-a1e1-b2dec9c22893
+                        name: anvil-drop-simulator-2
+                        readme: test-readme-2
+                        resources:
+                          cpu: 2
+                          ram: 2
+                          gpu_class: high
+              schema:
+                $ref: '#/components/schemas/RecipeDeploymentList'
+          description: OK
+        "404":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Not Found
+                    status: 404
+                    detail: Not Found
+                    instance: 72ea5f29
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: List Recipe Deployments
+      tags:
+      - recipe_deployments
+    post:
+      description: Creates a new Recipe Deployment
+      operationId: create_recipe_deployment
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/CreateRecipeDeployment'
+      responses:
+        "201":
+          content:
+            application/json:
+              example:
+                jsonExample:
+                  value:
+                    id: 500dec9c-aaf3-4a0b-aa7f-de6483d0b9b1
+                    name: sim1
+                    display_name: Simulation 1
+                    replicas: 1
+                    current_state:
+                      status: stopped
+                      start_time: 2020-07-04T19:00:00Z
+                      finish_time: 2020-07-04T19:00:00Z
+                      instance_status_counts:
+                        allocating_count: 1
+                        creating_count: 1
+                        running_count: 1
+                    recipe:
+                      id: 3cc0c401-4159-4760-a1e1-b2dec9c2440e
+                      name: anvil-drop-simulator
+                      display_name: null
+                      readme: test-readme
+                      resources:
+                        cpu: 1
+                        ram: 1
+                        gpu_class: high
+              schema:
+                $ref: '#/components/schemas/RecipeDeployment'
+          description: Created
+          headers:
+            Location:
+              explode: false
+              schema:
+                example: /organizations/acme-corp/projects/anvil-drop-simulator/recipe-deployments/salad-recipe
+                type: string
+              style: simple
+        "400":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Bad Request
+                    status: 400
+                    detail: Bad Request
+                    instance: 60907fdc
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Forbidden
+                    status: 403
+                    detail: Forbidden
+                    instance: 962fc00e
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: Create a Recipe Deployment
+      tags:
+      - recipe_deployments
+    summary: Recipe Deployments
+  /organizations/{organization_name}/projects/{project_name}/recipe-deployments/{recipe_deployment_name}:
+    delete:
+      description: Deletes a Recipe Deployment
+      operationId: delete_recipe_deployment
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique recipe deployment name
+        explode: false
+        in: path
+        name: recipe_deployment_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,62}[a-z0-9]$"
+          type: string
+        style: simple
+      responses:
+        "202":
+          description: Accepted
+        "403":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Forbidden
+                    status: 403
+                    detail: Forbidden
+                    instance: 962fc00e
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Not Found
+                    status: 404
+                    detail: Not Found
+                    instance: 72ea5f29
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: Delete a Recipe Deployment
+      tags:
+      - recipe_deployments
+    description: Operations for a recipe
+    get:
+      description: Gets a Recipe Deployment by its unique name
+      operationId: get_recipe_deployment
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique recipe deployment name
+        explode: false
+        in: path
+        name: recipe_deployment_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,62}[a-z0-9]$"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    id: 500dec9c-aaf3-4a0b-aa7f-de6483d0b9b1
+                    name: sim1
+                    display_name: Simulation 1
+                    replicas: 1
+                    current_state:
+                      status: stopped
+                      start_time: 2020-07-04T19:00:00Z
+                      finish_time: 2020-07-04T19:00:00Z
+                      instance_status_counts:
+                        allocating_count: 1
+                        creating_count: 1
+                        running_count: 1
+                    recipe:
+                      id: 3cc0c401-4159-4760-a1e1-b2dec9c2440e
+                      name: anvil-drop-simulator
+                      display_name: null
+                      readme: test-readme
+                      resources:
+                        cpu: 1
+                        ram: 1
+                        gpu_class: high
+              schema:
+                $ref: '#/components/schemas/RecipeDeployment'
+          description: OK
+        "404":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Not Found
+                    status: 404
+                    detail: Not Found
+                    instance: 72ea5f29
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: Get a Recipe Deployment
+      tags:
+      - recipe_deployments
+    patch:
+      description: Updates a Recipe Deployment
+      operationId: update_recipe_deployment
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique recipe deployment name
+        explode: false
+        in: path
+        name: recipe_deployment_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,62}[a-z0-9]$"
+          type: string
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateRecipeDeployment'
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    id: 500dec9c-aaf3-4a0b-aa7f-de6483d0b9b1
+                    name: sim1
+                    display_name: Simulation 1
+                    replicas: 1
+                    current_state:
+                      status: stopped
+                      start_time: 2020-07-04T19:00:00Z
+                      finish_time: 2020-07-04T19:00:00Z
+                      instance_status_counts:
+                        allocating_count: 1
+                        creating_count: 1
+                        running_count: 1
+                    recipe:
+                      id: 3cc0c401-4159-4760-a1e1-b2dec9c2440e
+                      name: anvil-drop-simulator
+                      display_name: null
+                      readme: test-readme
+                      resources:
+                        cpu: 1
+                        ram: 1
+                        gpu_class: high
+              schema:
+                $ref: '#/components/schemas/RecipeDeployment'
+          description: OK
+        "400":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Bad Request
+                    status: 400
+                    detail: Bad Request
+                    instance: 60907fdc
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Forbidden
+                    status: 403
+                    detail: Forbidden
+                    instance: 962fc00e
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Not Found
+                    status: 404
+                    detail: Not Found
+                    instance: 72ea5f29
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: Update a Recipe Deployment
+      tags:
+      - recipe_deployments
+    summary: Recipe Deployment
+  /organizations/{organization_name}/projects/{project_name}/recipe-deployments/{recipe_deployment_name}/start:
+    description: Operations for a recipe
+    post:
+      description: Starts a Deployed Recipe
+      operationId: start_deployed_recipe
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique recipe deployment name
+        explode: false
+        in: path
+        name: recipe_deployment_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,62}[a-z0-9]$"
+          type: string
+        style: simple
+      responses:
+        "202":
+          description: Accepted
+        "400":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Bad Request
+                    status: 400
+                    detail: Bad Request
+                    instance: 60907fdc
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Forbidden
+                    status: 403
+                    detail: Forbidden
+                    instance: 962fc00e
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: Start a Deployed Recipe
+      tags:
+      - recipe_deployments
+    summary: Recipe Deployment
+  /organizations/{organization_name}/projects/{project_name}/recipe-deployments/{recipe_deployment_name}/restart:
+    description: Operations for a recipe
+    post:
+      description: Restarts a Deployed Recipe
+      operationId: restart_deployed_recipe
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique recipe deployment name
+        explode: false
+        in: path
+        name: recipe_deployment_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,62}[a-z0-9]$"
+          type: string
+        style: simple
+      responses:
+        "202":
+          description: Accepted
+        "400":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Bad Request
+                    status: 400
+                    detail: Bad Request
+                    instance: 60907fdc
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Forbidden
+                    status: 403
+                    detail: Forbidden
+                    instance: 962fc00e
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: Restart a Deployed Recipe
+      tags:
+      - recipe_deployments
+    summary: Recipe Deployment
+  /organizations/{organization_name}/projects/{project_name}/recipe-deployments/{recipe_deployment_name}/stop:
+    description: Operations for a recipe
+    post:
+      description: Stops a Deployed Recipe
+      operationId: stop_deployed_recipe
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique recipe deployment name
+        explode: false
+        in: path
+        name: recipe_deployment_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,62}[a-z0-9]$"
+          type: string
+        style: simple
+      responses:
+        "202":
+          description: Accepted
+        "400":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Bad Request
+                    status: 400
+                    detail: Bad Request
+                    instance: 60907fdc
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Forbidden
+                    status: 403
+                    detail: Forbidden
+                    instance: 962fc00e
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Forbidden
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: Stop a Deployed Recipe
+      tags:
+      - recipe_deployments
+    summary: Recipe Deployment
+  /organizations/{organization_name}/projects/{project_name}/recipe-deployments/{recipe_deployment_name}/instances:
+    description: Operations for a recipe
+    get:
+      description: Retrieves a list of recipe deployment instances
+      operationId: list_recipe_deployment_instances
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique project name
+        explode: false
+        in: path
+        name: project_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique recipe deployment name
+        explode: false
+        in: path
+        name: recipe_deployment_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,62}[a-z0-9]$"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                instances:
+                - machine_id: 5ebfa363-6e0b-4db1-b9be-70ed4995d0b1
+                  state: running
+                  update_time: 2023-05-04T05:41:05Z
+                - machine_id: a6c2e6d5-6c5a-4b3b-a4d4-4b13c2b634ad
+                  state: creating
+                  update_time: 2023-05-04T05:38:12Z
+              schema:
+                $ref: '#/components/schemas/RecipeDeploymentInstances'
+          description: OK
+        "404":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Not Found
+                    status: 404
+                    detail: Not Found
+                    instance: 72ea5f29
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: List Recipe Deployment Instances
+      tags:
+      - recipe_deployments
+    summary: Recipe Deployment
+  /organizations/{organization_name}/gpu-classes:
+    description: Allows reading the GPU Classes collection available for the organization
+    get:
+      description: List the GPU Classes
+      operationId: list_gpu_classes
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    items:
+                    - name: g4dn.xlarge
+                    - name: g4dn.metal
+              schema:
+                $ref: '#/components/schemas/GpuClassesList'
+          description: OK
+        "404":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Not Found
+                    status: 404
+                    detail: Not Found
+                    instance: 72ea5f29
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: List the GPU Classes
+      tags:
+      - organization_data
+    summary: GPU Classes
+  /organizations/{organization_name}/recipes:
+    description: Operations for recipes
+    get:
+      description: Gets the list of recipes
+      operationId: list_recipes
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    items:
+                    - id: 3cc0c401-4159-4760-a1e1-b2dec9c2440e
+                      name: anvil-drop-simulator
+                      readme: test-readme
+                    - id: 3cc0c401-4159-4760-a1e1-b2dec9c22893
+                      name: anvil-drop-simulator-2
+                      readme: test-readme-2
+              schema:
+                $ref: '#/components/schemas/RecipeList'
+          description: OK
+        "404":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Not Found
+                    status: 404
+                    detail: Not Found
+                    instance: 72ea5f29
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: List Recipes
+      tags:
+      - recipes
+    summary: Recipes
+  /organizations/{organization_name}/recipes/{recipe_name}:
+    description: Operations for recipes
+    get:
+      description: Gets a recipe
+      operationId: get_recipe
+      parameters:
+      - description: The unique organization name
+        explode: false
+        in: path
+        name: organization_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        style: simple
+      - description: The unique recipe name
+        explode: false
+        in: path
+        name: recipe_name
+        required: true
+        schema:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,62}[a-z0-9]$"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    id: 3cc0c401-4159-4760-a1e1-b2dec9c2440e
+                    name: anvil-drop-simulator
+                    readme: test-readme
+              schema:
+                $ref: '#/components/schemas/Recipe'
+          description: OK
+        "404":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Not Found
+                    status: 404
+                    detail: Not Found
+                    instance: 72ea5f29
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "429":
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Too Many Requests
+                    status: 409
+                    detail: Too Many Requests
+                    instance: cd6306ee
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Too Many Requests
+        default:
+          content:
+            application/json:
+              examples:
+                jsonExample:
+                  value:
+                    type: about:blank
+                    title: Unknown Error
+                    status: 500
+                    detail: Unknown Error
+                    instance: 188f9bbb
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Unknown Error
+      summary: Get a Recipe
+      tags:
+      - recipes
+    summary: Recipes
+components:
+  parameters:
+    container_group_name:
+      description: The unique container group name
+      explode: false
+      in: path
+      name: container_group_name
+      required: true
+      schema:
+        maxLength: 63
+        minLength: 2
+        pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+        type: string
+      style: simple
+    organization_name:
+      description: The unique organization name
+      explode: false
+      in: path
+      name: organization_name
+      required: true
+      schema:
+        maxLength: 63
+        minLength: 2
+        pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+        type: string
+      style: simple
+    project_name:
+      description: The unique project name
+      explode: false
+      in: path
+      name: project_name
+      required: true
+      schema:
+        maxLength: 63
+        minLength: 2
+        pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+        type: string
+      style: simple
+    recipe_deployment_name:
+      description: The unique recipe deployment name
+      explode: false
+      in: path
+      name: recipe_deployment_name
+      required: true
+      schema:
+        maxLength: 63
+        minLength: 2
+        pattern: "^[a-z][a-z0-9-]{0,62}[a-z0-9]$"
+        type: string
+      style: simple
+    recipe_name:
+      description: The unique recipe name
+      explode: false
+      in: path
+      name: recipe_name
+      required: true
+      schema:
+        maxLength: 63
+        minLength: 2
+        pattern: "^[a-z][a-z0-9-]{0,62}[a-z0-9]$"
+        type: string
+      style: simple
+    machine_id:
+      description: The unique machine identifier
+      explode: false
+      in: path
+      name: machine_id
+      required: true
+      schema:
+        format: uuid
+        type: string
+      style: simple
+  requestBodies:
+    CreateContainerGroup:
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                name: sim1
+                container:
+                  image: acme-corp/anvil-drop-simulator:v65535
+                  resources:
+                    cpu: 1
+                    memory: 2048
+                  command: []
+                restart_policy: always
+                replicas: 1
+          schema:
+            $ref: '#/components/schemas/CreateContainerGroup'
+      required: true
+    UpdateContainerGroup:
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                display_name: Simulation 1
+          schema:
+            $ref: '#/components/schemas/UpdateContainerGroup'
+      required: true
+    CreateRecipeDeployment:
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                name: sim1
+                display_name: Sim 1
+                replicas: 1
+                recipe_name: salad_recipe
+          schema:
+            $ref: '#/components/schemas/CreateRecipeDeployment'
+      required: true
+    UpdateRecipeDeployment:
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                display_name: Salad Deployed Recipe
+                replicas: 1
+          schema:
+            $ref: '#/components/schemas/UpdateRecipeDeployment'
+      required: true
+  responses:
+    "400":
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                type: about:blank
+                title: Bad Request
+                status: 400
+                detail: Bad Request
+                instance: 60907fdc
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+      description: Bad Request
+    "401":
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                type: about:blank
+                title: Unauthorized
+                status: 401
+                detail: Unauthorized
+                instance: dc907f60
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+      description: Unauthorized
+    "403":
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                type: about:blank
+                title: Forbidden
+                status: 403
+                detail: Forbidden
+                instance: 962fc00e
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+      description: Forbidden
+    "404":
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                type: about:blank
+                title: Not Found
+                status: 404
+                detail: Not Found
+                instance: 72ea5f29
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+      description: Not Found
+    "429":
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                type: about:blank
+                title: Too Many Requests
+                status: 409
+                detail: Too Many Requests
+                instance: cd6306ee
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+      description: Too Many Requests
+    UnknownError:
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                type: about:blank
+                title: Unknown Error
+                status: 500
+                detail: Unknown Error
+                instance: 188f9bbb
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+      description: Unknown Error
+    GetContainerGroup:
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                id: 500dec9c-aaf3-4a0b-aa7f-de6483d0b9b1
+                name: sim1
+                display_name: Simulation 1
+                container:
+                  image: acme-corp/anvil-drop-simulator:v65535
+                  resources:
+                    cpu: 1
+                    memory: 2048
+                  command: []
+                restart_policy: always
+                replicas: 1
+                current_state:
+                  status: stopped
+                  start_time: 2020-07-04T19:00:00Z
+                  finish_time: 2020-07-04T19:00:00Z
+                  instance_status_counts:
+                    allocating_count: 1
+                    creating_count: 1
+                    running_count: 1
+                create_time: 2020-07-04T19:00:00Z
+                update_time: 2020-07-04T19:00:00Z
+          schema:
+            $ref: '#/components/schemas/ContainerGroup'
+      description: OK
+    ListContainerGroups:
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                items:
+                - id: 500dec9c-aaf3-4a0b-aa7f-de6483d0b9b1
+                  name: sim1
+                  display_name: Simulation 1
+                  container:
+                    image: acme-corp/anvil-drop-simulator:v65535
+                    resources:
+                      cpu: 1
+                      memory: 2048
+                    command: []
+                  restart_policy: always
+                  replicas: 1
+                  current_state:
+                    status: stopped
+                    start_time: 2020-07-04T19:00:00Z
+                    finish_time: 2020-07-04T19:00:00Z
+                    instance_status_counts:
+                      allocating_count: 1
+                      creating_count: 1
+                      running_count: 1
+                  create_time: 2020-07-04T19:00:00Z
+                  update_time: 2020-07-04T19:00:00Z
+                - id: b697f678-b987-4992-bbbf-d6dda171b34a
+                  name: sim2
+                  display_name: Simulation 2
+                  container:
+                    image: acme-corp/anvil-drop-simulator:v65536
+                    resources:
+                      cpu: 1
+                      memory: 2048
+                    command: []
+                  restart_policy: always
+                  replicas: 1
+                  current_state:
+                    status: stopped
+                    start_time: 2020-07-04T19:00:00Z
+                    finish_time: 2020-07-04T19:00:00Z
+                    instance_status_counts:
+                      allocating_count: 1
+                      creating_count: 1
+                      running_count: 1
+                  create_time: 2020-07-04T19:00:00Z
+                  update_time: 2020-07-04T19:00:00Z
+          schema:
+            $ref: '#/components/schemas/ContainerGroupList'
+      description: OK
+    CreateContainerGroup:
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                id: 500dec9c-aaf3-4a0b-aa7f-de6483d0b9b1
+                name: sim1
+                display_name: Simulation 1
+                container:
+                  image: acme-corp/anvil-drop-simulator:v65535
+                  resources:
+                    cpu: 1
+                    memory: 2048
+                  command: []
+                restart_policy: always
+                replicas: 1
+                current_state:
+                  status: stopped
+                  start_time: 2020-07-04T19:00:00Z
+                  finish_time: 2020-07-04T19:00:00Z
+                  instance_status_counts:
+                    allocating_count: 1
+                    creating_count: 1
+                    running_count: 1
+                create_time: 2020-07-04T19:00:00Z
+                update_time: 2020-07-04T19:00:00Z
+          schema:
+            $ref: '#/components/schemas/ContainerGroup'
+      description: Created
+      headers:
+        Location:
+          explode: false
+          schema:
+            example: /organizations/acme-corp/projects/anvil-drop-simulator/containers/sim1
+            type: string
+          style: simple
+      links:
+        get_container_group_by_name:
+          operationId: get_container_group
+          parameters:
+            container_group_name: $response.body#/name
+    UpdateContainerGroup:
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                id: 500dec9c-aaf3-4a0b-aa7f-de6483d0b9b1
+                name: sim1
+                display_name: Simulation 1
+                container:
+                  image: acme-corp/anvil-drop-simulator:v65535
+                  resources:
+                    cpu: 1
+                    memory: 2048
+                  command: []
+                restart_policy: always
+                replicas: 1
+                current_state:
+                  status: stopped
+                  start_time: 2020-07-04T19:00:00Z
+                  finish_time: 2020-07-04T19:00:00Z
+                  instance_status_counts:
+                    allocating_count: 1
+                    creating_count: 1
+                    running_count: 1
+                create_time: 2020-07-04T19:00:00Z
+                update_time: 2020-07-04T19:00:00Z
+          schema:
+            $ref: '#/components/schemas/ContainerGroup'
+      description: OK
+    DeleteContainerGroup:
+      description: Accepted
+    StartContainerGroup:
+      description: Accepted
+    RestartContainerGroup:
+      description: Accepted
+    StopContainerGroup:
+      description: Accepted
+    ListContainerGroupInstances:
+      content:
+        application/json:
+          example:
+            instances:
+            - machine_id: 5ebfa363-6e0b-4db1-b9be-70ed4995d0b1
+              state: running
+              update_time: 2023-05-04T05:41:05Z
+            - machine_id: a6c2e6d5-6c5a-4b3b-a4d4-4b13c2b634ad
+              state: creating
+              update_time: 2023-05-04T05:38:12Z
+          schema:
+            $ref: '#/components/schemas/ContainerGroupInstances'
+      description: OK
+    ReallocateContainerGroupInstance:
+      description: Accepted
+    RecreateContainerGroupInstance:
+      description: Accepted
+    RestartContainerGroupInstance:
+      description: Accepted
+    ListGpuClasses:
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                items:
+                - name: g4dn.xlarge
+                - name: g4dn.metal
+          schema:
+            $ref: '#/components/schemas/GpuClassesList'
+      description: OK
+    GetQuotas:
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                container_group_quotas:
+                  max_created_container_groups: 10
+                  container_instance_quota: 10
+                create_time: 2020-07-04T19:00:00Z
+                recipes_quotas:
+                  max_created_recipe_deployments: 10
+                  recipe_instance_quota: 10
+                update_time: 2020-07-04T19:00:00Z
+          schema:
+            $ref: '#/components/schemas/Quotas'
+      description: OK
+    GetRecipe:
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                id: 3cc0c401-4159-4760-a1e1-b2dec9c2440e
+                name: anvil-drop-simulator
+                readme: test-readme
+          schema:
+            $ref: '#/components/schemas/Recipe'
+      description: OK
+    ListRecipes:
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                items:
+                - id: 3cc0c401-4159-4760-a1e1-b2dec9c2440e
+                  name: anvil-drop-simulator
+                  readme: test-readme
+                - id: 3cc0c401-4159-4760-a1e1-b2dec9c22893
+                  name: anvil-drop-simulator-2
+                  readme: test-readme-2
+          schema:
+            $ref: '#/components/schemas/RecipeList'
+      description: OK
+    GetRecipeDeployment:
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                id: 500dec9c-aaf3-4a0b-aa7f-de6483d0b9b1
+                name: sim1
+                display_name: Simulation 1
+                replicas: 1
+                current_state:
+                  status: stopped
+                  start_time: 2020-07-04T19:00:00Z
+                  finish_time: 2020-07-04T19:00:00Z
+                  instance_status_counts:
+                    allocating_count: 1
+                    creating_count: 1
+                    running_count: 1
+                recipe:
+                  id: 3cc0c401-4159-4760-a1e1-b2dec9c2440e
+                  name: anvil-drop-simulator
+                  display_name: null
+                  readme: test-readme
+                  resources:
+                    cpu: 1
+                    ram: 1
+                    gpu_class: high
+          schema:
+            $ref: '#/components/schemas/RecipeDeployment'
+      description: OK
+    ListRecipeDeployments:
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                items:
+                - id: 500dec9c-aaf3-4a0b-aa7f-de6483d0b9b1
+                  name: sim1
+                  display_name: Simulation 1
+                  replicas: 1
+                  current_state:
+                    status: stopped
+                    start_time: 2020-07-04T19:00:00Z
+                    finish_time: 2020-07-04T19:00:00Z
+                    instance_status_counts:
+                      allocating_count: 1
+                      creating_count: 1
+                      running_count: 1
+                  recipe:
+                    id: 3cc0c401-4159-4760-a1e1-b2dec9c2440e
+                    name: anvil-drop-simulator
+                    display_name: null
+                    readme: test-readme
+                    resources:
+                      cpu: 1
+                      ram: 1
+                      gpu_class: high
+                - id: b697f678-b987-4992-bbbf-d6dda171b34a
+                  name: sim2
+                  display_name: Simulation 2
+                  replicas: 1
+                  current_state:
+                    status: stopped
+                    start_time: 2020-07-04T19:00:00Z
+                    finish_time: 2020-07-04T19:00:00Z
+                    instance_status_counts:
+                      allocating_count: 1
+                      creating_count: 1
+                      running_count: 1
+                  recipe:
+                    id: 3cc0c401-4159-4760-a1e1-b2dec9c22893
+                    name: anvil-drop-simulator-2
+                    readme: test-readme-2
+                    resources:
+                      cpu: 2
+                      ram: 2
+                      gpu_class: high
+          schema:
+            $ref: '#/components/schemas/RecipeDeploymentList'
+      description: OK
+    CreateRecipeDeployment:
+      content:
+        application/json:
+          example:
+            jsonExample:
+              value:
+                id: 500dec9c-aaf3-4a0b-aa7f-de6483d0b9b1
+                name: sim1
+                display_name: Simulation 1
+                replicas: 1
+                current_state:
+                  status: stopped
+                  start_time: 2020-07-04T19:00:00Z
+                  finish_time: 2020-07-04T19:00:00Z
+                  instance_status_counts:
+                    allocating_count: 1
+                    creating_count: 1
+                    running_count: 1
+                recipe:
+                  id: 3cc0c401-4159-4760-a1e1-b2dec9c2440e
+                  name: anvil-drop-simulator
+                  display_name: null
+                  readme: test-readme
+                  resources:
+                    cpu: 1
+                    ram: 1
+                    gpu_class: high
+          schema:
+            $ref: '#/components/schemas/RecipeDeployment'
+      description: Created
+      headers:
+        Location:
+          explode: false
+          schema:
+            example: /organizations/acme-corp/projects/anvil-drop-simulator/recipe-deployments/salad-recipe
+            type: string
+          style: simple
+    UpdateRecipeDeployment:
+      content:
+        application/json:
+          examples:
+            jsonExample:
+              value:
+                id: 500dec9c-aaf3-4a0b-aa7f-de6483d0b9b1
+                name: sim1
+                display_name: Simulation 1
+                replicas: 1
+                current_state:
+                  status: stopped
+                  start_time: 2020-07-04T19:00:00Z
+                  finish_time: 2020-07-04T19:00:00Z
+                  instance_status_counts:
+                    allocating_count: 1
+                    creating_count: 1
+                    running_count: 1
+                recipe:
+                  id: 3cc0c401-4159-4760-a1e1-b2dec9c2440e
+                  name: anvil-drop-simulator
+                  display_name: null
+                  readme: test-readme
+                  resources:
+                    cpu: 1
+                    ram: 1
+                    gpu_class: high
+          schema:
+            $ref: '#/components/schemas/RecipeDeployment'
+      description: OK
+    DeleteRecipeDeployment:
+      description: Accepted
+    StartRecipeDeployment:
+      description: Accepted
+    StopRecipeDeployment:
+      description: Accepted
+    RestartRecipeDeployment:
+      description: Accepted
+    ListRecipeDeploymentInstances:
+      content:
+        application/json:
+          example:
+            instances:
+            - machine_id: 5ebfa363-6e0b-4db1-b9be-70ed4995d0b1
+              state: running
+              update_time: 2023-05-04T05:41:05Z
+            - machine_id: a6c2e6d5-6c5a-4b3b-a4d4-4b13c2b634ad
+              state: creating
+              update_time: 2023-05-04T05:38:12Z
+          schema:
+            $ref: '#/components/schemas/RecipeDeploymentInstances'
+      description: OK
+  schemas:
+    ProblemDetails:
+      additionalProperties: false
+      description: Represents a problem
+      properties:
+        type:
+          default: about:blank
+          description: The URI reference that identifies the problem type
+          nullable: true
+          type: string
+        title:
+          description: "A short, human-readable summary of the problem type"
+          nullable: true
+          type: string
+        status:
+          description: The HTTP status code generated by the origin server
+          nullable: true
+          type: integer
+        detail:
+          description: A human-readable explanation specific to this occurrence of
+            the problem
+          nullable: true
+          type: string
+        instance:
+          description: The URI reference that identifies the specific occurrence of
+            the problem
+          nullable: true
+          type: string
+      type: object
+    CountryCode:
+      enum:
+      - af
+      - al
+      - dz
+      - as
+      - ad
+      - ao
+      - ai
+      - aq
+      - ag
+      - ar
+      - am
+      - aw
+      - au
+      - at
+      - az
+      - bs
+      - bh
+      - bd
+      - bb
+      - by
+      - be
+      - bz
+      - bj
+      - bm
+      - bt
+      - bo
+      - bq
+      - ba
+      - bw
+      - bv
+      - br
+      - io
+      - bn
+      - bg
+      - bf
+      - bi
+      - cv
+      - kh
+      - cm
+      - ca
+      - ky
+      - cf
+      - td
+      - cl
+      - cn
+      - cx
+      - cc
+      - co
+      - km
+      - cd
+      - cg
+      - ck
+      - cr
+      - hr
+      - cu
+      - cw
+      - cy
+      - cz
+      - ci
+      - dk
+      - dj
+      - dm
+      - do
+      - ec
+      - eg
+      - sv
+      - gq
+      - er
+      - ee
+      - sz
+      - et
+      - fk
+      - fo
+      - fj
+      - fi
+      - fr
+      - gf
+      - pf
+      - tf
+      - ga
+      - gm
+      - ge
+      - de
+      - gh
+      - gi
+      - gr
+      - gl
+      - gd
+      - gp
+      - gu
+      - gt
+      - gg
+      - gn
+      - gw
+      - gy
+      - ht
+      - hm
+      - va
+      - hn
+      - hk
+      - hu
+      - is
+      - in
+      - id
+      - ir
+      - iq
+      - ie
+      - im
+      - il
+      - it
+      - jm
+      - jp
+      - je
+      - jo
+      - kz
+      - ke
+      - ki
+      - kp
+      - kr
+      - kw
+      - kg
+      - la
+      - lv
+      - lb
+      - ls
+      - lr
+      - ly
+      - li
+      - lt
+      - lu
+      - mo
+      - mg
+      - mw
+      - my
+      - mv
+      - ml
+      - mt
+      - mh
+      - mq
+      - mr
+      - mu
+      - yt
+      - mx
+      - fm
+      - md
+      - mc
+      - mn
+      - me
+      - ms
+      - ma
+      - mz
+      - mm
+      - na
+      - nr
+      - np
+      - nl
+      - nc
+      - nz
+      - ni
+      - ne
+      - ng
+      - nu
+      - nf
+      - mp
+      - "false"
+      - om
+      - pk
+      - pw
+      - ps
+      - pa
+      - pg
+      - py
+      - pe
+      - ph
+      - pn
+      - pl
+      - pt
+      - pr
+      - qa
+      - mk
+      - ro
+      - ru
+      - rw
+      - re
+      - bl
+      - sh
+      - kn
+      - lc
+      - mf
+      - pm
+      - vc
+      - ws
+      - sm
+      - st
+      - sa
+      - sn
+      - rs
+      - sc
+      - sl
+      - sg
+      - sx
+      - sk
+      - si
+      - sb
+      - so
+      - za
+      - gs
+      - ss
+      - es
+      - lk
+      - sd
+      - sr
+      - sj
+      - se
+      - ch
+      - sy
+      - tw
+      - tj
+      - tz
+      - th
+      - tl
+      - tg
+      - tk
+      - to
+      - tt
+      - tn
+      - tr
+      - tm
+      - tc
+      - tv
+      - ug
+      - ua
+      - ae
+      - gb
+      - um
+      - us
+      - uy
+      - uz
+      - vu
+      - ve
+      - vn
+      - vg
+      - vi
+      - wf
+      - eh
+      - ye
+      - zm
+      - zw
+      - ax
+      type: string
+    ContainerGroupStatus:
+      enum:
+      - pending
+      - running
+      - stopped
+      - succeeded
+      - failed
+      - deploying
+      type: string
+    ContainerRestartPolicy:
+      enum:
+      - always
+      - on_failure
+      - never
+      type: string
+    ContainerNetworkingProtocol:
+      enum:
+      - http
+      type: string
+    ContainerGroup:
+      additionalProperties: false
+      description: Represents a container group
+      example:
+        container:
+          image: image
+          environment_variables:
+            key: environment_variables
+          resources:
+            gpu_class: gpu_class
+            memory: 9875
+            cpu: 2
+          logging:
+            tcp:
+              port: 9607
+              host: host
+            new_relic:
+              host: host
+              ingestion_key: ingestion_key
+            splunk:
+              host: host
+              token: token
+          command:
+          - command
+          - command
+          - command
+          - command
+          - command
+        create_time: 2000-01-23T04:56:07.000+00:00
+        replicas: 60
+        current_state:
+          start_time: 2000-01-23T04:56:07.000+00:00
+          instance_status_count:
+            creating_count: 0
+            running_count: 0
+            allocating_count: 0
+          description: description
+          finish_time: 2000-01-23T04:56:07.000+00:00
+          status: null
+        networking:
+          protocol: null
+          port: 60957
+          auth: true
+          dns: http://example.com/aeiou
+        display_name: display_name
+        readiness_probe:
+          tcp:
+            port: 13284
+          period_seconds: 1
+          initial_delay_seconds: 1
+          failure_threshold: 1
+          http:
+            path: path
+            headers:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            scheme: null
+            port: 23698
+          success_threshold: 1
+          timeout_seconds: 1
+          grpc:
+            port: 27168
+            service: service
+          exec:
+            command:
+            - command
+            - command
+        update_time: 2000-01-23T04:56:07.000+00:00
+        restart_policy: null
+        startup_probe:
+          tcp:
+            port: 13284
+          period_seconds: 1
+          initial_delay_seconds: 1
+          failure_threshold: 1
+          http:
+            path: path
+            headers:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            scheme: null
+            port: 23698
+          success_threshold: 1
+          timeout_seconds: 1
+          grpc:
+            port: 27168
+            service: service
+          exec:
+            command:
+            - command
+            - command
+        name: name
+        country_codes:
+        - null
+        - null
+        - null
+        - null
+        - null
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        liveness_probe:
+          tcp:
+            port: 13284
+          period_seconds: 1
+          initial_delay_seconds: 1
+          failure_threshold: 1
+          http:
+            path: path
+            headers:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            scheme: null
+            port: 23698
+          success_threshold: 1
+          timeout_seconds: 1
+          grpc:
+            port: 27168
+            service: service
+          exec:
+            command:
+            - command
+            - command
+      properties:
+        id:
+          format: uuid
+          type: string
+        name:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        display_name:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[ ,-.0-9A-Za-z]+$"
+          type: string
+        container:
+          $ref: '#/components/schemas/Container'
+        restart_policy:
+          $ref: '#/components/schemas/ContainerRestartPolicy'
+        replicas:
+          maximum: 100
+          minimum: 1
+          type: integer
+        current_state:
+          $ref: '#/components/schemas/ContainerGroupState'
+        country_codes:
+          items:
+            $ref: '#/components/schemas/CountryCode'
+          maxItems: 500
+          minItems: 1
+          type: array
+        networking:
+          $ref: '#/components/schemas/ContainerGroupNetworking'
+        liveness_probe:
+          $ref: '#/components/schemas/ContainerGroupProbe'
+        readiness_probe:
+          $ref: '#/components/schemas/ContainerGroupProbe'
+        startup_probe:
+          $ref: '#/components/schemas/ContainerGroupProbe'
+        create_time:
+          format: date-time
+          type: string
+        update_time:
+          format: date-time
+          type: string
+      required:
+      - container
+      - create_time
+      - current_state
+      - display_name
+      - id
+      - name
+      - replicas
+      - restart_policy
+      - update_time
+      type: object
+    ContainerGroupList:
+      additionalProperties: false
+      description: Represents a list of container groups
+      example:
+        items:
+        - container:
+            image: image
+            environment_variables:
+              key: environment_variables
+            resources:
+              gpu_class: gpu_class
+              memory: 9875
+              cpu: 2
+            logging:
+              tcp:
+                port: 9607
+                host: host
+              new_relic:
+                host: host
+                ingestion_key: ingestion_key
+              splunk:
+                host: host
+                token: token
+            command:
+            - command
+            - command
+            - command
+            - command
+            - command
+          create_time: 2000-01-23T04:56:07.000+00:00
+          replicas: 60
+          current_state:
+            start_time: 2000-01-23T04:56:07.000+00:00
+            instance_status_count:
+              creating_count: 0
+              running_count: 0
+              allocating_count: 0
+            description: description
+            finish_time: 2000-01-23T04:56:07.000+00:00
+            status: null
+          networking:
+            protocol: null
+            port: 60957
+            auth: true
+            dns: http://example.com/aeiou
+          display_name: display_name
+          readiness_probe:
+            tcp:
+              port: 13284
+            period_seconds: 1
+            initial_delay_seconds: 1
+            failure_threshold: 1
+            http:
+              path: path
+              headers:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              scheme: null
+              port: 23698
+            success_threshold: 1
+            timeout_seconds: 1
+            grpc:
+              port: 27168
+              service: service
+            exec:
+              command:
+              - command
+              - command
+          update_time: 2000-01-23T04:56:07.000+00:00
+          restart_policy: null
+          startup_probe:
+            tcp:
+              port: 13284
+            period_seconds: 1
+            initial_delay_seconds: 1
+            failure_threshold: 1
+            http:
+              path: path
+              headers:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              scheme: null
+              port: 23698
+            success_threshold: 1
+            timeout_seconds: 1
+            grpc:
+              port: 27168
+              service: service
+            exec:
+              command:
+              - command
+              - command
+          name: name
+          country_codes:
+          - null
+          - null
+          - null
+          - null
+          - null
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          liveness_probe:
+            tcp:
+              port: 13284
+            period_seconds: 1
+            initial_delay_seconds: 1
+            failure_threshold: 1
+            http:
+              path: path
+              headers:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              scheme: null
+              port: 23698
+            success_threshold: 1
+            timeout_seconds: 1
+            grpc:
+              port: 27168
+              service: service
+            exec:
+              command:
+              - command
+              - command
+        - container:
+            image: image
+            environment_variables:
+              key: environment_variables
+            resources:
+              gpu_class: gpu_class
+              memory: 9875
+              cpu: 2
+            logging:
+              tcp:
+                port: 9607
+                host: host
+              new_relic:
+                host: host
+                ingestion_key: ingestion_key
+              splunk:
+                host: host
+                token: token
+            command:
+            - command
+            - command
+            - command
+            - command
+            - command
+          create_time: 2000-01-23T04:56:07.000+00:00
+          replicas: 60
+          current_state:
+            start_time: 2000-01-23T04:56:07.000+00:00
+            instance_status_count:
+              creating_count: 0
+              running_count: 0
+              allocating_count: 0
+            description: description
+            finish_time: 2000-01-23T04:56:07.000+00:00
+            status: null
+          networking:
+            protocol: null
+            port: 60957
+            auth: true
+            dns: http://example.com/aeiou
+          display_name: display_name
+          readiness_probe:
+            tcp:
+              port: 13284
+            period_seconds: 1
+            initial_delay_seconds: 1
+            failure_threshold: 1
+            http:
+              path: path
+              headers:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              scheme: null
+              port: 23698
+            success_threshold: 1
+            timeout_seconds: 1
+            grpc:
+              port: 27168
+              service: service
+            exec:
+              command:
+              - command
+              - command
+          update_time: 2000-01-23T04:56:07.000+00:00
+          restart_policy: null
+          startup_probe:
+            tcp:
+              port: 13284
+            period_seconds: 1
+            initial_delay_seconds: 1
+            failure_threshold: 1
+            http:
+              path: path
+              headers:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              scheme: null
+              port: 23698
+            success_threshold: 1
+            timeout_seconds: 1
+            grpc:
+              port: 27168
+              service: service
+            exec:
+              command:
+              - command
+              - command
+          name: name
+          country_codes:
+          - null
+          - null
+          - null
+          - null
+          - null
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          liveness_probe:
+            tcp:
+              port: 13284
+            period_seconds: 1
+            initial_delay_seconds: 1
+            failure_threshold: 1
+            http:
+              path: path
+              headers:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              scheme: null
+              port: 23698
+            success_threshold: 1
+            timeout_seconds: 1
+            grpc:
+              port: 27168
+              service: service
+            exec:
+              command:
+              - command
+              - command
+        - container:
+            image: image
+            environment_variables:
+              key: environment_variables
+            resources:
+              gpu_class: gpu_class
+              memory: 9875
+              cpu: 2
+            logging:
+              tcp:
+                port: 9607
+                host: host
+              new_relic:
+                host: host
+                ingestion_key: ingestion_key
+              splunk:
+                host: host
+                token: token
+            command:
+            - command
+            - command
+            - command
+            - command
+            - command
+          create_time: 2000-01-23T04:56:07.000+00:00
+          replicas: 60
+          current_state:
+            start_time: 2000-01-23T04:56:07.000+00:00
+            instance_status_count:
+              creating_count: 0
+              running_count: 0
+              allocating_count: 0
+            description: description
+            finish_time: 2000-01-23T04:56:07.000+00:00
+            status: null
+          networking:
+            protocol: null
+            port: 60957
+            auth: true
+            dns: http://example.com/aeiou
+          display_name: display_name
+          readiness_probe:
+            tcp:
+              port: 13284
+            period_seconds: 1
+            initial_delay_seconds: 1
+            failure_threshold: 1
+            http:
+              path: path
+              headers:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              scheme: null
+              port: 23698
+            success_threshold: 1
+            timeout_seconds: 1
+            grpc:
+              port: 27168
+              service: service
+            exec:
+              command:
+              - command
+              - command
+          update_time: 2000-01-23T04:56:07.000+00:00
+          restart_policy: null
+          startup_probe:
+            tcp:
+              port: 13284
+            period_seconds: 1
+            initial_delay_seconds: 1
+            failure_threshold: 1
+            http:
+              path: path
+              headers:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              scheme: null
+              port: 23698
+            success_threshold: 1
+            timeout_seconds: 1
+            grpc:
+              port: 27168
+              service: service
+            exec:
+              command:
+              - command
+              - command
+          name: name
+          country_codes:
+          - null
+          - null
+          - null
+          - null
+          - null
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          liveness_probe:
+            tcp:
+              port: 13284
+            period_seconds: 1
+            initial_delay_seconds: 1
+            failure_threshold: 1
+            http:
+              path: path
+              headers:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              scheme: null
+              port: 23698
+            success_threshold: 1
+            timeout_seconds: 1
+            grpc:
+              port: 27168
+              service: service
+            exec:
+              command:
+              - command
+              - command
+        - container:
+            image: image
+            environment_variables:
+              key: environment_variables
+            resources:
+              gpu_class: gpu_class
+              memory: 9875
+              cpu: 2
+            logging:
+              tcp:
+                port: 9607
+                host: host
+              new_relic:
+                host: host
+                ingestion_key: ingestion_key
+              splunk:
+                host: host
+                token: token
+            command:
+            - command
+            - command
+            - command
+            - command
+            - command
+          create_time: 2000-01-23T04:56:07.000+00:00
+          replicas: 60
+          current_state:
+            start_time: 2000-01-23T04:56:07.000+00:00
+            instance_status_count:
+              creating_count: 0
+              running_count: 0
+              allocating_count: 0
+            description: description
+            finish_time: 2000-01-23T04:56:07.000+00:00
+            status: null
+          networking:
+            protocol: null
+            port: 60957
+            auth: true
+            dns: http://example.com/aeiou
+          display_name: display_name
+          readiness_probe:
+            tcp:
+              port: 13284
+            period_seconds: 1
+            initial_delay_seconds: 1
+            failure_threshold: 1
+            http:
+              path: path
+              headers:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              scheme: null
+              port: 23698
+            success_threshold: 1
+            timeout_seconds: 1
+            grpc:
+              port: 27168
+              service: service
+            exec:
+              command:
+              - command
+              - command
+          update_time: 2000-01-23T04:56:07.000+00:00
+          restart_policy: null
+          startup_probe:
+            tcp:
+              port: 13284
+            period_seconds: 1
+            initial_delay_seconds: 1
+            failure_threshold: 1
+            http:
+              path: path
+              headers:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              scheme: null
+              port: 23698
+            success_threshold: 1
+            timeout_seconds: 1
+            grpc:
+              port: 27168
+              service: service
+            exec:
+              command:
+              - command
+              - command
+          name: name
+          country_codes:
+          - null
+          - null
+          - null
+          - null
+          - null
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          liveness_probe:
+            tcp:
+              port: 13284
+            period_seconds: 1
+            initial_delay_seconds: 1
+            failure_threshold: 1
+            http:
+              path: path
+              headers:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              scheme: null
+              port: 23698
+            success_threshold: 1
+            timeout_seconds: 1
+            grpc:
+              port: 27168
+              service: service
+            exec:
+              command:
+              - command
+              - command
+        - container:
+            image: image
+            environment_variables:
+              key: environment_variables
+            resources:
+              gpu_class: gpu_class
+              memory: 9875
+              cpu: 2
+            logging:
+              tcp:
+                port: 9607
+                host: host
+              new_relic:
+                host: host
+                ingestion_key: ingestion_key
+              splunk:
+                host: host
+                token: token
+            command:
+            - command
+            - command
+            - command
+            - command
+            - command
+          create_time: 2000-01-23T04:56:07.000+00:00
+          replicas: 60
+          current_state:
+            start_time: 2000-01-23T04:56:07.000+00:00
+            instance_status_count:
+              creating_count: 0
+              running_count: 0
+              allocating_count: 0
+            description: description
+            finish_time: 2000-01-23T04:56:07.000+00:00
+            status: null
+          networking:
+            protocol: null
+            port: 60957
+            auth: true
+            dns: http://example.com/aeiou
+          display_name: display_name
+          readiness_probe:
+            tcp:
+              port: 13284
+            period_seconds: 1
+            initial_delay_seconds: 1
+            failure_threshold: 1
+            http:
+              path: path
+              headers:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              scheme: null
+              port: 23698
+            success_threshold: 1
+            timeout_seconds: 1
+            grpc:
+              port: 27168
+              service: service
+            exec:
+              command:
+              - command
+              - command
+          update_time: 2000-01-23T04:56:07.000+00:00
+          restart_policy: null
+          startup_probe:
+            tcp:
+              port: 13284
+            period_seconds: 1
+            initial_delay_seconds: 1
+            failure_threshold: 1
+            http:
+              path: path
+              headers:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              scheme: null
+              port: 23698
+            success_threshold: 1
+            timeout_seconds: 1
+            grpc:
+              port: 27168
+              service: service
+            exec:
+              command:
+              - command
+              - command
+          name: name
+          country_codes:
+          - null
+          - null
+          - null
+          - null
+          - null
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          liveness_probe:
+            tcp:
+              port: 13284
+            period_seconds: 1
+            initial_delay_seconds: 1
+            failure_threshold: 1
+            http:
+              path: path
+              headers:
+              - name: name
+                value: value
+              - name: name
+                value: value
+              scheme: null
+              port: 23698
+            success_threshold: 1
+            timeout_seconds: 1
+            grpc:
+              port: 27168
+              service: service
+            exec:
+              command:
+              - command
+              - command
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/ContainerGroup'
+          maxItems: 100
+          minItems: 0
+          type: array
+      required:
+      - items
+      type: object
+    CreateContainerGroup:
+      additionalProperties: false
+      description: Represents a request to create a container group
+      example:
+        container:
+          image: image
+          environment_variables:
+            key: environment_variables
+          resources:
+            gpu_class: gpu_class
+            memory: 9875
+            cpu: 2
+          logging:
+            tcp:
+              port: 9607
+              host: host
+            new_relic:
+              host: host
+              ingestion_key: ingestion_key
+            splunk:
+              host: host
+              token: token
+          registry_authentication:
+            gcp_gcr:
+              service_key: service_key
+            basic:
+              password: password
+              username: username
+            aws_ecr:
+              access_key_id: access_key_id
+              secret_access_key: secret_access_key
+            docker_hub:
+              personal_access_token: personal_access_token
+              username: username
+          command:
+          - command
+          - command
+          - command
+          - command
+          - command
+        readiness_probe:
+          tcp:
+            port: 13284
+          period_seconds: 1
+          initial_delay_seconds: 1
+          failure_threshold: 1
+          http:
+            path: path
+            headers:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            scheme: null
+            port: 23698
+          success_threshold: 1
+          timeout_seconds: 1
+          grpc:
+            port: 27168
+            service: service
+          exec:
+            command:
+            - command
+            - command
+        restart_policy: null
+        replicas: 20
+        startup_probe:
+          tcp:
+            port: 13284
+          period_seconds: 1
+          initial_delay_seconds: 1
+          failure_threshold: 1
+          http:
+            path: path
+            headers:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            scheme: null
+            port: 23698
+          success_threshold: 1
+          timeout_seconds: 1
+          grpc:
+            port: 27168
+            service: service
+          exec:
+            command:
+            - command
+            - command
+        name: name
+        country_codes:
+        - null
+        - null
+        - null
+        - null
+        - null
+        networking:
+          protocol: null
+          port: 39501
+          auth: true
+        display_name: display_name
+        liveness_probe:
+          tcp:
+            port: 13284
+          period_seconds: 1
+          initial_delay_seconds: 1
+          failure_threshold: 1
+          http:
+            path: path
+            headers:
+            - name: name
+              value: value
+            - name: name
+              value: value
+            scheme: null
+            port: 23698
+          success_threshold: 1
+          timeout_seconds: 1
+          grpc:
+            port: 27168
+            service: service
+          exec:
+            command:
+            - command
+            - command
+      properties:
+        name:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        display_name:
+          maxLength: 63
+          minLength: 2
+          nullable: true
+          pattern: "^[ ,-.0-9A-Za-z]+$"
+          type: string
+        container:
+          $ref: '#/components/schemas/CreateContainer'
+        restart_policy:
+          $ref: '#/components/schemas/ContainerRestartPolicy'
+        replicas:
+          maximum: 250
+          minimum: 1
+          type: integer
+        country_codes:
+          items:
+            $ref: '#/components/schemas/CountryCode'
+          maxItems: 500
+          minItems: 1
+          type: array
+        networking:
+          $ref: '#/components/schemas/CreateContainerGroupNetworking'
+        liveness_probe:
+          $ref: '#/components/schemas/ContainerGroupProbe'
+        readiness_probe:
+          $ref: '#/components/schemas/ContainerGroupProbe'
+        startup_probe:
+          $ref: '#/components/schemas/ContainerGroupProbe'
+      required:
+      - container
+      - name
+      - replicas
+      - restart_policy
+      type: object
+    UpdateContainerGroup:
+      additionalProperties: false
+      description: Represents a request to update a container group
+      example:
+        replicas: 20
+        display_name: display_name
+      properties:
+        display_name:
+          maxLength: 63
+          minLength: 2
+          nullable: true
+          pattern: "^[ ,-.0-9A-Za-z]+$"
+          type: string
+        replicas:
+          maximum: 250
+          minimum: 1
+          nullable: true
+          type: integer
+      type: object
+    ContainerGroupNetworking:
+      additionalProperties: false
+      description: Represents container group networking parameters
+      example:
+        protocol: null
+        port: 60957
+        auth: true
+        dns: http://example.com/aeiou
+      nullable: true
+      properties:
+        protocol:
+          $ref: '#/components/schemas/ContainerNetworkingProtocol'
+        port:
+          maximum: 65535
+          minimum: 1
+          type: integer
+        auth:
+          type: boolean
+        dns:
+          format: url
+          type: string
+      required:
+      - auth
+      - dns
+      - port
+      - protocol
+      type: object
+    CreateContainerGroupNetworking:
+      additionalProperties: false
+      description: Represents container group networking parameters
+      example:
+        protocol: null
+        port: 39501
+        auth: true
+      nullable: true
+      properties:
+        protocol:
+          $ref: '#/components/schemas/ContainerNetworkingProtocol'
+        port:
+          maximum: 65535
+          minimum: 1
+          type: integer
+        auth:
+          type: boolean
+      required:
+      - auth
+      - port
+      - protocol
+      type: object
+    ContainerGroupProbe:
+      additionalProperties: false
+      description: Represents container group probe
+      example:
+        tcp:
+          port: 13284
+        period_seconds: 1
+        initial_delay_seconds: 1
+        failure_threshold: 1
+        http:
+          path: path
+          headers:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          scheme: null
+          port: 23698
+        success_threshold: 1
+        timeout_seconds: 1
+        grpc:
+          port: 27168
+          service: service
+        exec:
+          command:
+          - command
+          - command
+      nullable: true
+      properties:
+        http:
+          $ref: '#/components/schemas/ContainerGroupProbeHttp'
+        tcp:
+          $ref: '#/components/schemas/ContainerGroupProbeTcp'
+        grpc:
+          $ref: '#/components/schemas/ContainerGroupProbeGrpc'
+        exec:
+          $ref: '#/components/schemas/ContainerGroupProbeExec'
+        initial_delay_seconds:
+          minimum: 1
+          type: integer
+        period_seconds:
+          minimum: 1
+          type: integer
+        timeout_seconds:
+          minimum: 1
+          type: integer
+        success_threshold:
+          minimum: 1
+          type: integer
+        failure_threshold:
+          minimum: 1
+          type: integer
+      required:
+      - failure_threshold
+      - initial_delay_seconds
+      - period_seconds
+      - success_threshold
+      - timeout_seconds
+      type: object
+    ContainerProbeHttpScheme:
+      enum:
+      - http
+      type: string
+    HttpHeaders:
+      items:
+        $ref: '#/components/schemas/HttpHeaders_inner'
+      type: array
+    ContainerGroupProbeHttp:
+      additionalProperties: false
+      example:
+        path: path
+        headers:
+        - name: name
+          value: value
+        - name: name
+          value: value
+        scheme: null
+        port: 23698
+      properties:
+        path:
+          type: string
+        port:
+          maximum: 65536
+          minimum: 0
+          type: integer
+        scheme:
+          $ref: '#/components/schemas/ContainerProbeHttpScheme'
+        headers:
+          items:
+            $ref: '#/components/schemas/HttpHeaders_inner'
+          type: array
+      required:
+      - path
+      - port
+      type: object
+    ContainerGroupProbeTcp:
+      additionalProperties: false
+      example:
+        port: 13284
+      properties:
+        port:
+          maximum: 65536
+          minimum: 0
+          type: integer
+      required:
+      - port
+      type: object
+    ContainerGroupProbeGrpc:
+      additionalProperties: false
+      example:
+        port: 27168
+        service: service
+      properties:
+        service:
+          type: string
+        port:
+          maximum: 65536
+          minimum: 0
+          type: integer
+      required:
+      - port
+      - service
+      type: object
+    ContainerGroupProbeExec:
+      additionalProperties: false
+      example:
+        command:
+        - command
+        - command
+      properties:
+        command:
+          items:
+            type: string
+          type: array
+      required:
+      - command
+      type: object
+    Container:
+      additionalProperties: false
+      description: Represents a container
+      example:
+        image: image
+        environment_variables:
+          key: environment_variables
+        resources:
+          gpu_class: gpu_class
+          memory: 9875
+          cpu: 2
+        logging:
+          tcp:
+            port: 9607
+            host: host
+          new_relic:
+            host: host
+            ingestion_key: ingestion_key
+          splunk:
+            host: host
+            token: token
+        command:
+        - command
+        - command
+        - command
+        - command
+        - command
+      properties:
+        image:
+          maxLength: 1024
+          minLength: 1
+          type: string
+        resources:
+          $ref: '#/components/schemas/ContainerResourceRequirements'
+        command:
+          items:
+            type: string
+          maxItems: 100
+          minItems: 0
+          type: array
+        environment_variables:
+          additionalProperties:
+            type: string
+          type: object
+        logging:
+          $ref: '#/components/schemas/Container_logging'
+      required:
+      - command
+      - image
+      - resources
+      type: object
+    CreateContainer:
+      additionalProperties: false
+      description: Represents a container
+      example:
+        image: image
+        environment_variables:
+          key: environment_variables
+        resources:
+          gpu_class: gpu_class
+          memory: 9875
+          cpu: 2
+        logging:
+          tcp:
+            port: 9607
+            host: host
+          new_relic:
+            host: host
+            ingestion_key: ingestion_key
+          splunk:
+            host: host
+            token: token
+        registry_authentication:
+          gcp_gcr:
+            service_key: service_key
+          basic:
+            password: password
+            username: username
+          aws_ecr:
+            access_key_id: access_key_id
+            secret_access_key: secret_access_key
+          docker_hub:
+            personal_access_token: personal_access_token
+            username: username
+        command:
+        - command
+        - command
+        - command
+        - command
+        - command
+      properties:
+        image:
+          maxLength: 1024
+          minLength: 1
+          type: string
+        resources:
+          $ref: '#/components/schemas/ContainerResourceRequirements'
+        command:
+          items:
+            type: string
+          maxItems: 100
+          minItems: 0
+          nullable: true
+          type: array
+        environment_variables:
+          additionalProperties:
+            type: string
+          type: object
+        logging:
+          $ref: '#/components/schemas/Container_logging'
+        registry_authentication:
+          $ref: '#/components/schemas/CreateContainer_registry_authentication'
+      required:
+      - image
+      - resources
+      type: object
+    ContainerResourceRequirements:
+      additionalProperties: false
+      description: Represents a container resource requirements
+      example:
+        gpu_class: gpu_class
+        memory: 9875
+        cpu: 2
+      properties:
+        cpu:
+          maximum: 16
+          minimum: 1
+          type: integer
+        memory:
+          maximum: 16384
+          minimum: 1
+          type: integer
+        gpu_class:
+          nullable: true
+          type: string
+      required:
+      - cpu
+      - memory
+      type: object
+    ContainerGroupState:
+      additionalProperties: false
+      description: Represents a container group state
+      example:
+        start_time: 2000-01-23T04:56:07.000+00:00
+        instance_status_count:
+          creating_count: 0
+          running_count: 0
+          allocating_count: 0
+        description: description
+        finish_time: 2000-01-23T04:56:07.000+00:00
+        status: null
+      properties:
+        status:
+          $ref: '#/components/schemas/ContainerGroupStatus'
+        description:
+          nullable: true
+          type: string
+        start_time:
+          format: date-time
+          type: string
+        finish_time:
+          format: date-time
+          type: string
+        instance_status_count:
+          $ref: '#/components/schemas/ContainerGroupInstanceStatusCount'
+      required:
+      - finish_time
+      - instance_status_count
+      - start_time
+      - status
+      type: object
+    ContainerGroupInstanceStatusCount:
+      additionalProperties: false
+      description: Represents a container group instance status count
+      example:
+        creating_count: 0
+        running_count: 0
+        allocating_count: 0
+      properties:
+        allocating_count:
+          minimum: 0
+          type: integer
+        creating_count:
+          minimum: 0
+          type: integer
+        running_count:
+          minimum: 0
+          type: integer
+      required:
+      - allocating_count
+      - creating_count
+      - running_count
+      type: object
+    ContainerGroupInstances:
+      additionalProperties: false
+      description: Represents a list of container group instances
+      example:
+        instances:
+        - update_time: 2000-01-23T04:56:07.000+00:00
+          machine_id: machine_id
+          state: creating
+        - update_time: 2000-01-23T04:56:07.000+00:00
+          machine_id: machine_id
+          state: creating
+        - update_time: 2000-01-23T04:56:07.000+00:00
+          machine_id: machine_id
+          state: creating
+        - update_time: 2000-01-23T04:56:07.000+00:00
+          machine_id: machine_id
+          state: creating
+        - update_time: 2000-01-23T04:56:07.000+00:00
+          machine_id: machine_id
+          state: creating
+      properties:
+        instances:
+          items:
+            $ref: '#/components/schemas/ContainerGroupInstances_instances_inner'
+          maxItems: 1000
+          minItems: 0
+          type: array
+      required:
+      - instances
+      type: object
+    CreateContainerGroupProblemType:
+      enum:
+      - name_conflict
+      - created_quota_exceeded
+      - invalid_logging_configuration
+      - invalid_registry_authentication
+      - created_instance_quota_exceeded
+      - null
+      nullable: true
+      type: string
+    ListContainerGroupsProblemType:
+      enum:
+      - null
+      nullable: true
+      type: string
+    DeleteContainerGroupProblemType:
+      enum:
+      - null
+      nullable: true
+      type: string
+    GetContainerGroupProblemType:
+      enum:
+      - null
+      nullable: true
+      type: string
+    UpdateContainerGroupProblemType:
+      enum:
+      - updated_instance_quota_exceeded
+      - null
+      nullable: true
+      type: string
+    RestartContainerGroupProblemType:
+      enum:
+      - null
+      nullable: true
+      type: string
+    StartContainerGroupProblemType:
+      enum:
+      - null
+      nullable: true
+      type: string
+    StopContainerGroupProblemType:
+      enum:
+      - null
+      nullable: true
+      type: string
+    ReallocateContainerGroupInstanceProblemType:
+      enum:
+      - organization_not_found
+      - container_group_not_found
+      - node_not_scheduled
+      - container_group_instance_not_found
+      - organization_quotas_not_defined
+      - too_many_requests
+      - unexpected_error
+      - null
+      nullable: true
+      type: string
+    RecreateContainerGroupInstanceProblemType:
+      enum:
+      - organization_not_found
+      - container_group_not_found
+      - node_not_scheduled
+      - container_group_instance_not_found
+      - organization_quotas_not_defined
+      - too_many_requests
+      - unexpected_error
+      - null
+      nullable: true
+      type: string
+    RestartContainerGroupInstanceProblemType:
+      enum:
+      - organization_not_found
+      - container_group_not_found
+      - node_not_scheduled
+      - container_group_instance_not_found
+      - organization_quotas_not_defined
+      - too_many_requests
+      - unexpected_error
+      - null
+      nullable: true
+      type: string
+    GpuClass:
+      additionalProperties: false
+      description: Represents a GPU Class
+      example:
+        name: name
+      properties:
+        name:
+          description: The GPU class name
+          maxLength: 63
+          minLength: 2
+          type: string
+      required:
+      - name
+      type: object
+    GpuClassesList:
+      additionalProperties: false
+      description: Represents a list of GPU classes
+      example:
+        items:
+        - name: name
+        - name: name
+        - name: name
+        - name: name
+        - name: name
+      properties:
+        items:
+          description: The list of GPU classes
+          items:
+            $ref: '#/components/schemas/GpuClass'
+          maxItems: 100
+          minItems: 0
+          type: array
+      required:
+      - items
+      type: object
+    Quotas:
+      additionalProperties: false
+      description: Represents the organization quotas
+      example:
+        container_groups_quotas:
+          max_created_container_groups: 0
+          container_instance_quota: 6
+          max_container_group_reallocations_per_minute: 0
+          max_container_group_recreates_per_minute: 0
+          max_container_group_restarts_per_minute: 0
+        update_time: 2000-01-23T04:56:07.000+00:00
+        recipes_quotas:
+          recipe_instance_quota: 7
+          max_created_recipe_deployments: 2
+        create_time: 2000-01-23T04:56:07.000+00:00
+      properties:
+        container_groups_quotas:
+          $ref: '#/components/schemas/ContainerGroupsQuotas'
+        create_time:
+          description: The time the resource was created
+          format: date-time
+          type: string
+        recipes_quotas:
+          $ref: '#/components/schemas/RecipesQuotas'
+        update_time:
+          description: The time the resource was last updated
+          format: date-time
+          type: string
+      required:
+      - container_groups_quotas
+      - recipes_quotas
+      type: object
+    ContainerGroupsQuotas:
+      example:
+        max_created_container_groups: 0
+        container_instance_quota: 6
+        max_container_group_reallocations_per_minute: 0
+        max_container_group_recreates_per_minute: 0
+        max_container_group_restarts_per_minute: 0
+      properties:
+        max_created_container_groups:
+          type: integer
+        container_instance_quota:
+          type: integer
+        max_container_group_reallocations_per_minute:
+          default: 10
+          minimum: 0
+          type: integer
+        max_container_group_recreates_per_minute:
+          default: 10
+          minimum: 0
+          type: integer
+        max_container_group_restarts_per_minute:
+          default: 10
+          minimum: 0
+          type: integer
+      required:
+      - container_instance_quota
+      - max_created_container_groups
+      type: object
+    RecipesQuotas:
+      example:
+        recipe_instance_quota: 7
+        max_created_recipe_deployments: 2
+      properties:
+        max_created_recipe_deployments:
+          type: integer
+        recipe_instance_quota:
+          type: integer
+      required:
+      - max_created_recipe_deployments
+      - recipe_instance_quota
+      type: object
+    Recipe:
+      additionalProperties: false
+      description: Represents a recipe
+      example:
+        name: name
+        resources:
+          gpu_class: gpu_class
+          cpu: 6
+          ram: 1
+        networking:
+          protocol: null
+          port: 39073
+          auth: true
+          dns: http://example.com/aeiou
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        readme: readme
+      properties:
+        id:
+          description: The unique identifier
+          format: uuid
+          type: string
+        name:
+          description: The recipe name
+          type: string
+        readme:
+          description: A markdown file containing a brief summary of the recipe
+          type: string
+        resources:
+          $ref: '#/components/schemas/RecipeResources'
+        networking:
+          $ref: '#/components/schemas/RecipeNetworking'
+      required:
+      - id
+      - name
+      - readme
+      type: object
+    RecipeResources:
+      additionalProperties: false
+      description: Represents a recipe resources
+      example:
+        gpu_class: gpu_class
+        cpu: 6
+        ram: 1
+      properties:
+        cpu:
+          type: integer
+        ram:
+          type: integer
+        gpu_class:
+          type: string
+      required:
+      - cpu
+      - gpu_class
+      - ram
+      type: object
+    RecipeList:
+      additionalProperties: false
+      description: Represents a list of recipes
+      example:
+        items:
+        - name: name
+          resources:
+            gpu_class: gpu_class
+            cpu: 6
+            ram: 1
+          networking:
+            protocol: null
+            port: 39073
+            auth: true
+            dns: http://example.com/aeiou
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          readme: readme
+        - name: name
+          resources:
+            gpu_class: gpu_class
+            cpu: 6
+            ram: 1
+          networking:
+            protocol: null
+            port: 39073
+            auth: true
+            dns: http://example.com/aeiou
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          readme: readme
+        - name: name
+          resources:
+            gpu_class: gpu_class
+            cpu: 6
+            ram: 1
+          networking:
+            protocol: null
+            port: 39073
+            auth: true
+            dns: http://example.com/aeiou
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          readme: readme
+        - name: name
+          resources:
+            gpu_class: gpu_class
+            cpu: 6
+            ram: 1
+          networking:
+            protocol: null
+            port: 39073
+            auth: true
+            dns: http://example.com/aeiou
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          readme: readme
+        - name: name
+          resources:
+            gpu_class: gpu_class
+            cpu: 6
+            ram: 1
+          networking:
+            protocol: null
+            port: 39073
+            auth: true
+            dns: http://example.com/aeiou
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          readme: readme
+      properties:
+        items:
+          description: The list of items
+          items:
+            $ref: '#/components/schemas/Recipe'
+          maxItems: 100
+          minItems: 0
+          type: array
+      required:
+      - items
+      type: object
+    RecipeDeployment:
+      additionalProperties: false
+      description: Represents a deployed recipe
+      example:
+        replicas: 20
+        name: name
+        current_state:
+          start_time: 2000-01-23T04:56:07.000+00:00
+          instance_status_count:
+            creating_count: 0
+            running_count: 0
+            allocating_count: 0
+          description: description
+          finish_time: 2000-01-23T04:56:07.000+00:00
+          status: null
+        recipe:
+          name: name
+          resources:
+            gpu_class: gpu_class
+            cpu: 6
+            ram: 1
+          networking:
+            protocol: null
+            port: 39073
+            auth: true
+            dns: http://example.com/aeiou
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          readme: readme
+        networking:
+          protocol: null
+          port: 39073
+          auth: true
+          dns: http://example.com/aeiou
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        display_name: display_name
+      properties:
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+        display_name:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        replicas:
+          maximum: 250
+          minimum: 1
+          type: integer
+        current_state:
+          $ref: '#/components/schemas/ContainerGroupState'
+        recipe:
+          $ref: '#/components/schemas/Recipe'
+        networking:
+          $ref: '#/components/schemas/RecipeNetworking'
+      required:
+      - current_state
+      - display_name
+      - id
+      - name
+      - recipe
+      - replicas
+      type: object
+    RecipeNetworking:
+      additionalProperties: false
+      description: Represents recipe networking parameters
+      example:
+        protocol: null
+        port: 39073
+        auth: true
+        dns: http://example.com/aeiou
+      nullable: true
+      properties:
+        protocol:
+          $ref: '#/components/schemas/RecipeNetworkingProtocol'
+        port:
+          maximum: 65535
+          minimum: 1
+          type: integer
+        auth:
+          type: boolean
+        dns:
+          format: url
+          type: string
+      required:
+      - auth
+      - dns
+      - port
+      - protocol
+      type: object
+    RecipeNetworkingProtocol:
+      enum:
+      - http
+      type: string
+    RecipeDeploymentList:
+      additionalProperties: false
+      description: Represents a list of recipe deployments
+      example:
+        items:
+        - replicas: 20
+          name: name
+          current_state:
+            start_time: 2000-01-23T04:56:07.000+00:00
+            instance_status_count:
+              creating_count: 0
+              running_count: 0
+              allocating_count: 0
+            description: description
+            finish_time: 2000-01-23T04:56:07.000+00:00
+            status: null
+          recipe:
+            name: name
+            resources:
+              gpu_class: gpu_class
+              cpu: 6
+              ram: 1
+            networking:
+              protocol: null
+              port: 39073
+              auth: true
+              dns: http://example.com/aeiou
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            readme: readme
+          networking:
+            protocol: null
+            port: 39073
+            auth: true
+            dns: http://example.com/aeiou
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          display_name: display_name
+        - replicas: 20
+          name: name
+          current_state:
+            start_time: 2000-01-23T04:56:07.000+00:00
+            instance_status_count:
+              creating_count: 0
+              running_count: 0
+              allocating_count: 0
+            description: description
+            finish_time: 2000-01-23T04:56:07.000+00:00
+            status: null
+          recipe:
+            name: name
+            resources:
+              gpu_class: gpu_class
+              cpu: 6
+              ram: 1
+            networking:
+              protocol: null
+              port: 39073
+              auth: true
+              dns: http://example.com/aeiou
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            readme: readme
+          networking:
+            protocol: null
+            port: 39073
+            auth: true
+            dns: http://example.com/aeiou
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          display_name: display_name
+        - replicas: 20
+          name: name
+          current_state:
+            start_time: 2000-01-23T04:56:07.000+00:00
+            instance_status_count:
+              creating_count: 0
+              running_count: 0
+              allocating_count: 0
+            description: description
+            finish_time: 2000-01-23T04:56:07.000+00:00
+            status: null
+          recipe:
+            name: name
+            resources:
+              gpu_class: gpu_class
+              cpu: 6
+              ram: 1
+            networking:
+              protocol: null
+              port: 39073
+              auth: true
+              dns: http://example.com/aeiou
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            readme: readme
+          networking:
+            protocol: null
+            port: 39073
+            auth: true
+            dns: http://example.com/aeiou
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          display_name: display_name
+        - replicas: 20
+          name: name
+          current_state:
+            start_time: 2000-01-23T04:56:07.000+00:00
+            instance_status_count:
+              creating_count: 0
+              running_count: 0
+              allocating_count: 0
+            description: description
+            finish_time: 2000-01-23T04:56:07.000+00:00
+            status: null
+          recipe:
+            name: name
+            resources:
+              gpu_class: gpu_class
+              cpu: 6
+              ram: 1
+            networking:
+              protocol: null
+              port: 39073
+              auth: true
+              dns: http://example.com/aeiou
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            readme: readme
+          networking:
+            protocol: null
+            port: 39073
+            auth: true
+            dns: http://example.com/aeiou
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          display_name: display_name
+        - replicas: 20
+          name: name
+          current_state:
+            start_time: 2000-01-23T04:56:07.000+00:00
+            instance_status_count:
+              creating_count: 0
+              running_count: 0
+              allocating_count: 0
+            description: description
+            finish_time: 2000-01-23T04:56:07.000+00:00
+            status: null
+          recipe:
+            name: name
+            resources:
+              gpu_class: gpu_class
+              cpu: 6
+              ram: 1
+            networking:
+              protocol: null
+              port: 39073
+              auth: true
+              dns: http://example.com/aeiou
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            readme: readme
+          networking:
+            protocol: null
+            port: 39073
+            auth: true
+            dns: http://example.com/aeiou
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          display_name: display_name
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/RecipeDeployment'
+          maxItems: 100
+          minItems: 0
+          type: array
+      required:
+      - items
+      type: object
+    CreateRecipeDeployment:
+      additionalProperties: false
+      description: Represents a request to create a new recipe deployment
+      example:
+        replicas: 20
+        name: name
+        recipe_name: recipe_name
+        networking:
+          protocol: null
+          port: 39501
+          auth: true
+        display_name: display_name
+      properties:
+        name:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,61}[a-z0-9]$"
+          type: string
+        display_name:
+          maxLength: 63
+          minLength: 2
+          nullable: true
+          pattern: "^[ ,-.0-9A-Za-z]+$"
+          type: string
+        replicas:
+          maximum: 250
+          minimum: 1
+          type: integer
+        recipe_name:
+          maxLength: 63
+          minLength: 2
+          pattern: "^[a-z][a-z0-9-]{0,62}[a-z0-9]$"
+          type: string
+        networking:
+          $ref: '#/components/schemas/CreateRecipeNetworking'
+      required:
+      - display_name
+      - name
+      - recipe_name
+      - replicas
+      type: object
+    CreateRecipeNetworking:
+      additionalProperties: false
+      description: Represents container group networking parameters
+      example:
+        protocol: null
+        port: 39501
+        auth: true
+      nullable: true
+      properties:
+        protocol:
+          $ref: '#/components/schemas/RecipeNetworkingProtocol'
+        port:
+          maximum: 65535
+          minimum: 1
+          type: integer
+        auth:
+          type: boolean
+      required:
+      - auth
+      - port
+      - protocol
+      type: object
+    UpdateRecipeDeployment:
+      additionalProperties: false
+      description: Represents a request to update a recipe deployment
+      example:
+        replicas: 20
+        display_name: display_name
+      properties:
+        display_name:
+          maxLength: 63
+          minLength: 2
+          nullable: true
+          pattern: "^[ ,-.0-9A-Za-z]+$"
+          type: string
+        replicas:
+          maximum: 250
+          minimum: 1
+          nullable: true
+          type: integer
+      type: object
+    RecipeDeploymentInstances:
+      additionalProperties: false
+      description: Represents a list of recipe deployment instances
+      example:
+        instances:
+        - update_time: 2000-01-23T04:56:07.000+00:00
+          machine_id: machine_id
+          state: creating
+        - update_time: 2000-01-23T04:56:07.000+00:00
+          machine_id: machine_id
+          state: creating
+        - update_time: 2000-01-23T04:56:07.000+00:00
+          machine_id: machine_id
+          state: creating
+        - update_time: 2000-01-23T04:56:07.000+00:00
+          machine_id: machine_id
+          state: creating
+        - update_time: 2000-01-23T04:56:07.000+00:00
+          machine_id: machine_id
+          state: creating
+      properties:
+        instances:
+          items:
+            $ref: '#/components/schemas/RecipeDeploymentInstances_instances_inner'
+          maxItems: 1000
+          minItems: 0
+          type: array
+      required:
+      - instances
+      type: object
+    ListRecipesProblemType:
+      enum:
+      - null
+      nullable: true
+      type: string
+    GetRecipeProblemType:
+      enum:
+      - null
+      nullable: true
+      type: string
+    GetRecipeDeploymentProblemType:
+      enum:
+      - null
+      nullable: true
+      type: string
+    ListRecipeDeploymentsProblemType:
+      enum:
+      - null
+      nullable: true
+      type: string
+    CreateRecipeDeploymentProblemType:
+      enum:
+      - billing_information_required
+      - created_quota_exceeded
+      - name_conflict
+      - project_not_found
+      - unexpected_error
+      - organization_not_found
+      - recipe_not_found
+      - created_instance_quota_exceeded
+      - null
+      nullable: true
+      type: string
+    UpdateRecipeDeploymentProblemType:
+      enum:
+      - updated_instance_quota_exceeded
+      - null
+      nullable: true
+      type: string
+    DeleteRecipeDeploymentProblemType:
+      enum:
+      - null
+      nullable: true
+      type: string
+    StartRecipeDeploymentProblemType:
+      enum:
+      - null
+      nullable: true
+      type: string
+    StopRecipeDeploymentProblemType:
+      enum:
+      - null
+      nullable: true
+      type: string
+    RestartRecipeDeploymentProblemType:
+      enum:
+      - null
+      nullable: true
+      type: string
+    ListGpuClassesProblemType:
+      enum:
+      - null
+      nullable: true
+      type: string
+    HttpHeaders_inner:
+      additionalProperties: false
+      example:
+        name: name
+        value: value
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+      required:
+      - name
+      - value
+      type: object
+    Container_logging_new_relic:
+      additionalProperties: false
+      example:
+        host: host
+        ingestion_key: ingestion_key
+      nullable: true
+      properties:
+        host:
+          maxLength: 1000
+          minLength: 1
+          type: string
+        ingestion_key:
+          maxLength: 1000
+          minLength: 1
+          type: string
+      required:
+      - host
+      - ingestion_key
+      type: object
+    Container_logging_splunk:
+      additionalProperties: false
+      example:
+        host: host
+        token: token
+      nullable: true
+      properties:
+        host:
+          maxLength: 1000
+          minLength: 1
+          type: string
+        token:
+          maxLength: 1000
+          minLength: 1
+          type: string
+      required:
+      - host
+      - token
+      type: object
+    Container_logging_tcp:
+      additionalProperties: false
+      example:
+        port: 9607
+        host: host
+      nullable: true
+      properties:
+        host:
+          maxLength: 1000
+          minLength: 1
+          type: string
+        port:
+          maximum: 65535
+          minimum: 1
+          type: integer
+      required:
+      - host
+      - port
+      type: object
+    Container_logging:
+      additionalProperties: false
+      example:
+        tcp:
+          port: 9607
+          host: host
+        new_relic:
+          host: host
+          ingestion_key: ingestion_key
+        splunk:
+          host: host
+          token: token
+      nullable: true
+      properties:
+        new_relic:
+          $ref: '#/components/schemas/Container_logging_new_relic'
+        splunk:
+          $ref: '#/components/schemas/Container_logging_splunk'
+        tcp:
+          $ref: '#/components/schemas/Container_logging_tcp'
+      type: object
+    CreateContainer_registry_authentication_basic:
+      example:
+        password: password
+        username: username
+      nullable: true
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+      - password
+      - username
+      type: object
+    CreateContainer_registry_authentication_gcp_gcr:
+      example:
+        service_key: service_key
+      nullable: true
+      properties:
+        service_key:
+          type: string
+      required:
+      - service_key
+      type: object
+    CreateContainer_registry_authentication_aws_ecr:
+      example:
+        access_key_id: access_key_id
+        secret_access_key: secret_access_key
+      nullable: true
+      properties:
+        access_key_id:
+          type: string
+        secret_access_key:
+          type: string
+      required:
+      - access_key_id
+      - secret_access_key
+      type: object
+    CreateContainer_registry_authentication_docker_hub:
+      example:
+        personal_access_token: personal_access_token
+        username: username
+      nullable: true
+      properties:
+        username:
+          type: string
+        personal_access_token:
+          type: string
+      required:
+      - personal_access_token
+      - username
+      type: object
+    CreateContainer_registry_authentication:
+      example:
+        gcp_gcr:
+          service_key: service_key
+        basic:
+          password: password
+          username: username
+        aws_ecr:
+          access_key_id: access_key_id
+          secret_access_key: secret_access_key
+        docker_hub:
+          personal_access_token: personal_access_token
+          username: username
+      nullable: true
+      properties:
+        basic:
+          $ref: '#/components/schemas/CreateContainer_registry_authentication_basic'
+        gcp_gcr:
+          $ref: '#/components/schemas/CreateContainer_registry_authentication_gcp_gcr'
+        aws_ecr:
+          $ref: '#/components/schemas/CreateContainer_registry_authentication_aws_ecr'
+        docker_hub:
+          $ref: '#/components/schemas/CreateContainer_registry_authentication_docker_hub'
+      type: object
+    ContainerGroupInstances_instances_inner:
+      additionalProperties: false
+      example:
+        update_time: 2000-01-23T04:56:07.000+00:00
+        machine_id: machine_id
+        state: creating
+      properties:
+        machine_id:
+          description: The organization-specific machine ID
+          type: string
+        state:
+          description: The state of the container group instance
+          enum:
+          - creating
+          - running
+          type: string
+        update_time:
+          description: The UTC date & time when the workload on this machine transitioned
+            to the current state
+          format: date-time
+          type: string
+      required:
+      - machine_id
+      - state
+      - update_time
+      type: object
+    RecipeDeploymentInstances_instances_inner:
+      additionalProperties: false
+      example:
+        update_time: 2000-01-23T04:56:07.000+00:00
+        machine_id: machine_id
+        state: creating
+      properties:
+        machine_id:
+          description: The organization-specific machine ID
+          type: string
+        state:
+          description: The state of the recipe deployment instance
+          enum:
+          - creating
+          - running
+          type: string
+        update_time:
+          description: The UTC date & time when the workload on this machine transitioned
+            to the current state
+          format: date-time
+          type: string
+      required:
+      - machine_id
+      - state
+      - update_time
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Salad-Api-Key
+      type: apiKey
