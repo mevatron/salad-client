@@ -21,7 +21,7 @@ type ContainerGroupStatus string
 
 // List of ContainerGroupStatus
 const (
-	CONTAINER_GROUP_STATUS_PENDING ContainerGroupStatus = "pending"
+	CONTAINERGROUPSTATUS_PENDING ContainerGroupStatus = "pending"
 	CONTAINERGROUPSTATUS_RUNNING ContainerGroupStatus = "running"
 	CONTAINERGROUPSTATUS_STOPPED ContainerGroupStatus = "stopped"
 	CONTAINERGROUPSTATUS_SUCCEEDED ContainerGroupStatus = "succeeded"
