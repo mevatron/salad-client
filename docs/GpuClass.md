@@ -4,13 +4,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**Id** | **string** | The GPU class id | 
 **Name** | **string** | The GPU class name | 
+**IsHighDemand** | Pointer to **bool** |  | [optional] 
 
 ## Methods
 
 ### NewGpuClass
 
-`func NewGpuClass(name string, ) *GpuClass`
+`func NewGpuClass(id string, name string, ) *GpuClass`
 
 NewGpuClass instantiates a new GpuClass object
 This constructor will assign default values to properties that have it defined,
@@ -24,6 +26,26 @@ will change when the set of required properties is changed
 NewGpuClassWithDefaults instantiates a new GpuClass object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetId
+
+`func (o *GpuClass) GetId() string`
+
+GetId returns the Id field if non-nil, zero value otherwise.
+
+### GetIdOk
+
+`func (o *GpuClass) GetIdOk() (*string, bool)`
+
+GetIdOk returns a tuple with the Id field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetId
+
+`func (o *GpuClass) SetId(v string)`
+
+SetId sets Id field to given value.
+
 
 ### GetName
 
@@ -44,6 +66,31 @@ and a boolean to check if the value has been set.
 
 SetName sets Name field to given value.
 
+
+### GetIsHighDemand
+
+`func (o *GpuClass) GetIsHighDemand() bool`
+
+GetIsHighDemand returns the IsHighDemand field if non-nil, zero value otherwise.
+
+### GetIsHighDemandOk
+
+`func (o *GpuClass) GetIsHighDemandOk() (*bool, bool)`
+
+GetIsHighDemandOk returns a tuple with the IsHighDemand field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetIsHighDemand
+
+`func (o *GpuClass) SetIsHighDemand(v bool)`
+
+SetIsHighDemand sets IsHighDemand field to given value.
+
+### HasIsHighDemand
+
+`func (o *GpuClass) HasIsHighDemand() bool`
+
+HasIsHighDemand returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

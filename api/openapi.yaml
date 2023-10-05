@@ -2441,8 +2441,12 @@ paths:
                 jsonExample:
                   value:
                     items:
-                    - name: g4dn.xlarge
-                    - name: g4dn.metal
+                    - id: f9c04b6c-6860-48ab-929e-aa992eb33c46
+                      name: g4dn.xlarge
+                      is_high_demand: false
+                    - id: b5b574c3-66b9-47c5-b383-16d209fef3ef
+                      name: g4dn.metal
+                      is_high_demand: true
               schema:
                 $ref: '#/components/schemas/GpuClassesList'
           description: OK
@@ -3058,8 +3062,12 @@ components:
             jsonExample:
               value:
                 items:
-                - name: g4dn.xlarge
-                - name: g4dn.metal
+                - id: f9c04b6c-6860-48ab-929e-aa992eb33c46
+                  name: g4dn.xlarge
+                  is_high_demand: false
+                - id: b5b574c3-66b9-47c5-b383-16d209fef3ef
+                  name: g4dn.metal
+                  is_high_demand: true
           schema:
             $ref: '#/components/schemas/GpuClassesList'
       description: OK
@@ -3590,6 +3598,9 @@ components:
             gpu_class: gpu_class
             memory: 9875
             cpu: 2
+            gpu_classes:
+            - gpu_classes
+            - gpu_classes
           logging:
             tcp:
               port: 9607
@@ -3773,6 +3784,9 @@ components:
               gpu_class: gpu_class
               memory: 9875
               cpu: 2
+              gpu_classes:
+              - gpu_classes
+              - gpu_classes
             logging:
               tcp:
                 port: 9607
@@ -3896,6 +3910,9 @@ components:
               gpu_class: gpu_class
               memory: 9875
               cpu: 2
+              gpu_classes:
+              - gpu_classes
+              - gpu_classes
             logging:
               tcp:
                 port: 9607
@@ -4019,6 +4036,9 @@ components:
               gpu_class: gpu_class
               memory: 9875
               cpu: 2
+              gpu_classes:
+              - gpu_classes
+              - gpu_classes
             logging:
               tcp:
                 port: 9607
@@ -4142,6 +4162,9 @@ components:
               gpu_class: gpu_class
               memory: 9875
               cpu: 2
+              gpu_classes:
+              - gpu_classes
+              - gpu_classes
             logging:
               tcp:
                 port: 9607
@@ -4265,6 +4288,9 @@ components:
               gpu_class: gpu_class
               memory: 9875
               cpu: 2
+              gpu_classes:
+              - gpu_classes
+              - gpu_classes
             logging:
               tcp:
                 port: 9607
@@ -4402,6 +4428,9 @@ components:
             gpu_class: gpu_class
             memory: 9875
             cpu: 2
+            gpu_classes:
+            - gpu_classes
+            - gpu_classes
           logging:
             tcp:
               port: 9607
@@ -4772,6 +4801,9 @@ components:
           gpu_class: gpu_class
           memory: 9875
           cpu: 2
+          gpu_classes:
+          - gpu_classes
+          - gpu_classes
         logging:
           tcp:
             port: 9607
@@ -4823,6 +4855,9 @@ components:
           gpu_class: gpu_class
           memory: 9875
           cpu: 2
+          gpu_classes:
+          - gpu_classes
+          - gpu_classes
         logging:
           tcp:
             port: 9607
@@ -4884,6 +4919,9 @@ components:
         gpu_class: gpu_class
         memory: 9875
         cpu: 2
+        gpu_classes:
+        - gpu_classes
+        - gpu_classes
       properties:
         cpu:
           maximum: 16
@@ -4894,8 +4932,14 @@ components:
           minimum: 1
           type: integer
         gpu_class:
+          deprecated: true
           nullable: true
           type: string
+        gpu_classes:
+          items:
+            type: string
+          nullable: true
+          type: array
       required:
       - cpu
       - memory
@@ -5070,14 +5114,24 @@ components:
       additionalProperties: false
       description: Represents a GPU Class
       example:
+        is_high_demand: true
         name: name
+        id: id
       properties:
+        id:
+          description: The GPU class id
+          maxLength: 36
+          minLength: 36
+          type: string
         name:
           description: The GPU class name
           maxLength: 63
           minLength: 2
           type: string
+        is_high_demand:
+          type: boolean
       required:
+      - id
       - name
       type: object
     GpuClassesList:
@@ -5085,11 +5139,21 @@ components:
       description: Represents a list of GPU classes
       example:
         items:
-        - name: name
-        - name: name
-        - name: name
-        - name: name
-        - name: name
+        - is_high_demand: true
+          name: name
+          id: id
+        - is_high_demand: true
+          name: name
+          id: id
+        - is_high_demand: true
+          name: name
+          id: id
+        - is_high_demand: true
+          name: name
+          id: id
+        - is_high_demand: true
+          name: name
+          id: id
       properties:
         items:
           description: The list of GPU classes
