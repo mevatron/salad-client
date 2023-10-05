@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **Cpu** | **int32** |  | 
 **Memory** | **int32** |  | 
 **GpuClass** | Pointer to **NullableString** |  | [optional] 
+**GpuClasses** | Pointer to **[]string** |  | [optional] 
 
 ## Methods
 
@@ -102,6 +103,41 @@ HasGpuClass returns a boolean if a field has been set.
 `func (o *ContainerResourceRequirements) UnsetGpuClass()`
 
 UnsetGpuClass ensures that no value is present for GpuClass, not even an explicit nil
+### GetGpuClasses
+
+`func (o *ContainerResourceRequirements) GetGpuClasses() []string`
+
+GetGpuClasses returns the GpuClasses field if non-nil, zero value otherwise.
+
+### GetGpuClassesOk
+
+`func (o *ContainerResourceRequirements) GetGpuClassesOk() (*[]string, bool)`
+
+GetGpuClassesOk returns a tuple with the GpuClasses field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetGpuClasses
+
+`func (o *ContainerResourceRequirements) SetGpuClasses(v []string)`
+
+SetGpuClasses sets GpuClasses field to given value.
+
+### HasGpuClasses
+
+`func (o *ContainerResourceRequirements) HasGpuClasses() bool`
+
+HasGpuClasses returns a boolean if a field has been set.
+
+### SetGpuClassesNil
+
+`func (o *ContainerResourceRequirements) SetGpuClassesNil(b bool)`
+
+ SetGpuClassesNil sets the value for GpuClasses to be an explicit nil
+
+### UnsetGpuClasses
+`func (o *ContainerResourceRequirements) UnsetGpuClasses()`
+
+UnsetGpuClasses ensures that no value is present for GpuClasses, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
