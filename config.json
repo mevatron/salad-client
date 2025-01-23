@@ -1,0 +1,11 @@
+{
+  "generatorName": "go",
+  "inputSpec": "https://raw.githubusercontent.com/SaladTechnologies/salad-cloud-docs/refs/heads/main/api-specs/salad-cloud.yaml",
+  "outputDir": ".",
+  "git-user-id": "mevatron",
+  "git-repo-id": "salad-client",
+  "additionalProperties": {
+    "packageName": "saladclient",
+    "enumClassPrefix": true
+  }
+}
