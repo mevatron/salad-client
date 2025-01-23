@@ -11,10 +11,11 @@ package saladclient
 
 import (
 	"context"
+	openapiclient "github.com/mevatron/salad-client"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"os"
 	"testing"
-	openapiclient "github.com/mevatron/salad-client"
 )
 
 func Test_saladclient_ContainerGroupsAPIService(t *testing.T) {
@@ -24,12 +25,15 @@ func Test_saladclient_ContainerGroupsAPIService(t *testing.T) {
 
 	t.Run("Test ContainerGroupsAPIService CreateContainerGroup", func(t *testing.T) {
 
-		t.Skip("skip test") // remove to run test
+		var organizationName = os.Getenv("SALAD_ORG_NAME")
+		var projectName = os.Getenv("SALAD_PROJECT_NAME")
 
-		var organizationName string
-		var projectName string
+		createContainerGroup := *openapiclient.NewCreateContainerGroup("test-create-container-group", *openapiclient.NewCreateContainer("nginx:latest", *openapiclient.NewContainerResourceRequirements(int32(2), int32(4))), false, openapiclient.ContainerRestartPolicy("always"), int32(123)) // CreateContainerGroup |
 
-		resp, httpRes, err := apiClient.ContainerGroupsAPI.CreateContainerGroup(context.Background(), organizationName, projectName).Execute()
+		resp, httpRes, err := apiClient.ContainerGroupsAPI.
+			CreateContainerGroup(context.Background(), organizationName, projectName).
+			CreateContainerGroup(createContainerGroup).
+			Execute()
 
 		require.Nil(t, err)
 		require.NotNil(t, resp)
