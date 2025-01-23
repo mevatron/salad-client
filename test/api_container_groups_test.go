@@ -11,10 +11,10 @@ package saladclient
 
 import (
 	"context"
-	openapiclient "github.com/mevatron/s
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"testing"
+	openapiclient "github.com/mevatron/salad-client"
 )
 
 func Test_saladclient_ContainerGroupsAPIService(t *testing.T) {
