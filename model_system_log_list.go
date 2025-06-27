@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -23,7 +22,8 @@ var _ MappedNullable = &SystemLogList{}
 // SystemLogList Represents a list of system logs
 type SystemLogList struct {
 	// A list of system logs
-	Items []SystemLog `json:"items"`
+	Items                []SystemLog `json:"items"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _SystemLogList SystemLogList
@@ -71,7 +71,7 @@ func (o *SystemLogList) SetItems(v []SystemLog) {
 }
 
 func (o SystemLogList) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -81,6 +81,11 @@ func (o SystemLogList) MarshalJSON() ([]byte, error) {
 func (o SystemLogList) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["items"] = o.Items
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -97,10 +102,10 @@ func (o *SystemLogList) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -108,15 +113,20 @@ func (o *SystemLogList) UnmarshalJSON(data []byte) (err error) {
 
 	varSystemLogList := _SystemLogList{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varSystemLogList)
+	err = json.Unmarshal(data, &varSystemLogList)
 
 	if err != nil {
 		return err
 	}
 
 	*o = SystemLogList(varSystemLogList)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "items")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -156,5 +166,3 @@ func (v *NullableSystemLogList) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

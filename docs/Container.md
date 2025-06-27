@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Command** | **[]string** | List of commands to run inside the container. Each command is a string representing a command-line instruction. | 
-**EnvironmentVariables** | Pointer to **map[string]string** | Environment variables to set in the container. | [optional] 
+**EnvironmentVariables** | Pointer to  | Environment variables to set in the container. | [optional] 
 **Hash** | Pointer to **string** | SHA-256 hash (64-character hexadecimal string) | [optional] 
 **Image** | **string** | The container image. | 
 **ImageCaching** | Pointer to **bool** | The container image caching. | [optional] 
@@ -52,16 +52,6 @@ and a boolean to check if the value has been set.
 SetCommand sets Command field to given value.
 
 
-### SetCommandNil
-
-`func (o *Container) SetCommandNil(b bool)`
-
- SetCommandNil sets the value for Command to be an explicit nil
-
-### UnsetCommand
-`func (o *Container) UnsetCommand()`
-
-UnsetCommand ensures that no value is present for Command, not even an explicit nil
 ### GetEnvironmentVariables
 
 `func (o *Container) GetEnvironmentVariables() map[string]string`
@@ -87,6 +77,16 @@ SetEnvironmentVariables sets EnvironmentVariables field to given value.
 
 HasEnvironmentVariables returns a boolean if a field has been set.
 
+### SetEnvironmentVariablesNil
+
+`func (o *Container) SetEnvironmentVariablesNil(b bool)`
+
+ SetEnvironmentVariablesNil sets the value for EnvironmentVariables to be an explicit nil
+
+### UnsetEnvironmentVariables
+`func (o *Container) UnsetEnvironmentVariables()`
+
+UnsetEnvironmentVariables ensures that no value is present for EnvironmentVariables, not even an explicit nil
 ### GetHash
 
 `func (o *Container) GetHash() string`

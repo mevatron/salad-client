@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,9 +13,8 @@ package saladclient
 
 import (
 	"encoding/json"
-	"time"
-	"bytes"
 	"fmt"
+	"time"
 )
 
 // checks if the QueueJob type satisfies the MappedNullable interface at compile time
@@ -24,7 +23,7 @@ var _ MappedNullable = &QueueJob{}
 // QueueJob Represents a queue job
 type QueueJob struct {
 	// The job identifier
-	Id string `json:"id"`
+	Id    string      `json:"id"`
 	Input interface{} `json:"input"`
 	// Additional metadata for the job
 	Metadata map[string]interface{} `json:"metadata,omitempty"`
@@ -34,11 +33,12 @@ type QueueJob struct {
 	Status string `json:"status"`
 	// The job events
 	Events []QueueJobEvent `json:"events"`
-	Output interface{} `json:"output,omitempty"`
+	Output interface{}     `json:"output,omitempty"`
 	// The job creation time
 	CreateTime time.Time `json:"create_time"`
 	// The job update time
-	UpdateTime time.Time `json:"update_time"`
+	UpdateTime           time.Time `json:"update_time"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _QueueJob QueueJob
@@ -310,7 +310,7 @@ func (o *QueueJob) SetUpdateTime(v time.Time) {
 }
 
 func (o QueueJob) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -336,6 +336,11 @@ func (o QueueJob) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["create_time"] = o.CreateTime
 	toSerialize["update_time"] = o.UpdateTime
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -357,10 +362,10 @@ func (o *QueueJob) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -368,15 +373,28 @@ func (o *QueueJob) UnmarshalJSON(data []byte) (err error) {
 
 	varQueueJob := _QueueJob{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varQueueJob)
+	err = json.Unmarshal(data, &varQueueJob)
 
 	if err != nil {
 		return err
 	}
 
 	*o = QueueJob(varQueueJob)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "input")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "webhook")
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "events")
+		delete(additionalProperties, "output")
+		delete(additionalProperties, "create_time")
+		delete(additionalProperties, "update_time")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -416,5 +434,3 @@ func (v *NullableQueueJob) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

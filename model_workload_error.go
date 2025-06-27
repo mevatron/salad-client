@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,9 +13,8 @@ package saladclient
 
 import (
 	"encoding/json"
-	"time"
-	"bytes"
 	"fmt"
+	"time"
 )
 
 // checks if the WorkloadError type satisfies the MappedNullable interface at compile time
@@ -36,7 +35,8 @@ type WorkloadError struct {
 	// The timestamp when the workload started execution, or null if it failed before starting
 	StartedAt *time.Time `json:"started_at,omitempty"`
 	// The schema version number for this error record, used for tracking error format changes
-	Version int32 `json:"version"`
+	Version              int32 `json:"version"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _WorkloadError WorkloadError
@@ -241,7 +241,7 @@ func (o *WorkloadError) SetVersion(v int32) {
 }
 
 func (o WorkloadError) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -259,6 +259,11 @@ func (o WorkloadError) ToMap() (map[string]interface{}, error) {
 		toSerialize["started_at"] = o.StartedAt
 	}
 	toSerialize["version"] = o.Version
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -280,10 +285,10 @@ func (o *WorkloadError) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -291,15 +296,26 @@ func (o *WorkloadError) UnmarshalJSON(data []byte) (err error) {
 
 	varWorkloadError := _WorkloadError{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varWorkloadError)
+	err = json.Unmarshal(data, &varWorkloadError)
 
 	if err != nil {
 		return err
 	}
 
 	*o = WorkloadError(varWorkloadError)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "allocated_at")
+		delete(additionalProperties, "detail")
+		delete(additionalProperties, "failed_at")
+		delete(additionalProperties, "instance_id")
+		delete(additionalProperties, "machine_id")
+		delete(additionalProperties, "started_at")
+		delete(additionalProperties, "version")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -339,5 +355,3 @@ func (v *NullableWorkloadError) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

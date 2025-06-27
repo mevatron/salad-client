@@ -4,9 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**DisplayName** | Pointer to **NullableString** | The display name for the container group. If null is provided, the display name will be set to the container group name. | [optional] 
+**DisplayName** | Pointer to **string** | The display name for the container group. If null is provided, the display name will be set to the container group name. | [optional] 
 **Container** | Pointer to [**UpdateContainer**](UpdateContainer.md) |  | [optional] 
-**Replicas** | Pointer to **NullableInt32** | The desired number of instances for your container group deployment. | [optional] 
+**Replicas** | Pointer to **int32** | The desired number of instances for your container group deployment. | [optional] 
 **CountryCodes** | Pointer to [**[]CountryCode**](CountryCode.md) | List of countries nodes must be located in. Remove this field to permit nodes from any country. | [optional] 
 **Networking** | Pointer to [**UpdateContainerGroupNetworking**](UpdateContainerGroupNetworking.md) |  | [optional] 
 **LivenessProbe** | Pointer to [**ContainerGroupLivenessProbe**](ContainerGroupLivenessProbe.md) |  | [optional] 
@@ -58,16 +58,6 @@ SetDisplayName sets DisplayName field to given value.
 
 HasDisplayName returns a boolean if a field has been set.
 
-### SetDisplayNameNil
-
-`func (o *ContainerGroupPatch) SetDisplayNameNil(b bool)`
-
- SetDisplayNameNil sets the value for DisplayName to be an explicit nil
-
-### UnsetDisplayName
-`func (o *ContainerGroupPatch) UnsetDisplayName()`
-
-UnsetDisplayName ensures that no value is present for DisplayName, not even an explicit nil
 ### GetContainer
 
 `func (o *ContainerGroupPatch) GetContainer() UpdateContainer`
@@ -118,16 +108,6 @@ SetReplicas sets Replicas field to given value.
 
 HasReplicas returns a boolean if a field has been set.
 
-### SetReplicasNil
-
-`func (o *ContainerGroupPatch) SetReplicasNil(b bool)`
-
- SetReplicasNil sets the value for Replicas to be an explicit nil
-
-### UnsetReplicas
-`func (o *ContainerGroupPatch) UnsetReplicas()`
-
-UnsetReplicas ensures that no value is present for Replicas, not even an explicit nil
 ### GetCountryCodes
 
 `func (o *ContainerGroupPatch) GetCountryCodes() []CountryCode`
@@ -153,16 +133,6 @@ SetCountryCodes sets CountryCodes field to given value.
 
 HasCountryCodes returns a boolean if a field has been set.
 
-### SetCountryCodesNil
-
-`func (o *ContainerGroupPatch) SetCountryCodesNil(b bool)`
-
- SetCountryCodesNil sets the value for CountryCodes to be an explicit nil
-
-### UnsetCountryCodes
-`func (o *ContainerGroupPatch) UnsetCountryCodes()`
-
-UnsetCountryCodes ensures that no value is present for CountryCodes, not even an explicit nil
 ### GetNetworking
 
 `func (o *ContainerGroupPatch) GetNetworking() UpdateContainerGroupNetworking`

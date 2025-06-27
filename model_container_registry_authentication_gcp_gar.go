@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -23,7 +22,8 @@ var _ MappedNullable = &ContainerRegistryAuthenticationGcpGar{}
 // ContainerRegistryAuthenticationGcpGar Authentication details for Google Artifact Registry (GAR)
 type ContainerRegistryAuthenticationGcpGar struct {
 	// GCP service account key in JSON format for GAR authentication
-	ServiceKey string `json:"service_key" validate:"regexp=^.*$"`
+	ServiceKey           string `json:"service_key"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ContainerRegistryAuthenticationGcpGar ContainerRegistryAuthenticationGcpGar
@@ -71,7 +71,7 @@ func (o *ContainerRegistryAuthenticationGcpGar) SetServiceKey(v string) {
 }
 
 func (o ContainerRegistryAuthenticationGcpGar) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -81,6 +81,11 @@ func (o ContainerRegistryAuthenticationGcpGar) MarshalJSON() ([]byte, error) {
 func (o ContainerRegistryAuthenticationGcpGar) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["service_key"] = o.ServiceKey
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -97,10 +102,10 @@ func (o *ContainerRegistryAuthenticationGcpGar) UnmarshalJSON(data []byte) (err 
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -108,15 +113,20 @@ func (o *ContainerRegistryAuthenticationGcpGar) UnmarshalJSON(data []byte) (err 
 
 	varContainerRegistryAuthenticationGcpGar := _ContainerRegistryAuthenticationGcpGar{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varContainerRegistryAuthenticationGcpGar)
+	err = json.Unmarshal(data, &varContainerRegistryAuthenticationGcpGar)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ContainerRegistryAuthenticationGcpGar(varContainerRegistryAuthenticationGcpGar)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "service_key")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -156,5 +166,3 @@ func (v *NullableContainerRegistryAuthenticationGcpGar) UnmarshalJSON(src []byte
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

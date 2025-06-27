@@ -5,11 +5,11 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Command** | Pointer to **[]string** | Pass a command (and optional arguments) to override the ENTRYPOINT and CMD of a container image. | [optional] 
-**EnvironmentVariables** | Pointer to **map[string]string** | Environment variables to set in the container. | [optional] 
-**Image** | Pointer to **NullableString** | The container image to use. | [optional] 
+**EnvironmentVariables** | Pointer to  | Environment variables to set in the container. | [optional] 
+**Image** | Pointer to **string** | The container image to use. | [optional] 
 **ImageCaching** | Pointer to **bool** | The container image caching. | [optional] 
 **Logging** | Pointer to [**UpdateContainerLogging**](UpdateContainerLogging.md) |  | [optional] 
-**Priority** | Pointer to [**NullableContainerGroupPriority**](ContainerGroupPriority.md) |  | [optional] 
+**Priority** | Pointer to [**ContainerGroupPriority**](ContainerGroupPriority.md) |  | [optional] 
 **RegistryAuthentication** | Pointer to [**ContainerRegistryAuthentication**](ContainerRegistryAuthentication.md) |  | [optional] 
 **Resources** | Pointer to [**UpdateContainerResources**](UpdateContainerResources.md) |  | [optional] 
 
@@ -57,16 +57,6 @@ SetCommand sets Command field to given value.
 
 HasCommand returns a boolean if a field has been set.
 
-### SetCommandNil
-
-`func (o *UpdateContainer) SetCommandNil(b bool)`
-
- SetCommandNil sets the value for Command to be an explicit nil
-
-### UnsetCommand
-`func (o *UpdateContainer) UnsetCommand()`
-
-UnsetCommand ensures that no value is present for Command, not even an explicit nil
 ### GetEnvironmentVariables
 
 `func (o *UpdateContainer) GetEnvironmentVariables() map[string]string`
@@ -92,6 +82,16 @@ SetEnvironmentVariables sets EnvironmentVariables field to given value.
 
 HasEnvironmentVariables returns a boolean if a field has been set.
 
+### SetEnvironmentVariablesNil
+
+`func (o *UpdateContainer) SetEnvironmentVariablesNil(b bool)`
+
+ SetEnvironmentVariablesNil sets the value for EnvironmentVariables to be an explicit nil
+
+### UnsetEnvironmentVariables
+`func (o *UpdateContainer) UnsetEnvironmentVariables()`
+
+UnsetEnvironmentVariables ensures that no value is present for EnvironmentVariables, not even an explicit nil
 ### GetImage
 
 `func (o *UpdateContainer) GetImage() string`
@@ -117,16 +117,6 @@ SetImage sets Image field to given value.
 
 HasImage returns a boolean if a field has been set.
 
-### SetImageNil
-
-`func (o *UpdateContainer) SetImageNil(b bool)`
-
- SetImageNil sets the value for Image to be an explicit nil
-
-### UnsetImage
-`func (o *UpdateContainer) UnsetImage()`
-
-UnsetImage ensures that no value is present for Image, not even an explicit nil
 ### GetImageCaching
 
 `func (o *UpdateContainer) GetImageCaching() bool`
@@ -202,16 +192,6 @@ SetPriority sets Priority field to given value.
 
 HasPriority returns a boolean if a field has been set.
 
-### SetPriorityNil
-
-`func (o *UpdateContainer) SetPriorityNil(b bool)`
-
- SetPriorityNil sets the value for Priority to be an explicit nil
-
-### UnsetPriority
-`func (o *UpdateContainer) UnsetPriority()`
-
-UnsetPriority ensures that no value is present for Priority, not even an explicit nil
 ### GetRegistryAuthentication
 
 `func (o *UpdateContainer) GetRegistryAuthentication() ContainerRegistryAuthentication`

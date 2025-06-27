@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **Cpu** | **int32** | The number of CPU cores required by the container. Must be between 1 and 16. | 
 **Memory** | **int32** | The amount of memory (in MB) required by the container. Must be between 1024 MB and 61440 MB. | 
 **GpuClasses** | **[]string** | A list of GPU class UUIDs required by the container. Can be null if no GPU is required. | 
-**StorageAmount** | Pointer to **int64** | The amount of storage (in bytes) required by the container. Must be between 1 GB (1073741824 bytes) and 50 GB (53687091200 bytes). | [optional] 
+**StorageAmount** | Pointer to **int64** | The amount of storage (in bytes) required by the container. Must be between 1 GB (1073741824 bytes) and 250 GB (268435456000 bytes). | [optional] 
 
 ## Methods
 
@@ -88,16 +88,6 @@ and a boolean to check if the value has been set.
 SetGpuClasses sets GpuClasses field to given value.
 
 
-### SetGpuClassesNil
-
-`func (o *ContainerResourceRequirements) SetGpuClassesNil(b bool)`
-
- SetGpuClassesNil sets the value for GpuClasses to be an explicit nil
-
-### UnsetGpuClasses
-`func (o *ContainerResourceRequirements) UnsetGpuClasses()`
-
-UnsetGpuClasses ensures that no value is present for GpuClasses, not even an explicit nil
 ### GetStorageAmount
 
 `func (o *ContainerResourceRequirements) GetStorageAmount() int64`

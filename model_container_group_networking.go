@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -27,15 +26,16 @@ type ContainerGroupNetworking struct {
 	// The container group networking client request timeout.
 	ClientRequestTimeout *int32 `json:"client_request_timeout,omitempty"`
 	// Domain name or URL endpoint for the container group's network interface
-	Dns string `json:"dns" validate:"regexp=^([a-z][a-z0-9-]{0,61}[a-z0-9]\\\\.)*[a-z][a-z0-9-]{0,61}[a-z0-9]$"`
+	Dns          string                               `json:"dns" validate:"regexp=^([a-z][a-z0-9-]{0,61}[a-z0-9]\\\\.)*[a-z][a-z0-9-]{0,61}[a-z0-9]$"`
 	LoadBalancer ContainerGroupNetworkingLoadBalancer `json:"load_balancer"`
 	// The container group networking port.
-	Port int32 `json:"port"`
+	Port     int32                       `json:"port"`
 	Protocol ContainerNetworkingProtocol `json:"protocol"`
 	// The container group networking server response timeout.
 	ServerResponseTimeout *int32 `json:"server_response_timeout,omitempty"`
 	// The container group networking single connection limit flag.
 	SingleConnectionLimit *bool `json:"single_connection_limit,omitempty"`
+	AdditionalProperties  map[string]interface{}
 }
 
 type _ContainerGroupNetworking ContainerGroupNetworking
@@ -293,7 +293,7 @@ func (o *ContainerGroupNetworking) SetSingleConnectionLimit(v bool) {
 }
 
 func (o ContainerGroupNetworking) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -316,6 +316,11 @@ func (o ContainerGroupNetworking) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.SingleConnectionLimit) {
 		toSerialize["single_connection_limit"] = o.SingleConnectionLimit
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -336,10 +341,10 @@ func (o *ContainerGroupNetworking) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -347,15 +352,27 @@ func (o *ContainerGroupNetworking) UnmarshalJSON(data []byte) (err error) {
 
 	varContainerGroupNetworking := _ContainerGroupNetworking{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varContainerGroupNetworking)
+	err = json.Unmarshal(data, &varContainerGroupNetworking)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ContainerGroupNetworking(varContainerGroupNetworking)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "auth")
+		delete(additionalProperties, "client_request_timeout")
+		delete(additionalProperties, "dns")
+		delete(additionalProperties, "load_balancer")
+		delete(additionalProperties, "port")
+		delete(additionalProperties, "protocol")
+		delete(additionalProperties, "server_response_timeout")
+		delete(additionalProperties, "single_connection_limit")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -395,5 +412,3 @@ func (v *NullableContainerGroupNetworking) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

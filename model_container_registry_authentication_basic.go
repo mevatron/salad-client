@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -25,7 +24,8 @@ type ContainerRegistryAuthenticationBasic struct {
 	// Username for registry authentication
 	Username string `json:"username" validate:"regexp=^.*$"`
 	// Password for registry authentication
-	Password string `json:"password" validate:"regexp=^.*$"`
+	Password             string `json:"password" validate:"regexp=^.*$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ContainerRegistryAuthenticationBasic ContainerRegistryAuthenticationBasic
@@ -98,7 +98,7 @@ func (o *ContainerRegistryAuthenticationBasic) SetPassword(v string) {
 }
 
 func (o ContainerRegistryAuthenticationBasic) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -109,6 +109,11 @@ func (o ContainerRegistryAuthenticationBasic) ToMap() (map[string]interface{}, e
 	toSerialize := map[string]interface{}{}
 	toSerialize["username"] = o.Username
 	toSerialize["password"] = o.Password
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -126,10 +131,10 @@ func (o *ContainerRegistryAuthenticationBasic) UnmarshalJSON(data []byte) (err e
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -137,15 +142,21 @@ func (o *ContainerRegistryAuthenticationBasic) UnmarshalJSON(data []byte) (err e
 
 	varContainerRegistryAuthenticationBasic := _ContainerRegistryAuthenticationBasic{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varContainerRegistryAuthenticationBasic)
+	err = json.Unmarshal(data, &varContainerRegistryAuthenticationBasic)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ContainerRegistryAuthenticationBasic(varContainerRegistryAuthenticationBasic)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "username")
+		delete(additionalProperties, "password")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -185,5 +196,3 @@ func (v *NullableContainerRegistryAuthenticationBasic) UnmarshalJSON(src []byte)
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

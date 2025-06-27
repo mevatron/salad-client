@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -27,7 +26,8 @@ type ContainerLoggingDatadog struct {
 	// The Datadog API key used for authentication when sending logs.
 	ApiKey string `json:"api_key" validate:"regexp=^.*$"`
 	// Optional metadata tags to attach to logs for filtering and categorization in Datadog.
-	Tags []ContainerLoggingDatadogTag `json:"tags"`
+	Tags                 []ContainerLoggingDatadogTag `json:"tags"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ContainerLoggingDatadog ContainerLoggingDatadog
@@ -101,7 +101,6 @@ func (o *ContainerLoggingDatadog) SetApiKey(v string) {
 }
 
 // GetTags returns the Tags field value
-// If the value is explicit nil, the zero value for []ContainerLoggingDatadogTag will be returned
 func (o *ContainerLoggingDatadog) GetTags() []ContainerLoggingDatadogTag {
 	if o == nil {
 		var ret []ContainerLoggingDatadogTag
@@ -113,9 +112,8 @@ func (o *ContainerLoggingDatadog) GetTags() []ContainerLoggingDatadogTag {
 
 // GetTagsOk returns a tuple with the Tags field value
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ContainerLoggingDatadog) GetTagsOk() ([]ContainerLoggingDatadogTag, bool) {
-	if o == nil || IsNil(o.Tags) {
+	if o == nil {
 		return nil, false
 	}
 	return o.Tags, true
@@ -127,7 +125,7 @@ func (o *ContainerLoggingDatadog) SetTags(v []ContainerLoggingDatadogTag) {
 }
 
 func (o ContainerLoggingDatadog) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -138,9 +136,12 @@ func (o ContainerLoggingDatadog) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["host"] = o.Host
 	toSerialize["api_key"] = o.ApiKey
-	if o.Tags != nil {
-		toSerialize["tags"] = o.Tags
+	toSerialize["tags"] = o.Tags
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
 	}
+
 	return toSerialize, nil
 }
 
@@ -159,10 +160,10 @@ func (o *ContainerLoggingDatadog) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -170,15 +171,22 @@ func (o *ContainerLoggingDatadog) UnmarshalJSON(data []byte) (err error) {
 
 	varContainerLoggingDatadog := _ContainerLoggingDatadog{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varContainerLoggingDatadog)
+	err = json.Unmarshal(data, &varContainerLoggingDatadog)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ContainerLoggingDatadog(varContainerLoggingDatadog)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "host")
+		delete(additionalProperties, "api_key")
+		delete(additionalProperties, "tags")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -218,5 +226,3 @@ func (v *NullableContainerLoggingDatadog) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

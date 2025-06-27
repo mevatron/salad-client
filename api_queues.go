@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -20,16 +20,15 @@ import (
 	"strings"
 )
 
-
 // QueuesAPIService QueuesAPI service
 type QueuesAPIService service
 
 type ApiCreateQueueRequest struct {
-	ctx context.Context
-	ApiService *QueuesAPIService
+	ctx              context.Context
+	ApiService       *QueuesAPIService
 	organizationName string
-	projectName string
-	queuePrototype *QueuePrototype
+	projectName      string
+	queuePrototype   *QueuePrototype
 }
 
 func (r ApiCreateQueueRequest) QueuePrototype(queuePrototype QueuePrototype) ApiCreateQueueRequest {
@@ -46,28 +45,29 @@ CreateQueue Create Queue
 
 Creates a new queue in the given project.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @return ApiCreateQueueRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@return ApiCreateQueueRequest
 */
 func (a *QueuesAPIService) CreateQueue(ctx context.Context, organizationName string, projectName string) ApiCreateQueueRequest {
 	return ApiCreateQueueRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:       a,
+		ctx:              ctx,
 		organizationName: organizationName,
-		projectName: projectName,
+		projectName:      projectName,
 	}
 }
 
 // Execute executes the request
-//  @return Queue
+//
+//	@return Queue
 func (a *QueuesAPIService) CreateQueueExecute(r ApiCreateQueueRequest) (*Queue, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *Queue
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Queue
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "QueuesAPIService.CreateQueue")
@@ -160,8 +160,8 @@ func (a *QueuesAPIService) CreateQueueExecute(r ApiCreateQueueRequest) (*Queue, 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -171,8 +171,8 @@ func (a *QueuesAPIService) CreateQueueExecute(r ApiCreateQueueRequest) (*Queue, 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -182,18 +182,18 @@ func (a *QueuesAPIService) CreateQueueExecute(r ApiCreateQueueRequest) (*Queue, 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -210,11 +210,11 @@ func (a *QueuesAPIService) CreateQueueExecute(r ApiCreateQueueRequest) (*Queue, 
 }
 
 type ApiCreateQueueJobRequest struct {
-	ctx context.Context
-	ApiService *QueuesAPIService
-	organizationName string
-	projectName string
-	queueName string
+	ctx               context.Context
+	ApiService        *QueuesAPIService
+	organizationName  string
+	projectName       string
+	queueName         string
 	queueJobPrototype *QueueJobPrototype
 }
 
@@ -232,30 +232,31 @@ CreateQueueJob Create Job
 
 Creates a new job
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @param queueName The queue name.
- @return ApiCreateQueueJobRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@param queueName The queue name.
+	@return ApiCreateQueueJobRequest
 */
 func (a *QueuesAPIService) CreateQueueJob(ctx context.Context, organizationName string, projectName string, queueName string) ApiCreateQueueJobRequest {
 	return ApiCreateQueueJobRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:       a,
+		ctx:              ctx,
 		organizationName: organizationName,
-		projectName: projectName,
-		queueName: queueName,
+		projectName:      projectName,
+		queueName:        queueName,
 	}
 }
 
 // Execute executes the request
-//  @return QueueJob
+//
+//	@return QueueJob
 func (a *QueuesAPIService) CreateQueueJobExecute(r ApiCreateQueueJobRequest) (*QueueJob, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *QueueJob
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *QueueJob
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "QueuesAPIService.CreateQueueJob")
@@ -355,8 +356,8 @@ func (a *QueuesAPIService) CreateQueueJobExecute(r ApiCreateQueueJobRequest) (*Q
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -366,8 +367,8 @@ func (a *QueuesAPIService) CreateQueueJobExecute(r ApiCreateQueueJobRequest) (*Q
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -377,18 +378,18 @@ func (a *QueuesAPIService) CreateQueueJobExecute(r ApiCreateQueueJobRequest) (*Q
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -405,11 +406,11 @@ func (a *QueuesAPIService) CreateQueueJobExecute(r ApiCreateQueueJobRequest) (*Q
 }
 
 type ApiDeleteQueueRequest struct {
-	ctx context.Context
-	ApiService *QueuesAPIService
+	ctx              context.Context
+	ApiService       *QueuesAPIService
 	organizationName string
-	projectName string
-	queueName string
+	projectName      string
+	queueName        string
 }
 
 func (r ApiDeleteQueueRequest) Execute() (*http.Response, error) {
@@ -421,28 +422,28 @@ DeleteQueue Delete Queue
 
 Deletes an existing queue in the given project.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @param queueName The queue name.
- @return ApiDeleteQueueRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@param queueName The queue name.
+	@return ApiDeleteQueueRequest
 */
 func (a *QueuesAPIService) DeleteQueue(ctx context.Context, organizationName string, projectName string, queueName string) ApiDeleteQueueRequest {
 	return ApiDeleteQueueRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:       a,
+		ctx:              ctx,
 		organizationName: organizationName,
-		projectName: projectName,
-		queueName: queueName,
+		projectName:      projectName,
+		queueName:        queueName,
 	}
 }
 
 // Execute executes the request
 func (a *QueuesAPIService) DeleteQueueExecute(r ApiDeleteQueueRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "QueuesAPIService.DeleteQueue")
@@ -537,8 +538,8 @@ func (a *QueuesAPIService) DeleteQueueExecute(r ApiDeleteQueueRequest) (*http.Re
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -548,18 +549,18 @@ func (a *QueuesAPIService) DeleteQueueExecute(r ApiDeleteQueueRequest) (*http.Re
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
 
@@ -567,12 +568,12 @@ func (a *QueuesAPIService) DeleteQueueExecute(r ApiDeleteQueueRequest) (*http.Re
 }
 
 type ApiDeleteQueueJobRequest struct {
-	ctx context.Context
-	ApiService *QueuesAPIService
+	ctx              context.Context
+	ApiService       *QueuesAPIService
 	organizationName string
-	projectName string
-	queueName string
-	queueJobId string
+	projectName      string
+	queueName        string
+	queueJobId       string
 }
 
 func (r ApiDeleteQueueJobRequest) Execute() (*http.Response, error) {
@@ -584,30 +585,30 @@ DeleteQueueJob Delete Job
 
 Cancels a job in a queue
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @param queueName The queue name.
- @param queueJobId The job identifier. This is automatically generated and assigned when the job is created.
- @return ApiDeleteQueueJobRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@param queueName The queue name.
+	@param queueJobId The job identifier. This is automatically generated and assigned when the job is created.
+	@return ApiDeleteQueueJobRequest
 */
 func (a *QueuesAPIService) DeleteQueueJob(ctx context.Context, organizationName string, projectName string, queueName string, queueJobId string) ApiDeleteQueueJobRequest {
 	return ApiDeleteQueueJobRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:       a,
+		ctx:              ctx,
 		organizationName: organizationName,
-		projectName: projectName,
-		queueName: queueName,
-		queueJobId: queueJobId,
+		projectName:      projectName,
+		queueName:        queueName,
+		queueJobId:       queueJobId,
 	}
 }
 
 // Execute executes the request
 func (a *QueuesAPIService) DeleteQueueJobExecute(r ApiDeleteQueueJobRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "QueuesAPIService.DeleteQueueJob")
@@ -703,8 +704,8 @@ func (a *QueuesAPIService) DeleteQueueJobExecute(r ApiDeleteQueueJobRequest) (*h
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -714,18 +715,18 @@ func (a *QueuesAPIService) DeleteQueueJobExecute(r ApiDeleteQueueJobRequest) (*h
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
 
@@ -733,11 +734,11 @@ func (a *QueuesAPIService) DeleteQueueJobExecute(r ApiDeleteQueueJobRequest) (*h
 }
 
 type ApiGetQueueRequest struct {
-	ctx context.Context
-	ApiService *QueuesAPIService
+	ctx              context.Context
+	ApiService       *QueuesAPIService
 	organizationName string
-	projectName string
-	queueName string
+	projectName      string
+	queueName        string
 }
 
 func (r ApiGetQueueRequest) Execute() (*Queue, *http.Response, error) {
@@ -749,30 +750,31 @@ GetQueue Get Queue
 
 Gets an existing queue in the given project.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @param queueName The queue name.
- @return ApiGetQueueRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@param queueName The queue name.
+	@return ApiGetQueueRequest
 */
 func (a *QueuesAPIService) GetQueue(ctx context.Context, organizationName string, projectName string, queueName string) ApiGetQueueRequest {
 	return ApiGetQueueRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:       a,
+		ctx:              ctx,
 		organizationName: organizationName,
-		projectName: projectName,
-		queueName: queueName,
+		projectName:      projectName,
+		queueName:        queueName,
 	}
 }
 
 // Execute executes the request
-//  @return Queue
+//
+//	@return Queue
 func (a *QueuesAPIService) GetQueueExecute(r ApiGetQueueRequest) (*Queue, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *Queue
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Queue
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "QueuesAPIService.GetQueue")
@@ -867,8 +869,8 @@ func (a *QueuesAPIService) GetQueueExecute(r ApiGetQueueRequest) (*Queue, *http.
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -878,18 +880,18 @@ func (a *QueuesAPIService) GetQueueExecute(r ApiGetQueueRequest) (*Queue, *http.
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -906,12 +908,12 @@ func (a *QueuesAPIService) GetQueueExecute(r ApiGetQueueRequest) (*Queue, *http.
 }
 
 type ApiGetQueueJobRequest struct {
-	ctx context.Context
-	ApiService *QueuesAPIService
+	ctx              context.Context
+	ApiService       *QueuesAPIService
 	organizationName string
-	projectName string
-	queueName string
-	queueJobId string
+	projectName      string
+	queueName        string
+	queueJobId       string
 }
 
 func (r ApiGetQueueJobRequest) Execute() (*QueueJob, *http.Response, error) {
@@ -923,32 +925,33 @@ GetQueueJob Get Job
 
 Gets a job in a queue
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @param queueName The queue name.
- @param queueJobId The job identifier. This is automatically generated and assigned when the job is created.
- @return ApiGetQueueJobRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@param queueName The queue name.
+	@param queueJobId The job identifier. This is automatically generated and assigned when the job is created.
+	@return ApiGetQueueJobRequest
 */
 func (a *QueuesAPIService) GetQueueJob(ctx context.Context, organizationName string, projectName string, queueName string, queueJobId string) ApiGetQueueJobRequest {
 	return ApiGetQueueJobRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:       a,
+		ctx:              ctx,
 		organizationName: organizationName,
-		projectName: projectName,
-		queueName: queueName,
-		queueJobId: queueJobId,
+		projectName:      projectName,
+		queueName:        queueName,
+		queueJobId:       queueJobId,
 	}
 }
 
 // Execute executes the request
-//  @return QueueJob
+//
+//	@return QueueJob
 func (a *QueuesAPIService) GetQueueJobExecute(r ApiGetQueueJobRequest) (*QueueJob, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *QueueJob
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *QueueJob
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "QueuesAPIService.GetQueueJob")
@@ -1044,8 +1047,8 @@ func (a *QueuesAPIService) GetQueueJobExecute(r ApiGetQueueJobRequest) (*QueueJo
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -1055,18 +1058,18 @@ func (a *QueuesAPIService) GetQueueJobExecute(r ApiGetQueueJobRequest) (*QueueJo
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -1083,13 +1086,13 @@ func (a *QueuesAPIService) GetQueueJobExecute(r ApiGetQueueJobRequest) (*QueueJo
 }
 
 type ApiListQueueJobsRequest struct {
-	ctx context.Context
-	ApiService *QueuesAPIService
+	ctx              context.Context
+	ApiService       *QueuesAPIService
 	organizationName string
-	projectName string
-	queueName string
-	page *int32
-	pageSize *int32
+	projectName      string
+	queueName        string
+	page             *int32
+	pageSize         *int32
 }
 
 // The page number.
@@ -1113,30 +1116,31 @@ ListQueueJobs List Jobs
 
 Gets the list of jobs in a queue
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @param queueName The queue name.
- @return ApiListQueueJobsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@param queueName The queue name.
+	@return ApiListQueueJobsRequest
 */
 func (a *QueuesAPIService) ListQueueJobs(ctx context.Context, organizationName string, projectName string, queueName string) ApiListQueueJobsRequest {
 	return ApiListQueueJobsRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:       a,
+		ctx:              ctx,
 		organizationName: organizationName,
-		projectName: projectName,
-		queueName: queueName,
+		projectName:      projectName,
+		queueName:        queueName,
 	}
 }
 
 // Execute executes the request
-//  @return QueueJobCollection
+//
+//	@return QueueJobCollection
 func (a *QueuesAPIService) ListQueueJobsExecute(r ApiListQueueJobsRequest) (*QueueJobCollection, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *QueueJobCollection
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *QueueJobCollection
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "QueuesAPIService.ListQueueJobs")
@@ -1237,8 +1241,8 @@ func (a *QueuesAPIService) ListQueueJobsExecute(r ApiListQueueJobsRequest) (*Que
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -1248,18 +1252,18 @@ func (a *QueuesAPIService) ListQueueJobsExecute(r ApiListQueueJobsRequest) (*Que
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -1276,10 +1280,10 @@ func (a *QueuesAPIService) ListQueueJobsExecute(r ApiListQueueJobsRequest) (*Que
 }
 
 type ApiListQueuesRequest struct {
-	ctx context.Context
-	ApiService *QueuesAPIService
+	ctx              context.Context
+	ApiService       *QueuesAPIService
 	organizationName string
-	projectName string
+	projectName      string
 }
 
 func (r ApiListQueuesRequest) Execute() (*QueueCollection, *http.Response, error) {
@@ -1291,28 +1295,29 @@ ListQueues List Queues
 
 Gets the list of queues in the given project.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @return ApiListQueuesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@return ApiListQueuesRequest
 */
 func (a *QueuesAPIService) ListQueues(ctx context.Context, organizationName string, projectName string) ApiListQueuesRequest {
 	return ApiListQueuesRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:       a,
+		ctx:              ctx,
 		organizationName: organizationName,
-		projectName: projectName,
+		projectName:      projectName,
 	}
 }
 
 // Execute executes the request
-//  @return QueueCollection
+//
+//	@return QueueCollection
 func (a *QueuesAPIService) ListQueuesExecute(r ApiListQueuesRequest) (*QueueCollection, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *QueueCollection
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *QueueCollection
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "QueuesAPIService.ListQueues")
@@ -1400,8 +1405,8 @@ func (a *QueuesAPIService) ListQueuesExecute(r ApiListQueuesRequest) (*QueueColl
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -1411,18 +1416,18 @@ func (a *QueuesAPIService) ListQueuesExecute(r ApiListQueuesRequest) (*QueueColl
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -1439,12 +1444,12 @@ func (a *QueuesAPIService) ListQueuesExecute(r ApiListQueuesRequest) (*QueueColl
 }
 
 type ApiUpdateQueueRequest struct {
-	ctx context.Context
-	ApiService *QueuesAPIService
+	ctx              context.Context
+	ApiService       *QueuesAPIService
 	organizationName string
-	projectName string
-	queueName string
-	queuePatch *QueuePatch
+	projectName      string
+	queueName        string
+	queuePatch       *QueuePatch
 }
 
 func (r ApiUpdateQueueRequest) QueuePatch(queuePatch QueuePatch) ApiUpdateQueueRequest {
@@ -1461,30 +1466,31 @@ UpdateQueue Update Queue
 
 Updates an existing queue in the given project.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @param queueName The queue name.
- @return ApiUpdateQueueRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@param queueName The queue name.
+	@return ApiUpdateQueueRequest
 */
 func (a *QueuesAPIService) UpdateQueue(ctx context.Context, organizationName string, projectName string, queueName string) ApiUpdateQueueRequest {
 	return ApiUpdateQueueRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:       a,
+		ctx:              ctx,
 		organizationName: organizationName,
-		projectName: projectName,
-		queueName: queueName,
+		projectName:      projectName,
+		queueName:        queueName,
 	}
 }
 
 // Execute executes the request
-//  @return Queue
+//
+//	@return Queue
 func (a *QueuesAPIService) UpdateQueueExecute(r ApiUpdateQueueRequest) (*Queue, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPatch
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *Queue
+		localVarHTTPMethod  = http.MethodPatch
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Queue
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "QueuesAPIService.UpdateQueue")
@@ -1584,8 +1590,8 @@ func (a *QueuesAPIService) UpdateQueueExecute(r ApiUpdateQueueRequest) (*Queue, 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1595,8 +1601,8 @@ func (a *QueuesAPIService) UpdateQueueExecute(r ApiUpdateQueueRequest) (*Queue, 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -1606,18 +1612,18 @@ func (a *QueuesAPIService) UpdateQueueExecute(r ApiUpdateQueueRequest) (*Queue, 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 

@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -27,7 +26,8 @@ type QueuePrototype struct {
 	// The display name. This may be used as a more human-readable name.
 	DisplayName *string `json:"display_name,omitempty" validate:"regexp=^[ ,-.0-9A-Za-z]+$"`
 	// The description. This may be used as a space for notes or other information about the queue.
-	Description *string `json:"description,omitempty" validate:"regexp=^.*$"`
+	Description          *string `json:"description,omitempty" validate:"regexp=^.*$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _QueuePrototype QueuePrototype
@@ -139,7 +139,7 @@ func (o *QueuePrototype) SetDescription(v string) {
 }
 
 func (o QueuePrototype) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -155,6 +155,11 @@ func (o QueuePrototype) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -171,10 +176,10 @@ func (o *QueuePrototype) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -182,15 +187,22 @@ func (o *QueuePrototype) UnmarshalJSON(data []byte) (err error) {
 
 	varQueuePrototype := _QueuePrototype{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varQueuePrototype)
+	err = json.Unmarshal(data, &varQueuePrototype)
 
 	if err != nil {
 		return err
 	}
 
 	*o = QueuePrototype(varQueuePrototype)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "display_name")
+		delete(additionalProperties, "description")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -230,5 +242,3 @@ func (v *NullableQueuePrototype) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

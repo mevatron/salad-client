@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,9 +13,8 @@ package saladclient
 
 import (
 	"encoding/json"
-	"time"
-	"bytes"
 	"fmt"
+	"time"
 )
 
 // checks if the ContainerGroupInstance type satisfies the MappedNullable interface at compile time
@@ -26,8 +25,8 @@ type ContainerGroupInstance struct {
 	// The container group instance identifier.
 	Id string `json:"id"`
 	// The container group machine identifier.
-	MachineId string `json:"machine_id"`
-	State ContainerGroupInstanceState `json:"state"`
+	MachineId string                      `json:"machine_id"`
+	State     ContainerGroupInstanceState `json:"state"`
 	// The UTC timestamp when the container group instance last changed its state. This helps track the lifecycle and state transitions of the instance.
 	UpdateTime time.Time `json:"update_time"`
 	// The version of the container group definition currently running on this instance. Used to track deployment and update progress across the container group fleet.
@@ -37,7 +36,8 @@ type ContainerGroupInstance struct {
 	// Indicates whether the container group instance has successfully completed its startup sequence and passed any configured startup probes. This will always be true when no startup probe is defined for the container group.
 	Started *bool `json:"started,omitempty"`
 	// The cost of deleting the container group instance
-	DeletionCost *int32 `json:"deletion_cost,omitempty"`
+	DeletionCost         *int32 `json:"deletion_cost,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ContainerGroupInstance ContainerGroupInstance
@@ -285,7 +285,7 @@ func (o *ContainerGroupInstance) SetDeletionCost(v int32) {
 }
 
 func (o ContainerGroupInstance) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -308,6 +308,11 @@ func (o ContainerGroupInstance) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.DeletionCost) {
 		toSerialize["deletion_cost"] = o.DeletionCost
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -328,10 +333,10 @@ func (o *ContainerGroupInstance) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -339,15 +344,27 @@ func (o *ContainerGroupInstance) UnmarshalJSON(data []byte) (err error) {
 
 	varContainerGroupInstance := _ContainerGroupInstance{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varContainerGroupInstance)
+	err = json.Unmarshal(data, &varContainerGroupInstance)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ContainerGroupInstance(varContainerGroupInstance)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "machine_id")
+		delete(additionalProperties, "state")
+		delete(additionalProperties, "update_time")
+		delete(additionalProperties, "version")
+		delete(additionalProperties, "ready")
+		delete(additionalProperties, "started")
+		delete(additionalProperties, "deletion_cost")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -387,5 +404,3 @@ func (v *NullableContainerGroupInstance) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -4,6 +4,7 @@
   "additionalProperties": {
     "packageName": "saladclient",
     "enumClassPrefix": true,
-    "withGoMod": false
+    "withGoMod": false,
+    "disallowAdditionalPropertiesIfNotPresent": false
   }
 }

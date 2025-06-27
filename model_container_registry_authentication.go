@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -20,12 +20,15 @@ var _ MappedNullable = &ContainerRegistryAuthentication{}
 
 // ContainerRegistryAuthentication Authentication configuration for various container registry types, including AWS ECR, Docker Hub, GCP GAR, GCP GCR, and basic authentication.
 type ContainerRegistryAuthentication struct {
-	AwsEcr *ContainerRegistryAuthenticationAwsEcr `json:"aws_ecr,omitempty"`
-	Basic *ContainerRegistryAuthenticationBasic `json:"basic,omitempty"`
-	DockerHub *ContainerRegistryAuthenticationDockerHub `json:"docker_hub,omitempty"`
-	GcpGar *ContainerRegistryAuthenticationGcpGar `json:"gcp_gar,omitempty"`
-	GcpGcr *ContainerRegistryAuthenticationGcpGcr `json:"gcp_gcr,omitempty"`
+	AwsEcr               *ContainerRegistryAuthenticationAwsEcr    `json:"aws_ecr,omitempty"`
+	Basic                *ContainerRegistryAuthenticationBasic     `json:"basic,omitempty"`
+	DockerHub            *ContainerRegistryAuthenticationDockerHub `json:"docker_hub,omitempty"`
+	GcpGar               *ContainerRegistryAuthenticationGcpGar    `json:"gcp_gar,omitempty"`
+	GcpGcr               *ContainerRegistryAuthenticationGcpGcr    `json:"gcp_gcr,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ContainerRegistryAuthentication ContainerRegistryAuthentication
 
 // NewContainerRegistryAuthentication instantiates a new ContainerRegistryAuthentication object
 // This constructor will assign default values to properties that have it defined,
@@ -205,7 +208,7 @@ func (o *ContainerRegistryAuthentication) SetGcpGcr(v ContainerRegistryAuthentic
 }
 
 func (o ContainerRegistryAuthentication) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -229,7 +232,37 @@ func (o ContainerRegistryAuthentication) ToMap() (map[string]interface{}, error)
 	if !IsNil(o.GcpGcr) {
 		toSerialize["gcp_gcr"] = o.GcpGcr
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ContainerRegistryAuthentication) UnmarshalJSON(data []byte) (err error) {
+	varContainerRegistryAuthentication := _ContainerRegistryAuthentication{}
+
+	err = json.Unmarshal(data, &varContainerRegistryAuthentication)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ContainerRegistryAuthentication(varContainerRegistryAuthentication)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "aws_ecr")
+		delete(additionalProperties, "basic")
+		delete(additionalProperties, "docker_hub")
+		delete(additionalProperties, "gcp_gar")
+		delete(additionalProperties, "gcp_gcr")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableContainerRegistryAuthentication struct {
@@ -267,5 +300,3 @@ func (v *NullableContainerRegistryAuthentication) UnmarshalJSON(src []byte) erro
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

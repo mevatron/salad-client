@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -23,7 +22,8 @@ var _ MappedNullable = &WebhookSecretKey{}
 // WebhookSecretKey Represents a webhook secret key
 type WebhookSecretKey struct {
 	// The webhook secret key
-	SecretKey string `json:"secret_key" validate:"regexp=^[+\\/=0-9A-Za-z]{44,172}$"`
+	SecretKey            string `json:"secret_key" validate:"regexp=^[+\\/=0-9A-Za-z]{44,172}$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _WebhookSecretKey WebhookSecretKey
@@ -71,7 +71,7 @@ func (o *WebhookSecretKey) SetSecretKey(v string) {
 }
 
 func (o WebhookSecretKey) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -81,6 +81,11 @@ func (o WebhookSecretKey) MarshalJSON() ([]byte, error) {
 func (o WebhookSecretKey) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["secret_key"] = o.SecretKey
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -97,10 +102,10 @@ func (o *WebhookSecretKey) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -108,15 +113,20 @@ func (o *WebhookSecretKey) UnmarshalJSON(data []byte) (err error) {
 
 	varWebhookSecretKey := _WebhookSecretKey{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varWebhookSecretKey)
+	err = json.Unmarshal(data, &varWebhookSecretKey)
 
 	if err != nil {
 		return err
 	}
 
 	*o = WebhookSecretKey(varWebhookSecretKey)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "secret_key")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -156,5 +166,3 @@ func (v *NullableWebhookSecretKey) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

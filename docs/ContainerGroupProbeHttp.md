@@ -7,13 +7,13 @@ Name | Type | Description | Notes
 **Headers** | [**[]ContainerGroupProbeHttpHeader**](ContainerGroupProbeHttpHeader.md) | A collection of HTTP header name-value pairs used for configuring requests and responses in container group endpoints. Each header consists of a name and its corresponding value. | 
 **Path** | **string** | The HTTP path that will be probed to check container health. | 
 **Port** | **int32** | The TCP port number to which the HTTP request will be sent. | 
-**Scheme** | [**NullableContainerProbeHttpScheme**](ContainerProbeHttpScheme.md) |  | 
+**Scheme** | [**ContainerProbeHttpScheme**](ContainerProbeHttpScheme.md) |  | 
 
 ## Methods
 
 ### NewContainerGroupProbeHttp
 
-`func NewContainerGroupProbeHttp(headers []ContainerGroupProbeHttpHeader, path string, port int32, scheme NullableContainerProbeHttpScheme, ) *ContainerGroupProbeHttp`
+`func NewContainerGroupProbeHttp(headers []ContainerGroupProbeHttpHeader, path string, port int32, scheme ContainerProbeHttpScheme, ) *ContainerGroupProbeHttp`
 
 NewContainerGroupProbeHttp instantiates a new ContainerGroupProbeHttp object
 This constructor will assign default values to properties that have it defined,
@@ -108,16 +108,6 @@ and a boolean to check if the value has been set.
 SetScheme sets Scheme field to given value.
 
 
-### SetSchemeNil
-
-`func (o *ContainerGroupProbeHttp) SetSchemeNil(b bool)`
-
- SetSchemeNil sets the value for Scheme to be an explicit nil
-
-### UnsetScheme
-`func (o *ContainerGroupProbeHttp) UnsetScheme()`
-
-UnsetScheme ensures that no value is present for Scheme, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

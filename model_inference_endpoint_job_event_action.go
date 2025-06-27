@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -21,11 +21,11 @@ type InferenceEndpointJobEventAction string
 
 // List of InferenceEndpointJobEventAction
 const (
-	INFERENCEENDPOINTJOBEVENTACTION_CREATED InferenceEndpointJobEventAction = "created"
-	INFERENCEENDPOINTJOBEVENTACTION_STARTED InferenceEndpointJobEventAction = "started"
+	INFERENCEENDPOINTJOBEVENTACTION_CREATED   InferenceEndpointJobEventAction = "created"
+	INFERENCEENDPOINTJOBEVENTACTION_STARTED   InferenceEndpointJobEventAction = "started"
 	INFERENCEENDPOINTJOBEVENTACTION_SUCCEEDED InferenceEndpointJobEventAction = "succeeded"
 	INFERENCEENDPOINTJOBEVENTACTION_CANCELLED InferenceEndpointJobEventAction = "cancelled"
-	INFERENCEENDPOINTJOBEVENTACTION_FAILED InferenceEndpointJobEventAction = "failed"
+	INFERENCEENDPOINTJOBEVENTACTION_FAILED    InferenceEndpointJobEventAction = "failed"
 )
 
 // All allowed values of InferenceEndpointJobEventAction enum
@@ -115,4 +115,3 @@ func (v *NullableInferenceEndpointJobEventAction) UnmarshalJSON(src []byte) erro
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-

@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -20,13 +20,16 @@ var _ MappedNullable = &ContainerLogging{}
 
 // ContainerLogging Configuration options for directing container logs to a logging provider. This schema enables you to specify a single logging destination for container output, supporting monitoring, debugging, and analytics use cases. Each provider has its own configuration parameters defined in the referenced schemas. Only one logging provider can be selected at a time.
 type ContainerLogging struct {
-	Axiom *ContainerLoggingAxiom `json:"axiom,omitempty"`
-	Datadog *ContainerLoggingDatadog `json:"datadog,omitempty"`
-	Http *ContainerLoggingHttp `json:"http,omitempty"`
-	NewRelic *ContainerLoggingNewRelic `json:"new_relic,omitempty"`
-	Splunk *ContainerLoggingSplunk `json:"splunk,omitempty"`
-	Tcp *ContainerLoggingTcp `json:"tcp,omitempty"`
+	Axiom                *ContainerLoggingAxiom    `json:"axiom,omitempty"`
+	Datadog              *ContainerLoggingDatadog  `json:"datadog,omitempty"`
+	Http                 *ContainerLoggingHttp     `json:"http,omitempty"`
+	NewRelic             *ContainerLoggingNewRelic `json:"new_relic,omitempty"`
+	Splunk               *ContainerLoggingSplunk   `json:"splunk,omitempty"`
+	Tcp                  *ContainerLoggingTcp      `json:"tcp,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ContainerLogging ContainerLogging
 
 // NewContainerLogging instantiates a new ContainerLogging object
 // This constructor will assign default values to properties that have it defined,
@@ -238,7 +241,7 @@ func (o *ContainerLogging) SetTcp(v ContainerLoggingTcp) {
 }
 
 func (o ContainerLogging) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -265,7 +268,38 @@ func (o ContainerLogging) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Tcp) {
 		toSerialize["tcp"] = o.Tcp
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ContainerLogging) UnmarshalJSON(data []byte) (err error) {
+	varContainerLogging := _ContainerLogging{}
+
+	err = json.Unmarshal(data, &varContainerLogging)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ContainerLogging(varContainerLogging)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "axiom")
+		delete(additionalProperties, "datadog")
+		delete(additionalProperties, "http")
+		delete(additionalProperties, "new_relic")
+		delete(additionalProperties, "splunk")
+		delete(additionalProperties, "tcp")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableContainerLogging struct {
@@ -303,5 +337,3 @@ func (v *NullableContainerLogging) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

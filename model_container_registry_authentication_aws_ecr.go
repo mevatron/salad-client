@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -25,7 +24,8 @@ type ContainerRegistryAuthenticationAwsEcr struct {
 	// AWS access key ID used for ECR authentication
 	AccessKeyId string `json:"access_key_id" validate:"regexp=^.*$"`
 	// AWS secret access key used for ECR authentication
-	SecretAccessKey string `json:"secret_access_key" validate:"regexp=^.*$"`
+	SecretAccessKey      string `json:"secret_access_key" validate:"regexp=^.*$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ContainerRegistryAuthenticationAwsEcr ContainerRegistryAuthenticationAwsEcr
@@ -98,7 +98,7 @@ func (o *ContainerRegistryAuthenticationAwsEcr) SetSecretAccessKey(v string) {
 }
 
 func (o ContainerRegistryAuthenticationAwsEcr) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -109,6 +109,11 @@ func (o ContainerRegistryAuthenticationAwsEcr) ToMap() (map[string]interface{}, 
 	toSerialize := map[string]interface{}{}
 	toSerialize["access_key_id"] = o.AccessKeyId
 	toSerialize["secret_access_key"] = o.SecretAccessKey
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -126,10 +131,10 @@ func (o *ContainerRegistryAuthenticationAwsEcr) UnmarshalJSON(data []byte) (err 
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -137,15 +142,21 @@ func (o *ContainerRegistryAuthenticationAwsEcr) UnmarshalJSON(data []byte) (err 
 
 	varContainerRegistryAuthenticationAwsEcr := _ContainerRegistryAuthenticationAwsEcr{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varContainerRegistryAuthenticationAwsEcr)
+	err = json.Unmarshal(data, &varContainerRegistryAuthenticationAwsEcr)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ContainerRegistryAuthenticationAwsEcr(varContainerRegistryAuthenticationAwsEcr)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "access_key_id")
+		delete(additionalProperties, "secret_access_key")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -185,5 +196,3 @@ func (v *NullableContainerRegistryAuthenticationAwsEcr) UnmarshalJSON(src []byte
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

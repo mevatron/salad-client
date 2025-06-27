@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -22,9 +21,10 @@ var _ MappedNullable = &GpuClassPrice{}
 
 // GpuClassPrice Represents the price of a GPU class for a given container group priority
 type GpuClassPrice struct {
-	Priority NullableContainerGroupPriority `json:"priority"`
+	Priority ContainerGroupPriority `json:"priority"`
 	// The price
-	Price string `json:"price" validate:"regexp=^.*$"`
+	Price                string `json:"price" validate:"regexp=^.*$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GpuClassPrice GpuClassPrice
@@ -33,7 +33,7 @@ type _GpuClassPrice GpuClassPrice
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewGpuClassPrice(priority NullableContainerGroupPriority, price string) *GpuClassPrice {
+func NewGpuClassPrice(priority ContainerGroupPriority, price string) *GpuClassPrice {
 	this := GpuClassPrice{}
 	this.Priority = priority
 	this.Price = price
@@ -49,29 +49,27 @@ func NewGpuClassPriceWithDefaults() *GpuClassPrice {
 }
 
 // GetPriority returns the Priority field value
-// If the value is explicit nil, the zero value for ContainerGroupPriority will be returned
 func (o *GpuClassPrice) GetPriority() ContainerGroupPriority {
-	if o == nil || o.Priority.Get() == nil {
+	if o == nil {
 		var ret ContainerGroupPriority
 		return ret
 	}
 
-	return *o.Priority.Get()
+	return o.Priority
 }
 
 // GetPriorityOk returns a tuple with the Priority field value
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *GpuClassPrice) GetPriorityOk() (*ContainerGroupPriority, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return o.Priority.Get(), o.Priority.IsSet()
+	return &o.Priority, true
 }
 
 // SetPriority sets field value
 func (o *GpuClassPrice) SetPriority(v ContainerGroupPriority) {
-	o.Priority.Set(&v)
+	o.Priority = v
 }
 
 // GetPrice returns the Price field value
@@ -99,7 +97,7 @@ func (o *GpuClassPrice) SetPrice(v string) {
 }
 
 func (o GpuClassPrice) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -108,8 +106,13 @@ func (o GpuClassPrice) MarshalJSON() ([]byte, error) {
 
 func (o GpuClassPrice) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["priority"] = o.Priority.Get()
+	toSerialize["priority"] = o.Priority
 	toSerialize["price"] = o.Price
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -127,10 +130,10 @@ func (o *GpuClassPrice) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -138,15 +141,21 @@ func (o *GpuClassPrice) UnmarshalJSON(data []byte) (err error) {
 
 	varGpuClassPrice := _GpuClassPrice{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGpuClassPrice)
+	err = json.Unmarshal(data, &varGpuClassPrice)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GpuClassPrice(varGpuClassPrice)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "priority")
+		delete(additionalProperties, "price")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -186,5 +195,3 @@ func (v *NullableGpuClassPrice) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

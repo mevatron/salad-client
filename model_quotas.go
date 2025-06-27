@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,9 +13,8 @@ package saladclient
 
 import (
 	"encoding/json"
-	"time"
-	"bytes"
 	"fmt"
+	"time"
 )
 
 // checks if the Quotas type satisfies the MappedNullable interface at compile time
@@ -27,7 +26,8 @@ type Quotas struct {
 	// The time the resource was created
 	CreateTime *time.Time `json:"create_time,omitempty"`
 	// The time the resource was last updated
-	UpdateTime *time.Time `json:"update_time,omitempty"`
+	UpdateTime           *time.Time `json:"update_time,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Quotas Quotas
@@ -139,7 +139,7 @@ func (o *Quotas) SetUpdateTime(v time.Time) {
 }
 
 func (o Quotas) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -155,6 +155,11 @@ func (o Quotas) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.UpdateTime) {
 		toSerialize["update_time"] = o.UpdateTime
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -171,10 +176,10 @@ func (o *Quotas) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -182,15 +187,22 @@ func (o *Quotas) UnmarshalJSON(data []byte) (err error) {
 
 	varQuotas := _Quotas{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varQuotas)
+	err = json.Unmarshal(data, &varQuotas)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Quotas(varQuotas)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "container_groups_quotas")
+		delete(additionalProperties, "create_time")
+		delete(additionalProperties, "update_time")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -230,5 +242,3 @@ func (v *NullableQuotas) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

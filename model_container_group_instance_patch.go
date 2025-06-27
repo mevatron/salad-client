@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -21,7 +21,7 @@ var _ MappedNullable = &ContainerGroupInstancePatch{}
 // ContainerGroupInstancePatch Represents a request to update a container group instance
 type ContainerGroupInstancePatch struct {
 	// The cost of deleting the container group instance
-	DeletionCost NullableInt32 `json:"deletion_cost,omitempty"`
+	DeletionCost *int32 `json:"deletion_cost,omitempty"`
 }
 
 // NewContainerGroupInstancePatch instantiates a new ContainerGroupInstancePatch object
@@ -41,50 +41,40 @@ func NewContainerGroupInstancePatchWithDefaults() *ContainerGroupInstancePatch {
 	return &this
 }
 
-// GetDeletionCost returns the DeletionCost field value if set, zero value otherwise (both if not set or set to explicit null).
+// GetDeletionCost returns the DeletionCost field value if set, zero value otherwise.
 func (o *ContainerGroupInstancePatch) GetDeletionCost() int32 {
-	if o == nil || IsNil(o.DeletionCost.Get()) {
+	if o == nil || IsNil(o.DeletionCost) {
 		var ret int32
 		return ret
 	}
-	return *o.DeletionCost.Get()
+	return *o.DeletionCost
 }
 
 // GetDeletionCostOk returns a tuple with the DeletionCost field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ContainerGroupInstancePatch) GetDeletionCostOk() (*int32, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.DeletionCost) {
 		return nil, false
 	}
-	return o.DeletionCost.Get(), o.DeletionCost.IsSet()
+	return o.DeletionCost, true
 }
 
 // HasDeletionCost returns a boolean if a field has been set.
 func (o *ContainerGroupInstancePatch) HasDeletionCost() bool {
-	if o != nil && o.DeletionCost.IsSet() {
+	if o != nil && !IsNil(o.DeletionCost) {
 		return true
 	}
 
 	return false
 }
 
-// SetDeletionCost gets a reference to the given NullableInt32 and assigns it to the DeletionCost field.
+// SetDeletionCost gets a reference to the given int32 and assigns it to the DeletionCost field.
 func (o *ContainerGroupInstancePatch) SetDeletionCost(v int32) {
-	o.DeletionCost.Set(&v)
-}
-// SetDeletionCostNil sets the value for DeletionCost to be an explicit nil
-func (o *ContainerGroupInstancePatch) SetDeletionCostNil() {
-	o.DeletionCost.Set(nil)
-}
-
-// UnsetDeletionCost ensures that no value is present for DeletionCost, not even an explicit nil
-func (o *ContainerGroupInstancePatch) UnsetDeletionCost() {
-	o.DeletionCost.Unset()
+	o.DeletionCost = &v
 }
 
 func (o ContainerGroupInstancePatch) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -93,8 +83,8 @@ func (o ContainerGroupInstancePatch) MarshalJSON() ([]byte, error) {
 
 func (o ContainerGroupInstancePatch) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if o.DeletionCost.IsSet() {
-		toSerialize["deletion_cost"] = o.DeletionCost.Get()
+	if !IsNil(o.DeletionCost) {
+		toSerialize["deletion_cost"] = o.DeletionCost
 	}
 	return toSerialize, nil
 }
@@ -134,5 +124,3 @@ func (v *NullableContainerGroupInstancePatch) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

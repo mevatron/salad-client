@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,9 +13,8 @@ package saladclient
 
 import (
 	"encoding/json"
-	"time"
-	"bytes"
 	"fmt"
+	"time"
 )
 
 // checks if the ContainerGroupState type satisfies the MappedNullable interface at compile time
@@ -24,13 +23,14 @@ var _ MappedNullable = &ContainerGroupState{}
 // ContainerGroupState Represents the operational state of a container group during its lifecycle, including timing information, status, and instance distribution metrics. This state captures the current execution status, start and finish times, and provides visibility into the operational health across instances.
 type ContainerGroupState struct {
 	// Optional textual description or notes about the current state of the container group
-	Description NullableString `json:"description,omitempty" validate:"regexp=^.*$"`
+	Description *string `json:"description,omitempty" validate:"regexp=^.*$"`
 	// Timestamp when the container group execution finished or is expected to finish
-	FinishTime time.Time `json:"finish_time"`
+	FinishTime           time.Time                         `json:"finish_time"`
 	InstanceStatusCounts ContainerGroupInstanceStatusCount `json:"instance_status_counts"`
 	// Timestamp when the container group execution started
-	StartTime time.Time `json:"start_time"`
-	Status ContainerGroupStatus `json:"status"`
+	StartTime            time.Time            `json:"start_time"`
+	Status               ContainerGroupStatus `json:"status"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ContainerGroupState ContainerGroupState
@@ -56,46 +56,36 @@ func NewContainerGroupStateWithDefaults() *ContainerGroupState {
 	return &this
 }
 
-// GetDescription returns the Description field value if set, zero value otherwise (both if not set or set to explicit null).
+// GetDescription returns the Description field value if set, zero value otherwise.
 func (o *ContainerGroupState) GetDescription() string {
-	if o == nil || IsNil(o.Description.Get()) {
+	if o == nil || IsNil(o.Description) {
 		var ret string
 		return ret
 	}
-	return *o.Description.Get()
+	return *o.Description
 }
 
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ContainerGroupState) GetDescriptionOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Description) {
 		return nil, false
 	}
-	return o.Description.Get(), o.Description.IsSet()
+	return o.Description, true
 }
 
 // HasDescription returns a boolean if a field has been set.
 func (o *ContainerGroupState) HasDescription() bool {
-	if o != nil && o.Description.IsSet() {
+	if o != nil && !IsNil(o.Description) {
 		return true
 	}
 
 	return false
 }
 
-// SetDescription gets a reference to the given NullableString and assigns it to the Description field.
+// SetDescription gets a reference to the given string and assigns it to the Description field.
 func (o *ContainerGroupState) SetDescription(v string) {
-	o.Description.Set(&v)
-}
-// SetDescriptionNil sets the value for Description to be an explicit nil
-func (o *ContainerGroupState) SetDescriptionNil() {
-	o.Description.Set(nil)
-}
-
-// UnsetDescription ensures that no value is present for Description, not even an explicit nil
-func (o *ContainerGroupState) UnsetDescription() {
-	o.Description.Unset()
+	o.Description = &v
 }
 
 // GetFinishTime returns the FinishTime field value
@@ -195,7 +185,7 @@ func (o *ContainerGroupState) SetStatus(v ContainerGroupStatus) {
 }
 
 func (o ContainerGroupState) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -204,13 +194,18 @@ func (o ContainerGroupState) MarshalJSON() ([]byte, error) {
 
 func (o ContainerGroupState) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Description.IsSet() {
-		toSerialize["description"] = o.Description.Get()
+	if !IsNil(o.Description) {
+		toSerialize["description"] = o.Description
 	}
 	toSerialize["finish_time"] = o.FinishTime
 	toSerialize["instance_status_counts"] = o.InstanceStatusCounts
 	toSerialize["start_time"] = o.StartTime
 	toSerialize["status"] = o.Status
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -230,10 +225,10 @@ func (o *ContainerGroupState) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -241,15 +236,24 @@ func (o *ContainerGroupState) UnmarshalJSON(data []byte) (err error) {
 
 	varContainerGroupState := _ContainerGroupState{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varContainerGroupState)
+	err = json.Unmarshal(data, &varContainerGroupState)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ContainerGroupState(varContainerGroupState)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "finish_time")
+		delete(additionalProperties, "instance_status_counts")
+		delete(additionalProperties, "start_time")
+		delete(additionalProperties, "status")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -289,5 +293,3 @@ func (v *NullableContainerGroupState) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -25,7 +24,8 @@ type ContainerGroupProbeGrpc struct {
 	// The port number on which the gRPC health check service is exposed.
 	Port int32 `json:"port"`
 	// The name of the gRPC service that implements the health check protocol.
-	Service string `json:"service" validate:"regexp=^.*$"`
+	Service              string `json:"service" validate:"regexp=^.*$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ContainerGroupProbeGrpc ContainerGroupProbeGrpc
@@ -98,7 +98,7 @@ func (o *ContainerGroupProbeGrpc) SetService(v string) {
 }
 
 func (o ContainerGroupProbeGrpc) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -109,6 +109,11 @@ func (o ContainerGroupProbeGrpc) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["port"] = o.Port
 	toSerialize["service"] = o.Service
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -126,10 +131,10 @@ func (o *ContainerGroupProbeGrpc) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -137,15 +142,21 @@ func (o *ContainerGroupProbeGrpc) UnmarshalJSON(data []byte) (err error) {
 
 	varContainerGroupProbeGrpc := _ContainerGroupProbeGrpc{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varContainerGroupProbeGrpc)
+	err = json.Unmarshal(data, &varContainerGroupProbeGrpc)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ContainerGroupProbeGrpc(varContainerGroupProbeGrpc)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "port")
+		delete(additionalProperties, "service")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -185,5 +196,3 @@ func (v *NullableContainerGroupProbeGrpc) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

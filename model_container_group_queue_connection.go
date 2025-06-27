@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -27,7 +26,8 @@ type ContainerGroupQueueConnection struct {
 	// The network port number used to connect to the queue service. Must be a valid TCP/IP port between 1 and 65535.
 	Port int32 `json:"port"`
 	// Unique identifier for the queue. Must start with a lowercase letter, can contain lowercase letters, numbers, and hyphens, and must end with a letter or number.
-	QueueName string `json:"queue_name" validate:"regexp=^[a-z][a-z0-9-]{0,61}[a-z0-9]$"`
+	QueueName            string `json:"queue_name" validate:"regexp=^[a-z][a-z0-9-]{0,61}[a-z0-9]$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ContainerGroupQueueConnection ContainerGroupQueueConnection
@@ -125,7 +125,7 @@ func (o *ContainerGroupQueueConnection) SetQueueName(v string) {
 }
 
 func (o ContainerGroupQueueConnection) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -137,6 +137,11 @@ func (o ContainerGroupQueueConnection) ToMap() (map[string]interface{}, error) {
 	toSerialize["path"] = o.Path
 	toSerialize["port"] = o.Port
 	toSerialize["queue_name"] = o.QueueName
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -155,10 +160,10 @@ func (o *ContainerGroupQueueConnection) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -166,15 +171,22 @@ func (o *ContainerGroupQueueConnection) UnmarshalJSON(data []byte) (err error) {
 
 	varContainerGroupQueueConnection := _ContainerGroupQueueConnection{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varContainerGroupQueueConnection)
+	err = json.Unmarshal(data, &varContainerGroupQueueConnection)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ContainerGroupQueueConnection(varContainerGroupQueueConnection)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "path")
+		delete(additionalProperties, "port")
+		delete(additionalProperties, "queue_name")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -214,5 +226,3 @@ func (v *NullableContainerGroupQueueConnection) UnmarshalJSON(src []byte) error 
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

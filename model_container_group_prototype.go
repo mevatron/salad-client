@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -23,23 +22,24 @@ var _ MappedNullable = &ContainerGroupPrototype{}
 // ContainerGroupPrototype Represents a request to create a container group, which manages a collection of container instances with shared configuration and scaling policies
 type ContainerGroupPrototype struct {
 	// Determines whether the container group should start automatically when created (true) or remain stopped until manually started (false)
-	AutostartPolicy bool `json:"autostart_policy"`
-	Container CreateContainer `json:"container"`
+	AutostartPolicy bool            `json:"autostart_policy"`
+	Container       CreateContainer `json:"container"`
 	// List of countries nodes must be located in. Remove this field to permit nodes from any country.
 	CountryCodes []CountryCode `json:"country_codes,omitempty"`
 	// Human-readable name for the container group that can include spaces and special characters, used for display purposes
-	DisplayName *string `json:"display_name,omitempty" validate:"regexp=^[ ,-.0-9A-Za-z]+$"`
+	DisplayName   *string                      `json:"display_name,omitempty" validate:"regexp=^[ ,-.0-9A-Za-z]+$"`
 	LivenessProbe *ContainerGroupLivenessProbe `json:"liveness_probe,omitempty"`
 	// Unique identifier for the container group that must follow DNS naming conventions (lowercase alphanumeric with hyphens)
-	Name string `json:"name" validate:"regexp=^[a-z][a-z0-9-]{0,61}[a-z0-9]$"`
-	Networking *CreateContainerGroupNetworking `json:"networking,omitempty"`
-	QueueAutoscaler *ContainerGroupQueueAutoscaler `json:"queue_autoscaler,omitempty"`
-	QueueConnection *ContainerGroupQueueConnection `json:"queue_connection,omitempty"`
-	ReadinessProbe *ContainerGroupReadinessProbe `json:"readiness_probe,omitempty"`
+	Name            string                          `json:"name" validate:"regexp=^[a-z][a-z0-9-]{0,61}[a-z0-9]$"`
+	Networking      *CreateContainerGroupNetworking `json:"networking,omitempty"`
+	QueueAutoscaler *ContainerGroupQueueAutoscaler  `json:"queue_autoscaler,omitempty"`
+	QueueConnection *ContainerGroupQueueConnection  `json:"queue_connection,omitempty"`
+	ReadinessProbe  *ContainerGroupReadinessProbe   `json:"readiness_probe,omitempty"`
 	// Number of container instances to deploy and maintain for this container group
-	Replicas int32 `json:"replicas"`
-	RestartPolicy ContainerRestartPolicy `json:"restart_policy"`
-	StartupProbe *ContainerGroupStartupProbe `json:"startup_probe,omitempty"`
+	Replicas             int32                       `json:"replicas"`
+	RestartPolicy        ContainerRestartPolicy      `json:"restart_policy"`
+	StartupProbe         *ContainerGroupStartupProbe `json:"startup_probe,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ContainerGroupPrototype ContainerGroupPrototype
@@ -443,7 +443,7 @@ func (o *ContainerGroupPrototype) SetStartupProbe(v ContainerGroupStartupProbe) 
 }
 
 func (o ContainerGroupPrototype) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -481,6 +481,11 @@ func (o ContainerGroupPrototype) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.StartupProbe) {
 		toSerialize["startup_probe"] = o.StartupProbe
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -501,10 +506,10 @@ func (o *ContainerGroupPrototype) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -512,15 +517,32 @@ func (o *ContainerGroupPrototype) UnmarshalJSON(data []byte) (err error) {
 
 	varContainerGroupPrototype := _ContainerGroupPrototype{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varContainerGroupPrototype)
+	err = json.Unmarshal(data, &varContainerGroupPrototype)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ContainerGroupPrototype(varContainerGroupPrototype)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "autostart_policy")
+		delete(additionalProperties, "container")
+		delete(additionalProperties, "country_codes")
+		delete(additionalProperties, "display_name")
+		delete(additionalProperties, "liveness_probe")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "networking")
+		delete(additionalProperties, "queue_autoscaler")
+		delete(additionalProperties, "queue_connection")
+		delete(additionalProperties, "readiness_probe")
+		delete(additionalProperties, "replicas")
+		delete(additionalProperties, "restart_policy")
+		delete(additionalProperties, "startup_probe")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -560,5 +582,3 @@ func (v *NullableContainerGroupPrototype) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -33,7 +32,8 @@ type ContainerGroupQueueAutoscaler struct {
 	// The minimum number of instances the container can scale down to, ensuring baseline availability
 	MinReplicas int32 `json:"min_replicas"`
 	// The period (in seconds) in which the autoscaler checks the queue length and applies the scaling formula
-	PollingPeriod *int32 `json:"polling_period,omitempty"`
+	PollingPeriod        *int32 `json:"polling_period,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ContainerGroupQueueAutoscaler ContainerGroupQueueAutoscaler
@@ -227,7 +227,7 @@ func (o *ContainerGroupQueueAutoscaler) SetPollingPeriod(v int32) {
 }
 
 func (o ContainerGroupQueueAutoscaler) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -248,6 +248,11 @@ func (o ContainerGroupQueueAutoscaler) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.PollingPeriod) {
 		toSerialize["polling_period"] = o.PollingPeriod
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -266,10 +271,10 @@ func (o *ContainerGroupQueueAutoscaler) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -277,15 +282,25 @@ func (o *ContainerGroupQueueAutoscaler) UnmarshalJSON(data []byte) (err error) {
 
 	varContainerGroupQueueAutoscaler := _ContainerGroupQueueAutoscaler{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varContainerGroupQueueAutoscaler)
+	err = json.Unmarshal(data, &varContainerGroupQueueAutoscaler)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ContainerGroupQueueAutoscaler(varContainerGroupQueueAutoscaler)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "desired_queue_length")
+		delete(additionalProperties, "max_replicas")
+		delete(additionalProperties, "max_downscale_per_minute")
+		delete(additionalProperties, "max_upscale_per_minute")
+		delete(additionalProperties, "min_replicas")
+		delete(additionalProperties, "polling_period")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -325,5 +340,3 @@ func (v *NullableContainerGroupQueueAutoscaler) UnmarshalJSON(src []byte) error 
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

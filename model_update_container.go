@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -25,14 +25,17 @@ type UpdateContainer struct {
 	// Environment variables to set in the container.
 	EnvironmentVariables map[string]string `json:"environment_variables,omitempty"`
 	// The container image to use.
-	Image NullableString `json:"image,omitempty" validate:"regexp=^.*$"`
+	Image *string `json:"image,omitempty" validate:"regexp=^.*$"`
 	// The container image caching.
-	ImageCaching *bool `json:"image_caching,omitempty"`
-	Logging *UpdateContainerLogging `json:"logging,omitempty"`
-	Priority NullableContainerGroupPriority `json:"priority,omitempty"`
+	ImageCaching           *bool                            `json:"image_caching,omitempty"`
+	Logging                *UpdateContainerLogging          `json:"logging,omitempty"`
+	Priority               *ContainerGroupPriority          `json:"priority,omitempty"`
 	RegistryAuthentication *ContainerRegistryAuthentication `json:"registry_authentication,omitempty"`
-	Resources *UpdateContainerResources `json:"resources,omitempty"`
+	Resources              *UpdateContainerResources        `json:"resources,omitempty"`
+	AdditionalProperties   map[string]interface{}
 }
+
+type _UpdateContainer UpdateContainer
 
 // NewUpdateContainer instantiates a new UpdateContainer object
 // This constructor will assign default values to properties that have it defined,
@@ -51,9 +54,9 @@ func NewUpdateContainerWithDefaults() *UpdateContainer {
 	return &this
 }
 
-// GetCommand returns the Command field value if set, zero value otherwise (both if not set or set to explicit null).
+// GetCommand returns the Command field value if set, zero value otherwise.
 func (o *UpdateContainer) GetCommand() []string {
-	if o == nil {
+	if o == nil || IsNil(o.Command) {
 		var ret []string
 		return ret
 	}
@@ -62,7 +65,6 @@ func (o *UpdateContainer) GetCommand() []string {
 
 // GetCommandOk returns a tuple with the Command field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *UpdateContainer) GetCommandOk() ([]string, bool) {
 	if o == nil || IsNil(o.Command) {
 		return nil, false
@@ -84,9 +86,9 @@ func (o *UpdateContainer) SetCommand(v []string) {
 	o.Command = v
 }
 
-// GetEnvironmentVariables returns the EnvironmentVariables field value if set, zero value otherwise.
+// GetEnvironmentVariables returns the EnvironmentVariables field value if set, zero value otherwise (both if not set or set to explicit null).
 func (o *UpdateContainer) GetEnvironmentVariables() map[string]string {
-	if o == nil || IsNil(o.EnvironmentVariables) {
+	if o == nil {
 		var ret map[string]string
 		return ret
 	}
@@ -95,11 +97,12 @@ func (o *UpdateContainer) GetEnvironmentVariables() map[string]string {
 
 // GetEnvironmentVariablesOk returns a tuple with the EnvironmentVariables field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *UpdateContainer) GetEnvironmentVariablesOk() (map[string]string, bool) {
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *UpdateContainer) GetEnvironmentVariablesOk() (*map[string]string, bool) {
 	if o == nil || IsNil(o.EnvironmentVariables) {
-		return map[string]string{}, false
+		return nil, false
 	}
-	return o.EnvironmentVariables, true
+	return &o.EnvironmentVariables, true
 }
 
 // HasEnvironmentVariables returns a boolean if a field has been set.
@@ -116,46 +119,36 @@ func (o *UpdateContainer) SetEnvironmentVariables(v map[string]string) {
 	o.EnvironmentVariables = v
 }
 
-// GetImage returns the Image field value if set, zero value otherwise (both if not set or set to explicit null).
+// GetImage returns the Image field value if set, zero value otherwise.
 func (o *UpdateContainer) GetImage() string {
-	if o == nil || IsNil(o.Image.Get()) {
+	if o == nil || IsNil(o.Image) {
 		var ret string
 		return ret
 	}
-	return *o.Image.Get()
+	return *o.Image
 }
 
 // GetImageOk returns a tuple with the Image field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *UpdateContainer) GetImageOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Image) {
 		return nil, false
 	}
-	return o.Image.Get(), o.Image.IsSet()
+	return o.Image, true
 }
 
 // HasImage returns a boolean if a field has been set.
 func (o *UpdateContainer) HasImage() bool {
-	if o != nil && o.Image.IsSet() {
+	if o != nil && !IsNil(o.Image) {
 		return true
 	}
 
 	return false
 }
 
-// SetImage gets a reference to the given NullableString and assigns it to the Image field.
+// SetImage gets a reference to the given string and assigns it to the Image field.
 func (o *UpdateContainer) SetImage(v string) {
-	o.Image.Set(&v)
-}
-// SetImageNil sets the value for Image to be an explicit nil
-func (o *UpdateContainer) SetImageNil() {
-	o.Image.Set(nil)
-}
-
-// UnsetImage ensures that no value is present for Image, not even an explicit nil
-func (o *UpdateContainer) UnsetImage() {
-	o.Image.Unset()
+	o.Image = &v
 }
 
 // GetImageCaching returns the ImageCaching field value if set, zero value otherwise.
@@ -222,46 +215,36 @@ func (o *UpdateContainer) SetLogging(v UpdateContainerLogging) {
 	o.Logging = &v
 }
 
-// GetPriority returns the Priority field value if set, zero value otherwise (both if not set or set to explicit null).
+// GetPriority returns the Priority field value if set, zero value otherwise.
 func (o *UpdateContainer) GetPriority() ContainerGroupPriority {
-	if o == nil || IsNil(o.Priority.Get()) {
+	if o == nil || IsNil(o.Priority) {
 		var ret ContainerGroupPriority
 		return ret
 	}
-	return *o.Priority.Get()
+	return *o.Priority
 }
 
 // GetPriorityOk returns a tuple with the Priority field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *UpdateContainer) GetPriorityOk() (*ContainerGroupPriority, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Priority) {
 		return nil, false
 	}
-	return o.Priority.Get(), o.Priority.IsSet()
+	return o.Priority, true
 }
 
 // HasPriority returns a boolean if a field has been set.
 func (o *UpdateContainer) HasPriority() bool {
-	if o != nil && o.Priority.IsSet() {
+	if o != nil && !IsNil(o.Priority) {
 		return true
 	}
 
 	return false
 }
 
-// SetPriority gets a reference to the given NullableContainerGroupPriority and assigns it to the Priority field.
+// SetPriority gets a reference to the given ContainerGroupPriority and assigns it to the Priority field.
 func (o *UpdateContainer) SetPriority(v ContainerGroupPriority) {
-	o.Priority.Set(&v)
-}
-// SetPriorityNil sets the value for Priority to be an explicit nil
-func (o *UpdateContainer) SetPriorityNil() {
-	o.Priority.Set(nil)
-}
-
-// UnsetPriority ensures that no value is present for Priority, not even an explicit nil
-func (o *UpdateContainer) UnsetPriority() {
-	o.Priority.Unset()
+	o.Priority = &v
 }
 
 // GetRegistryAuthentication returns the RegistryAuthentication field value if set, zero value otherwise.
@@ -329,7 +312,7 @@ func (o *UpdateContainer) SetResources(v UpdateContainerResources) {
 }
 
 func (o UpdateContainer) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -338,14 +321,14 @@ func (o UpdateContainer) MarshalJSON() ([]byte, error) {
 
 func (o UpdateContainer) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Command != nil {
+	if !IsNil(o.Command) {
 		toSerialize["command"] = o.Command
 	}
-	if !IsNil(o.EnvironmentVariables) {
+	if o.EnvironmentVariables != nil {
 		toSerialize["environment_variables"] = o.EnvironmentVariables
 	}
-	if o.Image.IsSet() {
-		toSerialize["image"] = o.Image.Get()
+	if !IsNil(o.Image) {
+		toSerialize["image"] = o.Image
 	}
 	if !IsNil(o.ImageCaching) {
 		toSerialize["image_caching"] = o.ImageCaching
@@ -353,8 +336,8 @@ func (o UpdateContainer) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Logging) {
 		toSerialize["logging"] = o.Logging
 	}
-	if o.Priority.IsSet() {
-		toSerialize["priority"] = o.Priority.Get()
+	if !IsNil(o.Priority) {
+		toSerialize["priority"] = o.Priority
 	}
 	if !IsNil(o.RegistryAuthentication) {
 		toSerialize["registry_authentication"] = o.RegistryAuthentication
@@ -362,7 +345,40 @@ func (o UpdateContainer) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Resources) {
 		toSerialize["resources"] = o.Resources
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *UpdateContainer) UnmarshalJSON(data []byte) (err error) {
+	varUpdateContainer := _UpdateContainer{}
+
+	err = json.Unmarshal(data, &varUpdateContainer)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateContainer(varUpdateContainer)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "command")
+		delete(additionalProperties, "environment_variables")
+		delete(additionalProperties, "image")
+		delete(additionalProperties, "image_caching")
+		delete(additionalProperties, "logging")
+		delete(additionalProperties, "priority")
+		delete(additionalProperties, "registry_authentication")
+		delete(additionalProperties, "resources")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableUpdateContainer struct {
@@ -400,5 +416,3 @@ func (v *NullableUpdateContainer) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

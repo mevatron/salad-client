@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -28,8 +27,9 @@ type ContainerResourceRequirements struct {
 	Memory int32 `json:"memory"`
 	// A list of GPU class UUIDs required by the container. Can be null if no GPU is required.
 	GpuClasses []string `json:"gpu_classes"`
-	// The amount of storage (in bytes) required by the container. Must be between 1 GB (1073741824 bytes) and 50 GB (53687091200 bytes).
-	StorageAmount *int64 `json:"storage_amount,omitempty"`
+	// The amount of storage (in bytes) required by the container. Must be between 1 GB (1073741824 bytes) and 250 GB (268435456000 bytes).
+	StorageAmount        *int64 `json:"storage_amount,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ContainerResourceRequirements ContainerResourceRequirements
@@ -103,7 +103,6 @@ func (o *ContainerResourceRequirements) SetMemory(v int32) {
 }
 
 // GetGpuClasses returns the GpuClasses field value
-// If the value is explicit nil, the zero value for []string will be returned
 func (o *ContainerResourceRequirements) GetGpuClasses() []string {
 	if o == nil {
 		var ret []string
@@ -115,9 +114,8 @@ func (o *ContainerResourceRequirements) GetGpuClasses() []string {
 
 // GetGpuClassesOk returns a tuple with the GpuClasses field value
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ContainerResourceRequirements) GetGpuClassesOk() ([]string, bool) {
-	if o == nil || IsNil(o.GpuClasses) {
+	if o == nil {
 		return nil, false
 	}
 	return o.GpuClasses, true
@@ -161,7 +159,7 @@ func (o *ContainerResourceRequirements) SetStorageAmount(v int64) {
 }
 
 func (o ContainerResourceRequirements) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -172,12 +170,15 @@ func (o ContainerResourceRequirements) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["cpu"] = o.Cpu
 	toSerialize["memory"] = o.Memory
-	if o.GpuClasses != nil {
-		toSerialize["gpu_classes"] = o.GpuClasses
-	}
+	toSerialize["gpu_classes"] = o.GpuClasses
 	if !IsNil(o.StorageAmount) {
 		toSerialize["storage_amount"] = o.StorageAmount
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -196,10 +197,10 @@ func (o *ContainerResourceRequirements) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -207,15 +208,23 @@ func (o *ContainerResourceRequirements) UnmarshalJSON(data []byte) (err error) {
 
 	varContainerResourceRequirements := _ContainerResourceRequirements{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varContainerResourceRequirements)
+	err = json.Unmarshal(data, &varContainerResourceRequirements)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ContainerResourceRequirements(varContainerResourceRequirements)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "cpu")
+		delete(additionalProperties, "memory")
+		delete(additionalProperties, "gpu_classes")
+		delete(additionalProperties, "storage_amount")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -255,5 +264,3 @@ func (v *NullableContainerResourceRequirements) UnmarshalJSON(src []byte) error 
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

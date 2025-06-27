@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Description** | Pointer to **NullableString** | Optional textual description or notes about the current state of the container group | [optional] 
+**Description** | Pointer to **string** | Optional textual description or notes about the current state of the container group | [optional] 
 **FinishTime** | **time.Time** | Timestamp when the container group execution finished or is expected to finish | 
 **InstanceStatusCounts** | [**ContainerGroupInstanceStatusCount**](ContainerGroupInstanceStatusCount.md) |  | 
 **StartTime** | **time.Time** | Timestamp when the container group execution started | 
@@ -54,16 +54,6 @@ SetDescription sets Description field to given value.
 
 HasDescription returns a boolean if a field has been set.
 
-### SetDescriptionNil
-
-`func (o *ContainerGroupState) SetDescriptionNil(b bool)`
-
- SetDescriptionNil sets the value for Description to be an explicit nil
-
-### UnsetDescription
-`func (o *ContainerGroupState) UnsetDescription()`
-
-UnsetDescription ensures that no value is present for Description, not even an explicit nil
 ### GetFinishTime
 
 `func (o *ContainerGroupState) GetFinishTime() time.Time`

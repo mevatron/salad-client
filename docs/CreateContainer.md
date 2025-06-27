@@ -5,19 +5,19 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Command** | Pointer to **[]string** | Pass a command (and optional arguments) to override the ENTRYPOINT and CMD of a container image. Each element in the array represents a command segment or argument. | [optional] 
-**EnvironmentVariables** | Pointer to **map[string]string** | Key-value pairs of environment variables to set within the container. These variables will be available to processes running inside the container. | [optional] 
+**EnvironmentVariables** | Pointer to  | Key-value pairs of environment variables to set within the container. These variables will be available to processes running inside the container. | [optional] 
 **Image** | **string** | The container image. | 
 **ImageCaching** | Pointer to **bool** | The container image caching. | [optional] 
 **Logging** | Pointer to [**CreateContainerLogging**](CreateContainerLogging.md) |  | [optional] 
-**Priority** | Pointer to [**NullableContainerGroupPriority**](ContainerGroupPriority.md) |  | [optional] 
+**Priority** | Pointer to [**ContainerGroupPriority**](ContainerGroupPriority.md) |  | [optional] 
 **RegistryAuthentication** | Pointer to [**ContainerRegistryAuthentication**](ContainerRegistryAuthentication.md) |  | [optional] 
-**Resources** | [**ContainerResourceRequirements**](ContainerResourceRequirements.md) |  | 
+**Resources** | [**CreateContainerResourceRequirements**](CreateContainerResourceRequirements.md) |  | 
 
 ## Methods
 
 ### NewCreateContainer
 
-`func NewCreateContainer(image string, resources ContainerResourceRequirements, ) *CreateContainer`
+`func NewCreateContainer(image string, resources CreateContainerResourceRequirements, ) *CreateContainer`
 
 NewCreateContainer instantiates a new CreateContainer object
 This constructor will assign default values to properties that have it defined,
@@ -57,16 +57,6 @@ SetCommand sets Command field to given value.
 
 HasCommand returns a boolean if a field has been set.
 
-### SetCommandNil
-
-`func (o *CreateContainer) SetCommandNil(b bool)`
-
- SetCommandNil sets the value for Command to be an explicit nil
-
-### UnsetCommand
-`func (o *CreateContainer) UnsetCommand()`
-
-UnsetCommand ensures that no value is present for Command, not even an explicit nil
 ### GetEnvironmentVariables
 
 `func (o *CreateContainer) GetEnvironmentVariables() map[string]string`
@@ -92,6 +82,16 @@ SetEnvironmentVariables sets EnvironmentVariables field to given value.
 
 HasEnvironmentVariables returns a boolean if a field has been set.
 
+### SetEnvironmentVariablesNil
+
+`func (o *CreateContainer) SetEnvironmentVariablesNil(b bool)`
+
+ SetEnvironmentVariablesNil sets the value for EnvironmentVariables to be an explicit nil
+
+### UnsetEnvironmentVariables
+`func (o *CreateContainer) UnsetEnvironmentVariables()`
+
+UnsetEnvironmentVariables ensures that no value is present for EnvironmentVariables, not even an explicit nil
 ### GetImage
 
 `func (o *CreateContainer) GetImage() string`
@@ -187,16 +187,6 @@ SetPriority sets Priority field to given value.
 
 HasPriority returns a boolean if a field has been set.
 
-### SetPriorityNil
-
-`func (o *CreateContainer) SetPriorityNil(b bool)`
-
- SetPriorityNil sets the value for Priority to be an explicit nil
-
-### UnsetPriority
-`func (o *CreateContainer) UnsetPriority()`
-
-UnsetPriority ensures that no value is present for Priority, not even an explicit nil
 ### GetRegistryAuthentication
 
 `func (o *CreateContainer) GetRegistryAuthentication() ContainerRegistryAuthentication`
@@ -224,20 +214,20 @@ HasRegistryAuthentication returns a boolean if a field has been set.
 
 ### GetResources
 
-`func (o *CreateContainer) GetResources() ContainerResourceRequirements`
+`func (o *CreateContainer) GetResources() CreateContainerResourceRequirements`
 
 GetResources returns the Resources field if non-nil, zero value otherwise.
 
 ### GetResourcesOk
 
-`func (o *CreateContainer) GetResourcesOk() (*ContainerResourceRequirements, bool)`
+`func (o *CreateContainer) GetResourcesOk() (*CreateContainerResourceRequirements, bool)`
 
 GetResourcesOk returns a tuple with the Resources field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetResources
 
-`func (o *CreateContainer) SetResources(v ContainerResourceRequirements)`
+`func (o *CreateContainer) SetResources(v CreateContainerResourceRequirements)`
 
 SetResources sets Resources field to given value.
 

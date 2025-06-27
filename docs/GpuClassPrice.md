@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Priority** | [**NullableContainerGroupPriority**](ContainerGroupPriority.md) |  | 
+**Priority** | [**ContainerGroupPriority**](ContainerGroupPriority.md) |  | 
 **Price** | **string** | The price | 
 
 ## Methods
 
 ### NewGpuClassPrice
 
-`func NewGpuClassPrice(priority NullableContainerGroupPriority, price string, ) *GpuClassPrice`
+`func NewGpuClassPrice(priority ContainerGroupPriority, price string, ) *GpuClassPrice`
 
 NewGpuClassPrice instantiates a new GpuClassPrice object
 This constructor will assign default values to properties that have it defined,
@@ -46,16 +46,6 @@ and a boolean to check if the value has been set.
 SetPriority sets Priority field to given value.
 
 
-### SetPriorityNil
-
-`func (o *GpuClassPrice) SetPriorityNil(b bool)`
-
- SetPriorityNil sets the value for Priority to be an explicit nil
-
-### UnsetPriority
-`func (o *GpuClassPrice) UnsetPriority()`
-
-UnsetPriority ensures that no value is present for Priority, not even an explicit nil
 ### GetPrice
 
 `func (o *GpuClassPrice) GetPrice() string`

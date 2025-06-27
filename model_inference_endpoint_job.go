@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,9 +13,8 @@ package saladclient
 
 import (
 	"encoding/json"
-	"time"
-	"bytes"
 	"fmt"
+	"time"
 )
 
 // checks if the InferenceEndpointJob type satisfies the MappedNullable interface at compile time
@@ -28,23 +27,24 @@ type InferenceEndpointJob struct {
 	// The inference endpoint name.
 	InferenceEndpointName string `json:"inference_endpoint_name" validate:"regexp=^[a-z][a-z0-9-]{0,61}[a-z0-9]$"`
 	// The organization name.
-	OrganizationName string `json:"organization_name" validate:"regexp=^[a-z][a-z0-9-]{0,61}[a-z0-9]$"`
-	Input interface{} `json:"input"`
+	OrganizationName string      `json:"organization_name" validate:"regexp=^[a-z][a-z0-9-]{0,61}[a-z0-9]$"`
+	Input            interface{} `json:"input"`
 	// The job metadata. May be any valid JSON.
 	Metadata map[string]interface{} `json:"metadata,omitempty"`
 	// The webhook URL called when the job completes.
 	// Deprecated
 	Webhook *string `json:"webhook,omitempty"`
 	// The webhook URL called when the job completes.
-	WebhookUrl *string `json:"webhook_url,omitempty"`
-	Status InferenceEndpointJobStatus `json:"status"`
+	WebhookUrl *string                    `json:"webhook_url,omitempty"`
+	Status     InferenceEndpointJobStatus `json:"status"`
 	// The list of events.
 	Events []InferenceEndpointJobEvent `json:"events"`
-	Output interface{} `json:"output,omitempty"`
+	Output interface{}                 `json:"output,omitempty"`
 	// The time the job was created.
 	CreateTime time.Time `json:"create_time"`
 	// The time the job was last updated.
-	UpdateTime time.Time `json:"update_time"`
+	UpdateTime           time.Time `json:"update_time"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _InferenceEndpointJob InferenceEndpointJob
@@ -401,7 +401,7 @@ func (o *InferenceEndpointJob) SetUpdateTime(v time.Time) {
 }
 
 func (o InferenceEndpointJob) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -432,6 +432,11 @@ func (o InferenceEndpointJob) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["create_time"] = o.CreateTime
 	toSerialize["update_time"] = o.UpdateTime
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -455,10 +460,10 @@ func (o *InferenceEndpointJob) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -466,15 +471,31 @@ func (o *InferenceEndpointJob) UnmarshalJSON(data []byte) (err error) {
 
 	varInferenceEndpointJob := _InferenceEndpointJob{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varInferenceEndpointJob)
+	err = json.Unmarshal(data, &varInferenceEndpointJob)
 
 	if err != nil {
 		return err
 	}
 
 	*o = InferenceEndpointJob(varInferenceEndpointJob)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "inference_endpoint_name")
+		delete(additionalProperties, "organization_name")
+		delete(additionalProperties, "input")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "webhook")
+		delete(additionalProperties, "webhook_url")
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "events")
+		delete(additionalProperties, "output")
+		delete(additionalProperties, "create_time")
+		delete(additionalProperties, "update_time")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -514,5 +535,3 @@ func (v *NullableInferenceEndpointJob) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-
