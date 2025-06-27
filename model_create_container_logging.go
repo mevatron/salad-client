@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -20,12 +20,12 @@ var _ MappedNullable = &CreateContainerLogging{}
 
 // CreateContainerLogging Configuration options for directing container logs to a logging provider. This schema enables you to specify a single logging destination for container output, supporting monitoring, debugging, and analytics use cases. Each provider has its own configuration parameters defined in the referenced schemas. Only one logging provider can be selected at a time.
 type CreateContainerLogging struct {
-	Axiom *ContainerLoggingAxiom `json:"axiom,omitempty"`
-	Datadog *ContainerLoggingDatadog `json:"datadog,omitempty"`
-	Http *CreateContainerLoggingHttp `json:"http,omitempty"`
-	NewRelic *ContainerLoggingNewRelic `json:"new_relic,omitempty"`
-	Splunk *ContainerLoggingSplunk `json:"splunk,omitempty"`
-	Tcp *ContainerLoggingTcp `json:"tcp,omitempty"`
+	Axiom    *ContainerLoggingAxiom      `json:"axiom,omitempty"`
+	Datadog  *ContainerLoggingDatadog    `json:"datadog,omitempty"`
+	Http     *CreateContainerLoggingHttp `json:"http,omitempty"`
+	NewRelic *ContainerLoggingNewRelic   `json:"new_relic,omitempty"`
+	Splunk   *ContainerLoggingSplunk     `json:"splunk,omitempty"`
+	Tcp      *ContainerLoggingTcp        `json:"tcp,omitempty"`
 }
 
 // NewCreateContainerLogging instantiates a new CreateContainerLogging object
@@ -238,7 +238,7 @@ func (o *CreateContainerLogging) SetTcp(v ContainerLoggingTcp) {
 }
 
 func (o CreateContainerLogging) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -303,5 +303,3 @@ func (v *NullableCreateContainerLogging) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

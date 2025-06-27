@@ -20,16 +20,16 @@ var _ MappedNullable = &UpdateContainerGroup{}
 
 // UpdateContainerGroup Represents a request to update a container group
 type UpdateContainerGroup struct {
-	DisplayName NullableString `json:"display_name,omitempty" validate:"regexp=^[ ,-.0-9A-Za-z]+$"`
-	Container *UpdateContainer `json:"container,omitempty"`
-	Replicas NullableInt32 `json:"replicas,omitempty"`
+	DisplayName NullableString   `json:"display_name,omitempty" validate:"regexp=^[ ,-.0-9A-Za-z]+$"`
+	Container   *UpdateContainer `json:"container,omitempty"`
+	Replicas    NullableInt32    `json:"replicas,omitempty"`
 	// List of countries nodes must be located in. Remove this field to permit nodes from any country.
-	CountryCodes []CountryCode `json:"country_codes,omitempty"`
-	Networking *UpdateContainerGroupNetworking `json:"networking,omitempty"`
-	LivenessProbe *ContainerGroupLivenessProbe `json:"liveness_probe,omitempty"`
-	ReadinessProbe *ContainerGroupReadinessProbe `json:"readiness_probe,omitempty"`
-	StartupProbe *ContainerGroupStartupProbe `json:"startup_probe,omitempty"`
-	QueueAutoscaler *QueueAutoscaler `json:"queue_autoscaler,omitempty"`
+	CountryCodes    []CountryCode                   `json:"country_codes,omitempty"`
+	Networking      *UpdateContainerGroupNetworking `json:"networking,omitempty"`
+	LivenessProbe   *ContainerGroupLivenessProbe    `json:"liveness_probe,omitempty"`
+	ReadinessProbe  *ContainerGroupReadinessProbe   `json:"readiness_probe,omitempty"`
+	StartupProbe    *ContainerGroupStartupProbe     `json:"startup_probe,omitempty"`
+	QueueAutoscaler *QueueAutoscaler                `json:"queue_autoscaler,omitempty"`
 }
 
 // NewUpdateContainerGroup instantiates a new UpdateContainerGroup object
@@ -81,6 +81,7 @@ func (o *UpdateContainerGroup) HasDisplayName() bool {
 func (o *UpdateContainerGroup) SetDisplayName(v string) {
 	o.DisplayName.Set(&v)
 }
+
 // SetDisplayNameNil sets the value for DisplayName to be an explicit nil
 func (o *UpdateContainerGroup) SetDisplayNameNil() {
 	o.DisplayName.Set(nil)
@@ -155,6 +156,7 @@ func (o *UpdateContainerGroup) HasReplicas() bool {
 func (o *UpdateContainerGroup) SetReplicas(v int32) {
 	o.Replicas.Set(&v)
 }
+
 // SetReplicasNil sets the value for Replicas to be an explicit nil
 func (o *UpdateContainerGroup) SetReplicasNil() {
 	o.Replicas.Set(nil)
@@ -359,7 +361,7 @@ func (o *UpdateContainerGroup) SetQueueAutoscaler(v QueueAutoscaler) {
 }
 
 func (o UpdateContainerGroup) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -433,5 +435,3 @@ func (v *NullableUpdateContainerGroup) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

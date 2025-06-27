@@ -65,6 +65,7 @@ docs/CreateContainer.md
 docs/CreateContainerGroupNetworking.md
 docs/CreateContainerLogging.md
 docs/CreateContainerLoggingHttp.md
+docs/CreateContainerResourceRequirements.md
 docs/GpuClass.md
 docs/GpuClassPrice.md
 docs/GpuClassesList.md
@@ -155,6 +156,7 @@ model_create_container.go
 model_create_container_group_networking.go
 model_create_container_logging.go
 model_create_container_logging_http.go
+model_create_container_resource_requirements.go
 model_gpu_class.go
 model_gpu_class_price.go
 model_gpu_classes_list.go
@@ -186,4 +188,12 @@ model_webhook_secret_key.go
 model_workload_error.go
 model_workload_error_list.go
 response.go
+test/api_container_groups_test.go
+test/api_inference_endpoints_test.go
+test/api_organization_data_test.go
+test/api_queues_test.go
+test/api_quotas_test.go
+test/api_system_logs_test.go
+test/api_webhook_secret_key_test.go
+test/api_workload_errors_test.go
 utils.go

@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -12,8 +12,8 @@ Contact: cloud@salad.com
 package saladclient
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -31,10 +31,10 @@ type CreateContainerLoggingHttp struct {
 	// Optional password for HTTP authentication
 	Password NullableString `json:"password,omitempty" validate:"regexp=^.*$"`
 	// Optional URL path for the HTTP endpoint
-	Path NullableString `json:"path,omitempty" validate:"regexp=^.*$"`
+	Path   NullableString             `json:"path,omitempty" validate:"regexp=^.*$"`
 	Format ContainerLoggingHttpFormat `json:"format"`
 	// Optional HTTP headers to include in log transmission requests
-	Headers []ContainerLoggingHttpHeader `json:"headers,omitempty"`
+	Headers     []ContainerLoggingHttpHeader    `json:"headers,omitempty"`
 	Compression ContainerLoggingHttpCompression `json:"compression"`
 }
 
@@ -141,6 +141,7 @@ func (o *CreateContainerLoggingHttp) HasUser() bool {
 func (o *CreateContainerLoggingHttp) SetUser(v string) {
 	o.User.Set(&v)
 }
+
 // SetUserNil sets the value for User to be an explicit nil
 func (o *CreateContainerLoggingHttp) SetUserNil() {
 	o.User.Set(nil)
@@ -183,6 +184,7 @@ func (o *CreateContainerLoggingHttp) HasPassword() bool {
 func (o *CreateContainerLoggingHttp) SetPassword(v string) {
 	o.Password.Set(&v)
 }
+
 // SetPasswordNil sets the value for Password to be an explicit nil
 func (o *CreateContainerLoggingHttp) SetPasswordNil() {
 	o.Password.Set(nil)
@@ -225,6 +227,7 @@ func (o *CreateContainerLoggingHttp) HasPath() bool {
 func (o *CreateContainerLoggingHttp) SetPath(v string) {
 	o.Path.Set(&v)
 }
+
 // SetPathNil sets the value for Path to be an explicit nil
 func (o *CreateContainerLoggingHttp) SetPathNil() {
 	o.Path.Set(nil)
@@ -316,7 +319,7 @@ func (o *CreateContainerLoggingHttp) SetCompression(v ContainerLoggingHttpCompre
 }
 
 func (o CreateContainerLoggingHttp) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -360,10 +363,10 @@ func (o *CreateContainerLoggingHttp) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -419,5 +422,3 @@ func (v *NullableCreateContainerLoggingHttp) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

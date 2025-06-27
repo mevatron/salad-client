@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -26,7 +26,7 @@ type UpdateContainerResources struct {
 	Memory NullableInt32 `json:"memory,omitempty"`
 	// List of GPU class identifiers that the container can use, specified as UUIDs.
 	GpuClasses []string `json:"gpu_classes,omitempty"`
-	// The amount of storage to allocate to the container in bytes (between 1GB and 50GB).
+	// The amount of storage to allocate to the container in bytes (between 1GB and 250GB).
 	StorageAmount NullableInt64 `json:"storage_amount,omitempty"`
 }
 
@@ -79,6 +79,7 @@ func (o *UpdateContainerResources) HasCpu() bool {
 func (o *UpdateContainerResources) SetCpu(v int32) {
 	o.Cpu.Set(&v)
 }
+
 // SetCpuNil sets the value for Cpu to be an explicit nil
 func (o *UpdateContainerResources) SetCpuNil() {
 	o.Cpu.Set(nil)
@@ -121,6 +122,7 @@ func (o *UpdateContainerResources) HasMemory() bool {
 func (o *UpdateContainerResources) SetMemory(v int32) {
 	o.Memory.Set(&v)
 }
+
 // SetMemoryNil sets the value for Memory to be an explicit nil
 func (o *UpdateContainerResources) SetMemoryNil() {
 	o.Memory.Set(nil)
@@ -196,6 +198,7 @@ func (o *UpdateContainerResources) HasStorageAmount() bool {
 func (o *UpdateContainerResources) SetStorageAmount(v int64) {
 	o.StorageAmount.Set(&v)
 }
+
 // SetStorageAmountNil sets the value for StorageAmount to be an explicit nil
 func (o *UpdateContainerResources) SetStorageAmountNil() {
 	o.StorageAmount.Set(nil)
@@ -207,7 +210,7 @@ func (o *UpdateContainerResources) UnsetStorageAmount() {
 }
 
 func (o UpdateContainerResources) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -266,5 +269,3 @@ func (v *NullableUpdateContainerResources) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

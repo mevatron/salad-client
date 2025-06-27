@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -12,8 +12,8 @@ Contact: cloud@salad.com
 package saladclient
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -29,11 +29,11 @@ type CreateContainer struct {
 	// The container image.
 	Image string `json:"image" validate:"regexp=^.*$"`
 	// The container image caching.
-	ImageCaching *bool `json:"image_caching,omitempty"`
-	Logging *CreateContainerLogging `json:"logging,omitempty"`
-	Priority NullableContainerGroupPriority `json:"priority,omitempty"`
-	RegistryAuthentication *ContainerRegistryAuthentication `json:"registry_authentication,omitempty"`
-	Resources ContainerResourceRequirements `json:"resources"`
+	ImageCaching           *bool                               `json:"image_caching,omitempty"`
+	Logging                *CreateContainerLogging             `json:"logging,omitempty"`
+	Priority               NullableContainerGroupPriority      `json:"priority,omitempty"`
+	RegistryAuthentication *ContainerRegistryAuthentication    `json:"registry_authentication,omitempty"`
+	Resources              CreateContainerResourceRequirements `json:"resources"`
 }
 
 type _CreateContainer CreateContainer
@@ -42,7 +42,7 @@ type _CreateContainer CreateContainer
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCreateContainer(image string, resources ContainerResourceRequirements) *CreateContainer {
+func NewCreateContainer(image string, resources CreateContainerResourceRequirements) *CreateContainer {
 	this := CreateContainer{}
 	this.Image = image
 	this.Resources = resources
@@ -242,6 +242,7 @@ func (o *CreateContainer) HasPriority() bool {
 func (o *CreateContainer) SetPriority(v ContainerGroupPriority) {
 	o.Priority.Set(&v)
 }
+
 // SetPriorityNil sets the value for Priority to be an explicit nil
 func (o *CreateContainer) SetPriorityNil() {
 	o.Priority.Set(nil)
@@ -285,9 +286,9 @@ func (o *CreateContainer) SetRegistryAuthentication(v ContainerRegistryAuthentic
 }
 
 // GetResources returns the Resources field value
-func (o *CreateContainer) GetResources() ContainerResourceRequirements {
+func (o *CreateContainer) GetResources() CreateContainerResourceRequirements {
 	if o == nil {
-		var ret ContainerResourceRequirements
+		var ret CreateContainerResourceRequirements
 		return ret
 	}
 
@@ -296,7 +297,7 @@ func (o *CreateContainer) GetResources() ContainerResourceRequirements {
 
 // GetResourcesOk returns a tuple with the Resources field value
 // and a boolean to check if the value has been set.
-func (o *CreateContainer) GetResourcesOk() (*ContainerResourceRequirements, bool) {
+func (o *CreateContainer) GetResourcesOk() (*CreateContainerResourceRequirements, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -304,12 +305,12 @@ func (o *CreateContainer) GetResourcesOk() (*ContainerResourceRequirements, bool
 }
 
 // SetResources sets field value
-func (o *CreateContainer) SetResources(v ContainerResourceRequirements) {
+func (o *CreateContainer) SetResources(v CreateContainerResourceRequirements) {
 	o.Resources = v
 }
 
 func (o CreateContainer) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -355,10 +356,10 @@ func (o *CreateContainer) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -414,5 +415,3 @@ func (v *NullableCreateContainer) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

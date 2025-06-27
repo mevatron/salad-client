@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -12,10 +12,10 @@ Contact: cloud@salad.com
 package saladclient
 
 import (
-	"encoding/json"
-	"time"
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"time"
 )
 
 // checks if the QueueJob type satisfies the MappedNullable interface at compile time
@@ -24,7 +24,7 @@ var _ MappedNullable = &QueueJob{}
 // QueueJob Represents a queue job
 type QueueJob struct {
 	// The job identifier
-	Id string `json:"id"`
+	Id    string      `json:"id"`
 	Input interface{} `json:"input"`
 	// Additional metadata for the job
 	Metadata map[string]interface{} `json:"metadata,omitempty"`
@@ -34,7 +34,7 @@ type QueueJob struct {
 	Status string `json:"status"`
 	// The job events
 	Events []QueueJobEvent `json:"events"`
-	Output interface{} `json:"output,omitempty"`
+	Output interface{}     `json:"output,omitempty"`
 	// The job creation time
 	CreateTime time.Time `json:"create_time"`
 	// The job update time
@@ -310,7 +310,7 @@ func (o *QueueJob) SetUpdateTime(v time.Time) {
 }
 
 func (o QueueJob) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -357,10 +357,10 @@ func (o *QueueJob) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -416,5 +416,3 @@ func (v *NullableQueueJob) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

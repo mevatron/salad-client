@@ -12,8 +12,8 @@ Contact: cloud@salad.com
 package saladclient
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -22,7 +22,7 @@ var _ MappedNullable = &CreateContainerRegistryAuthenticationAwsEcr{}
 
 // CreateContainerRegistryAuthenticationAwsEcr struct for CreateContainerRegistryAuthenticationAwsEcr
 type CreateContainerRegistryAuthenticationAwsEcr struct {
-	AccessKeyId string `json:"access_key_id"`
+	AccessKeyId     string `json:"access_key_id"`
 	SecretAccessKey string `json:"secret_access_key"`
 }
 
@@ -96,7 +96,7 @@ func (o *CreateContainerRegistryAuthenticationAwsEcr) SetSecretAccessKey(v strin
 }
 
 func (o CreateContainerRegistryAuthenticationAwsEcr) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -124,10 +124,10 @@ func (o *CreateContainerRegistryAuthenticationAwsEcr) UnmarshalJSON(data []byte)
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -183,5 +183,3 @@ func (v *NullableCreateContainerRegistryAuthenticationAwsEcr) UnmarshalJSON(src 
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

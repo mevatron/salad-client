@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -12,8 +12,8 @@ Contact: cloud@salad.com
 package saladclient
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -25,10 +25,10 @@ type CreateContainerGroupNetworking struct {
 	// Determines whether authentication is required for network connections to the container group
 	Auth bool `json:"auth"`
 	// The container group networking client request timeout.
-	ClientRequestTimeout *int32 `json:"client_request_timeout,omitempty"`
-	LoadBalancer *ContainerGroupNetworkingLoadBalancer `json:"load_balancer,omitempty"`
+	ClientRequestTimeout *int32                                `json:"client_request_timeout,omitempty"`
+	LoadBalancer         *ContainerGroupNetworkingLoadBalancer `json:"load_balancer,omitempty"`
 	// The container group networking port.
-	Port int32 `json:"port"`
+	Port     int32                       `json:"port"`
 	Protocol ContainerNetworkingProtocol `json:"protocol"`
 	// The container group networking server response timeout.
 	ServerResponseTimeout *int32 `json:"server_response_timeout,omitempty"`
@@ -275,7 +275,7 @@ func (o *CreateContainerGroupNetworking) SetSingleConnectionLimit(v bool) {
 }
 
 func (o CreateContainerGroupNetworking) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -317,10 +317,10 @@ func (o *CreateContainerGroupNetworking) UnmarshalJSON(data []byte) (err error) 
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -376,5 +376,3 @@ func (v *NullableCreateContainerGroupNetworking) UnmarshalJSON(src []byte) error
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -12,8 +12,8 @@ Contact: cloud@salad.com
 package saladclient
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -25,7 +25,7 @@ type QueueAutoscaler struct {
 	// The minimum number of instances the container can scale down to
 	MinReplicas int32 `json:"min_replicas"`
 	// The maximum number of instances the container can scale up to
-	MaxReplicas int32 `json:"max_replicas"`
+	MaxReplicas        int32 `json:"max_replicas"`
 	DesiredQueueLength int32 `json:"desired_queue_length"`
 	// The period (in seconds) in which the queue checks the formula
 	PollingPeriod *int32 `json:"polling_period,omitempty"`
@@ -226,7 +226,7 @@ func (o *QueueAutoscaler) SetMaxDownscalePerMinute(v int32) {
 }
 
 func (o QueueAutoscaler) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -265,10 +265,10 @@ func (o *QueueAutoscaler) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -324,5 +324,3 @@ func (v *NullableQueueAutoscaler) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

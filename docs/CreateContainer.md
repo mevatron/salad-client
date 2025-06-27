@@ -11,13 +11,13 @@ Name | Type | Description | Notes
 **Logging** | Pointer to [**CreateContainerLogging**](CreateContainerLogging.md) |  | [optional] 
 **Priority** | Pointer to [**NullableContainerGroupPriority**](ContainerGroupPriority.md) |  | [optional] 
 **RegistryAuthentication** | Pointer to [**ContainerRegistryAuthentication**](ContainerRegistryAuthentication.md) |  | [optional] 
-**Resources** | [**ContainerResourceRequirements**](ContainerResourceRequirements.md) |  | 
+**Resources** | [**CreateContainerResourceRequirements**](CreateContainerResourceRequirements.md) |  | 
 
 ## Methods
 
 ### NewCreateContainer
 
-`func NewCreateContainer(image string, resources ContainerResourceRequirements, ) *CreateContainer`
+`func NewCreateContainer(image string, resources CreateContainerResourceRequirements, ) *CreateContainer`
 
 NewCreateContainer instantiates a new CreateContainer object
 This constructor will assign default values to properties that have it defined,
@@ -224,20 +224,20 @@ HasRegistryAuthentication returns a boolean if a field has been set.
 
 ### GetResources
 
-`func (o *CreateContainer) GetResources() ContainerResourceRequirements`
+`func (o *CreateContainer) GetResources() CreateContainerResourceRequirements`
 
 GetResources returns the Resources field if non-nil, zero value otherwise.
 
 ### GetResourcesOk
 
-`func (o *CreateContainer) GetResourcesOk() (*ContainerResourceRequirements, bool)`
+`func (o *CreateContainer) GetResourcesOk() (*CreateContainerResourceRequirements, bool)`
 
 GetResourcesOk returns a tuple with the Resources field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetResources
 
-`func (o *CreateContainer) SetResources(v ContainerResourceRequirements)`
+`func (o *CreateContainer) SetResources(v CreateContainerResourceRequirements)`
 
 SetResources sets Resources field to given value.
 

@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **Cpu** | Pointer to **NullableInt32** | The number of CPU cores to allocate to the container (between 1 and 16 cores). | [optional] 
 **Memory** | Pointer to **NullableInt32** | The amount of memory to allocate to the container in megabytes (between 1024MB and 61440MB). | [optional] 
 **GpuClasses** | Pointer to **[]string** | List of GPU class identifiers that the container can use, specified as UUIDs. | [optional] 
-**StorageAmount** | Pointer to **NullableInt64** | The amount of storage to allocate to the container in bytes (between 1GB and 50GB). | [optional] 
+**StorageAmount** | Pointer to **NullableInt64** | The amount of storage to allocate to the container in bytes (between 1GB and 250GB). | [optional] 
 
 ## Methods
 

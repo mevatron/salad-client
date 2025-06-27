@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -12,8 +12,8 @@ Contact: cloud@salad.com
 package saladclient
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -23,7 +23,7 @@ var _ MappedNullable = &ContainerRegistryAuthenticationGcpGcr{}
 // ContainerRegistryAuthenticationGcpGcr Authentication details for Google Container Registry (GCR)
 type ContainerRegistryAuthenticationGcpGcr struct {
 	// GCP service account key in JSON format for GCR authentication
-	ServiceKey string `json:"service_key" validate:"regexp=^.*$"`
+	ServiceKey string `json:"service_key"`
 }
 
 type _ContainerRegistryAuthenticationGcpGcr ContainerRegistryAuthenticationGcpGcr
@@ -71,7 +71,7 @@ func (o *ContainerRegistryAuthenticationGcpGcr) SetServiceKey(v string) {
 }
 
 func (o ContainerRegistryAuthenticationGcpGcr) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -97,10 +97,10 @@ func (o *ContainerRegistryAuthenticationGcpGcr) UnmarshalJSON(data []byte) (err 
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -156,5 +156,3 @@ func (v *NullableContainerRegistryAuthenticationGcpGcr) UnmarshalJSON(src []byte
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

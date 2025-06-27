@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -20,15 +20,14 @@ import (
 	"strings"
 )
 
-
 // ContainerGroupsAPIService ContainerGroupsAPI service
 type ContainerGroupsAPIService service
 
 type ApiCreateContainerGroupRequest struct {
-	ctx context.Context
-	ApiService *ContainerGroupsAPIService
-	organizationName string
-	projectName string
+	ctx                     context.Context
+	ApiService              *ContainerGroupsAPIService
+	organizationName        string
+	projectName             string
 	containerGroupPrototype *ContainerGroupPrototype
 }
 
@@ -46,28 +45,29 @@ CreateContainerGroup Create Container Group
 
 Creates a new container group
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @return ApiCreateContainerGroupRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@return ApiCreateContainerGroupRequest
 */
 func (a *ContainerGroupsAPIService) CreateContainerGroup(ctx context.Context, organizationName string, projectName string) ApiCreateContainerGroupRequest {
 	return ApiCreateContainerGroupRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:       a,
+		ctx:              ctx,
 		organizationName: organizationName,
-		projectName: projectName,
+		projectName:      projectName,
 	}
 }
 
 // Execute executes the request
-//  @return ContainerGroup
+//
+//	@return ContainerGroup
 func (a *ContainerGroupsAPIService) CreateContainerGroupExecute(r ApiCreateContainerGroupRequest) (*ContainerGroup, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ContainerGroup
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ContainerGroup
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ContainerGroupsAPIService.CreateContainerGroup")
@@ -160,8 +160,8 @@ func (a *ContainerGroupsAPIService) CreateContainerGroupExecute(r ApiCreateConta
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -171,8 +171,8 @@ func (a *ContainerGroupsAPIService) CreateContainerGroupExecute(r ApiCreateConta
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -182,18 +182,18 @@ func (a *ContainerGroupsAPIService) CreateContainerGroupExecute(r ApiCreateConta
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -210,10 +210,10 @@ func (a *ContainerGroupsAPIService) CreateContainerGroupExecute(r ApiCreateConta
 }
 
 type ApiDeleteContainerGroupRequest struct {
-	ctx context.Context
-	ApiService *ContainerGroupsAPIService
-	organizationName string
-	projectName string
+	ctx                context.Context
+	ApiService         *ContainerGroupsAPIService
+	organizationName   string
+	projectName        string
 	containerGroupName string
 }
 
@@ -226,18 +226,18 @@ DeleteContainerGroup Delete Container Group
 
 Deletes a container group
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @param containerGroupName The unique container group name
- @return ApiDeleteContainerGroupRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@param containerGroupName The unique container group name
+	@return ApiDeleteContainerGroupRequest
 */
 func (a *ContainerGroupsAPIService) DeleteContainerGroup(ctx context.Context, organizationName string, projectName string, containerGroupName string) ApiDeleteContainerGroupRequest {
 	return ApiDeleteContainerGroupRequest{
-		ApiService: a,
-		ctx: ctx,
-		organizationName: organizationName,
-		projectName: projectName,
+		ApiService:         a,
+		ctx:                ctx,
+		organizationName:   organizationName,
+		projectName:        projectName,
 		containerGroupName: containerGroupName,
 	}
 }
@@ -245,9 +245,9 @@ func (a *ContainerGroupsAPIService) DeleteContainerGroup(ctx context.Context, or
 // Execute executes the request
 func (a *ContainerGroupsAPIService) DeleteContainerGroupExecute(r ApiDeleteContainerGroupRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ContainerGroupsAPIService.DeleteContainerGroup")
@@ -342,8 +342,8 @@ func (a *ContainerGroupsAPIService) DeleteContainerGroupExecute(r ApiDeleteConta
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -353,8 +353,8 @@ func (a *ContainerGroupsAPIService) DeleteContainerGroupExecute(r ApiDeleteConta
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -364,18 +364,18 @@ func (a *ContainerGroupsAPIService) DeleteContainerGroupExecute(r ApiDeleteConta
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
 
@@ -383,10 +383,10 @@ func (a *ContainerGroupsAPIService) DeleteContainerGroupExecute(r ApiDeleteConta
 }
 
 type ApiGetContainerGroupRequest struct {
-	ctx context.Context
-	ApiService *ContainerGroupsAPIService
-	organizationName string
-	projectName string
+	ctx                context.Context
+	ApiService         *ContainerGroupsAPIService
+	organizationName   string
+	projectName        string
 	containerGroupName string
 }
 
@@ -399,30 +399,31 @@ GetContainerGroup Get Container Group
 
 Gets a container group
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @param containerGroupName The unique container group name
- @return ApiGetContainerGroupRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@param containerGroupName The unique container group name
+	@return ApiGetContainerGroupRequest
 */
 func (a *ContainerGroupsAPIService) GetContainerGroup(ctx context.Context, organizationName string, projectName string, containerGroupName string) ApiGetContainerGroupRequest {
 	return ApiGetContainerGroupRequest{
-		ApiService: a,
-		ctx: ctx,
-		organizationName: organizationName,
-		projectName: projectName,
+		ApiService:         a,
+		ctx:                ctx,
+		organizationName:   organizationName,
+		projectName:        projectName,
 		containerGroupName: containerGroupName,
 	}
 }
 
 // Execute executes the request
-//  @return ContainerGroup
+//
+//	@return ContainerGroup
 func (a *ContainerGroupsAPIService) GetContainerGroupExecute(r ApiGetContainerGroupRequest) (*ContainerGroup, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ContainerGroup
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ContainerGroup
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ContainerGroupsAPIService.GetContainerGroup")
@@ -517,8 +518,8 @@ func (a *ContainerGroupsAPIService) GetContainerGroupExecute(r ApiGetContainerGr
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -528,18 +529,18 @@ func (a *ContainerGroupsAPIService) GetContainerGroupExecute(r ApiGetContainerGr
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -556,11 +557,11 @@ func (a *ContainerGroupsAPIService) GetContainerGroupExecute(r ApiGetContainerGr
 }
 
 type ApiGetContainerGroupInstanceRequest struct {
-	ctx context.Context
-	ApiService *ContainerGroupsAPIService
-	organizationName string
-	projectName string
-	containerGroupName string
+	ctx                      context.Context
+	ApiService               *ContainerGroupsAPIService
+	organizationName         string
+	projectName              string
+	containerGroupName       string
 	containerGroupInstanceId string
 }
 
@@ -573,32 +574,33 @@ GetContainerGroupInstance Get Container Group Instance
 
 Gets a container group instance
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @param containerGroupName The unique container group name
- @param containerGroupInstanceId The unique container group instance identifier
- @return ApiGetContainerGroupInstanceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@param containerGroupName The unique container group name
+	@param containerGroupInstanceId The unique container group instance identifier
+	@return ApiGetContainerGroupInstanceRequest
 */
 func (a *ContainerGroupsAPIService) GetContainerGroupInstance(ctx context.Context, organizationName string, projectName string, containerGroupName string, containerGroupInstanceId string) ApiGetContainerGroupInstanceRequest {
 	return ApiGetContainerGroupInstanceRequest{
-		ApiService: a,
-		ctx: ctx,
-		organizationName: organizationName,
-		projectName: projectName,
-		containerGroupName: containerGroupName,
+		ApiService:               a,
+		ctx:                      ctx,
+		organizationName:         organizationName,
+		projectName:              projectName,
+		containerGroupName:       containerGroupName,
 		containerGroupInstanceId: containerGroupInstanceId,
 	}
 }
 
 // Execute executes the request
-//  @return ContainerGroupInstance
+//
+//	@return ContainerGroupInstance
 func (a *ContainerGroupsAPIService) GetContainerGroupInstanceExecute(r ApiGetContainerGroupInstanceRequest) (*ContainerGroupInstance, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ContainerGroupInstance
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ContainerGroupInstance
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ContainerGroupsAPIService.GetContainerGroupInstance")
@@ -694,8 +696,8 @@ func (a *ContainerGroupsAPIService) GetContainerGroupInstanceExecute(r ApiGetCon
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -705,18 +707,18 @@ func (a *ContainerGroupsAPIService) GetContainerGroupInstanceExecute(r ApiGetCon
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -733,10 +735,10 @@ func (a *ContainerGroupsAPIService) GetContainerGroupInstanceExecute(r ApiGetCon
 }
 
 type ApiListContainerGroupInstancesRequest struct {
-	ctx context.Context
-	ApiService *ContainerGroupsAPIService
-	organizationName string
-	projectName string
+	ctx                context.Context
+	ApiService         *ContainerGroupsAPIService
+	organizationName   string
+	projectName        string
 	containerGroupName string
 }
 
@@ -749,30 +751,31 @@ ListContainerGroupInstances List Container Group Instances
 
 Gets the list of container group instances
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @param containerGroupName The unique container group name
- @return ApiListContainerGroupInstancesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@param containerGroupName The unique container group name
+	@return ApiListContainerGroupInstancesRequest
 */
 func (a *ContainerGroupsAPIService) ListContainerGroupInstances(ctx context.Context, organizationName string, projectName string, containerGroupName string) ApiListContainerGroupInstancesRequest {
 	return ApiListContainerGroupInstancesRequest{
-		ApiService: a,
-		ctx: ctx,
-		organizationName: organizationName,
-		projectName: projectName,
+		ApiService:         a,
+		ctx:                ctx,
+		organizationName:   organizationName,
+		projectName:        projectName,
 		containerGroupName: containerGroupName,
 	}
 }
 
 // Execute executes the request
-//  @return ContainerGroupInstanceCollection
+//
+//	@return ContainerGroupInstanceCollection
 func (a *ContainerGroupsAPIService) ListContainerGroupInstancesExecute(r ApiListContainerGroupInstancesRequest) (*ContainerGroupInstanceCollection, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ContainerGroupInstanceCollection
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ContainerGroupInstanceCollection
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ContainerGroupsAPIService.ListContainerGroupInstances")
@@ -867,8 +870,8 @@ func (a *ContainerGroupsAPIService) ListContainerGroupInstancesExecute(r ApiList
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -878,18 +881,18 @@ func (a *ContainerGroupsAPIService) ListContainerGroupInstancesExecute(r ApiList
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -906,10 +909,10 @@ func (a *ContainerGroupsAPIService) ListContainerGroupInstancesExecute(r ApiList
 }
 
 type ApiListContainerGroupsRequest struct {
-	ctx context.Context
-	ApiService *ContainerGroupsAPIService
+	ctx              context.Context
+	ApiService       *ContainerGroupsAPIService
 	organizationName string
-	projectName string
+	projectName      string
 }
 
 func (r ApiListContainerGroupsRequest) Execute() (*ContainerGroupCollection, *http.Response, error) {
@@ -921,28 +924,29 @@ ListContainerGroups List Container Groups
 
 Gets the list of container groups
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @return ApiListContainerGroupsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@return ApiListContainerGroupsRequest
 */
 func (a *ContainerGroupsAPIService) ListContainerGroups(ctx context.Context, organizationName string, projectName string) ApiListContainerGroupsRequest {
 	return ApiListContainerGroupsRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:       a,
+		ctx:              ctx,
 		organizationName: organizationName,
-		projectName: projectName,
+		projectName:      projectName,
 	}
 }
 
 // Execute executes the request
-//  @return ContainerGroupCollection
+//
+//	@return ContainerGroupCollection
 func (a *ContainerGroupsAPIService) ListContainerGroupsExecute(r ApiListContainerGroupsRequest) (*ContainerGroupCollection, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ContainerGroupCollection
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ContainerGroupCollection
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ContainerGroupsAPIService.ListContainerGroups")
@@ -1030,18 +1034,18 @@ func (a *ContainerGroupsAPIService) ListContainerGroupsExecute(r ApiListContaine
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -1058,11 +1062,11 @@ func (a *ContainerGroupsAPIService) ListContainerGroupsExecute(r ApiListContaine
 }
 
 type ApiReallocateContainerGroupInstanceRequest struct {
-	ctx context.Context
-	ApiService *ContainerGroupsAPIService
-	organizationName string
-	projectName string
-	containerGroupName string
+	ctx                      context.Context
+	ApiService               *ContainerGroupsAPIService
+	organizationName         string
+	projectName              string
+	containerGroupName       string
 	containerGroupInstanceId string
 }
 
@@ -1075,20 +1079,20 @@ ReallocateContainerGroupInstance Reallocate Container Group Instance
 
 Reallocates a container group instance to run on a different Salad Node
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @param containerGroupName The unique container group name
- @param containerGroupInstanceId The unique container group instance identifier
- @return ApiReallocateContainerGroupInstanceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@param containerGroupName The unique container group name
+	@param containerGroupInstanceId The unique container group instance identifier
+	@return ApiReallocateContainerGroupInstanceRequest
 */
 func (a *ContainerGroupsAPIService) ReallocateContainerGroupInstance(ctx context.Context, organizationName string, projectName string, containerGroupName string, containerGroupInstanceId string) ApiReallocateContainerGroupInstanceRequest {
 	return ApiReallocateContainerGroupInstanceRequest{
-		ApiService: a,
-		ctx: ctx,
-		organizationName: organizationName,
-		projectName: projectName,
-		containerGroupName: containerGroupName,
+		ApiService:               a,
+		ctx:                      ctx,
+		organizationName:         organizationName,
+		projectName:              projectName,
+		containerGroupName:       containerGroupName,
 		containerGroupInstanceId: containerGroupInstanceId,
 	}
 }
@@ -1096,9 +1100,9 @@ func (a *ContainerGroupsAPIService) ReallocateContainerGroupInstance(ctx context
 // Execute executes the request
 func (a *ContainerGroupsAPIService) ReallocateContainerGroupInstanceExecute(r ApiReallocateContainerGroupInstanceRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ContainerGroupsAPIService.ReallocateContainerGroupInstance")
@@ -1194,8 +1198,8 @@ func (a *ContainerGroupsAPIService) ReallocateContainerGroupInstanceExecute(r Ap
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -1205,18 +1209,18 @@ func (a *ContainerGroupsAPIService) ReallocateContainerGroupInstanceExecute(r Ap
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
 
@@ -1224,11 +1228,11 @@ func (a *ContainerGroupsAPIService) ReallocateContainerGroupInstanceExecute(r Ap
 }
 
 type ApiRecreateContainerGroupInstanceRequest struct {
-	ctx context.Context
-	ApiService *ContainerGroupsAPIService
-	organizationName string
-	projectName string
-	containerGroupName string
+	ctx                      context.Context
+	ApiService               *ContainerGroupsAPIService
+	organizationName         string
+	projectName              string
+	containerGroupName       string
 	containerGroupInstanceId string
 }
 
@@ -1241,20 +1245,20 @@ RecreateContainerGroupInstance Recreate Container Group Instance
 
 Stops a container, destroys it, and starts a new one without requiring the image to be downloaded again on a new Salad Node
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @param containerGroupName The unique container group name
- @param containerGroupInstanceId The unique container group instance identifier
- @return ApiRecreateContainerGroupInstanceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@param containerGroupName The unique container group name
+	@param containerGroupInstanceId The unique container group instance identifier
+	@return ApiRecreateContainerGroupInstanceRequest
 */
 func (a *ContainerGroupsAPIService) RecreateContainerGroupInstance(ctx context.Context, organizationName string, projectName string, containerGroupName string, containerGroupInstanceId string) ApiRecreateContainerGroupInstanceRequest {
 	return ApiRecreateContainerGroupInstanceRequest{
-		ApiService: a,
-		ctx: ctx,
-		organizationName: organizationName,
-		projectName: projectName,
-		containerGroupName: containerGroupName,
+		ApiService:               a,
+		ctx:                      ctx,
+		organizationName:         organizationName,
+		projectName:              projectName,
+		containerGroupName:       containerGroupName,
 		containerGroupInstanceId: containerGroupInstanceId,
 	}
 }
@@ -1262,9 +1266,9 @@ func (a *ContainerGroupsAPIService) RecreateContainerGroupInstance(ctx context.C
 // Execute executes the request
 func (a *ContainerGroupsAPIService) RecreateContainerGroupInstanceExecute(r ApiRecreateContainerGroupInstanceRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ContainerGroupsAPIService.RecreateContainerGroupInstance")
@@ -1360,8 +1364,8 @@ func (a *ContainerGroupsAPIService) RecreateContainerGroupInstanceExecute(r ApiR
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -1371,18 +1375,18 @@ func (a *ContainerGroupsAPIService) RecreateContainerGroupInstanceExecute(r ApiR
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
 
@@ -1390,11 +1394,11 @@ func (a *ContainerGroupsAPIService) RecreateContainerGroupInstanceExecute(r ApiR
 }
 
 type ApiRestartContainerGroupInstanceRequest struct {
-	ctx context.Context
-	ApiService *ContainerGroupsAPIService
-	organizationName string
-	projectName string
-	containerGroupName string
+	ctx                      context.Context
+	ApiService               *ContainerGroupsAPIService
+	organizationName         string
+	projectName              string
+	containerGroupName       string
 	containerGroupInstanceId string
 }
 
@@ -1407,20 +1411,20 @@ RestartContainerGroupInstance Restart container Group Instance
 
 Stops a container and restarts it on the same Salad Node
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @param containerGroupName The unique container group name
- @param containerGroupInstanceId The unique container group instance identifier
- @return ApiRestartContainerGroupInstanceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@param containerGroupName The unique container group name
+	@param containerGroupInstanceId The unique container group instance identifier
+	@return ApiRestartContainerGroupInstanceRequest
 */
 func (a *ContainerGroupsAPIService) RestartContainerGroupInstance(ctx context.Context, organizationName string, projectName string, containerGroupName string, containerGroupInstanceId string) ApiRestartContainerGroupInstanceRequest {
 	return ApiRestartContainerGroupInstanceRequest{
-		ApiService: a,
-		ctx: ctx,
-		organizationName: organizationName,
-		projectName: projectName,
-		containerGroupName: containerGroupName,
+		ApiService:               a,
+		ctx:                      ctx,
+		organizationName:         organizationName,
+		projectName:              projectName,
+		containerGroupName:       containerGroupName,
 		containerGroupInstanceId: containerGroupInstanceId,
 	}
 }
@@ -1428,9 +1432,9 @@ func (a *ContainerGroupsAPIService) RestartContainerGroupInstance(ctx context.Co
 // Execute executes the request
 func (a *ContainerGroupsAPIService) RestartContainerGroupInstanceExecute(r ApiRestartContainerGroupInstanceRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ContainerGroupsAPIService.RestartContainerGroupInstance")
@@ -1526,8 +1530,8 @@ func (a *ContainerGroupsAPIService) RestartContainerGroupInstanceExecute(r ApiRe
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -1537,18 +1541,18 @@ func (a *ContainerGroupsAPIService) RestartContainerGroupInstanceExecute(r ApiRe
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
 
@@ -1556,10 +1560,10 @@ func (a *ContainerGroupsAPIService) RestartContainerGroupInstanceExecute(r ApiRe
 }
 
 type ApiStartContainerGroupRequest struct {
-	ctx context.Context
-	ApiService *ContainerGroupsAPIService
-	organizationName string
-	projectName string
+	ctx                context.Context
+	ApiService         *ContainerGroupsAPIService
+	organizationName   string
+	projectName        string
 	containerGroupName string
 }
 
@@ -1572,18 +1576,18 @@ StartContainerGroup Start Container Group
 
 Starts a container group
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @param containerGroupName The unique container group name
- @return ApiStartContainerGroupRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@param containerGroupName The unique container group name
+	@return ApiStartContainerGroupRequest
 */
 func (a *ContainerGroupsAPIService) StartContainerGroup(ctx context.Context, organizationName string, projectName string, containerGroupName string) ApiStartContainerGroupRequest {
 	return ApiStartContainerGroupRequest{
-		ApiService: a,
-		ctx: ctx,
-		organizationName: organizationName,
-		projectName: projectName,
+		ApiService:         a,
+		ctx:                ctx,
+		organizationName:   organizationName,
+		projectName:        projectName,
 		containerGroupName: containerGroupName,
 	}
 }
@@ -1591,9 +1595,9 @@ func (a *ContainerGroupsAPIService) StartContainerGroup(ctx context.Context, org
 // Execute executes the request
 func (a *ContainerGroupsAPIService) StartContainerGroupExecute(r ApiStartContainerGroupRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ContainerGroupsAPIService.StartContainerGroup")
@@ -1688,8 +1692,8 @@ func (a *ContainerGroupsAPIService) StartContainerGroupExecute(r ApiStartContain
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1699,8 +1703,8 @@ func (a *ContainerGroupsAPIService) StartContainerGroupExecute(r ApiStartContain
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -1710,18 +1714,18 @@ func (a *ContainerGroupsAPIService) StartContainerGroupExecute(r ApiStartContain
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
 
@@ -1729,10 +1733,10 @@ func (a *ContainerGroupsAPIService) StartContainerGroupExecute(r ApiStartContain
 }
 
 type ApiStopContainerGroupRequest struct {
-	ctx context.Context
-	ApiService *ContainerGroupsAPIService
-	organizationName string
-	projectName string
+	ctx                context.Context
+	ApiService         *ContainerGroupsAPIService
+	organizationName   string
+	projectName        string
 	containerGroupName string
 }
 
@@ -1745,18 +1749,18 @@ StopContainerGroup Stop Container Group
 
 Stops a container group
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @param containerGroupName The unique container group name
- @return ApiStopContainerGroupRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@param containerGroupName The unique container group name
+	@return ApiStopContainerGroupRequest
 */
 func (a *ContainerGroupsAPIService) StopContainerGroup(ctx context.Context, organizationName string, projectName string, containerGroupName string) ApiStopContainerGroupRequest {
 	return ApiStopContainerGroupRequest{
-		ApiService: a,
-		ctx: ctx,
-		organizationName: organizationName,
-		projectName: projectName,
+		ApiService:         a,
+		ctx:                ctx,
+		organizationName:   organizationName,
+		projectName:        projectName,
 		containerGroupName: containerGroupName,
 	}
 }
@@ -1764,9 +1768,9 @@ func (a *ContainerGroupsAPIService) StopContainerGroup(ctx context.Context, orga
 // Execute executes the request
 func (a *ContainerGroupsAPIService) StopContainerGroupExecute(r ApiStopContainerGroupRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ContainerGroupsAPIService.StopContainerGroup")
@@ -1861,8 +1865,8 @@ func (a *ContainerGroupsAPIService) StopContainerGroupExecute(r ApiStopContainer
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1872,8 +1876,8 @@ func (a *ContainerGroupsAPIService) StopContainerGroupExecute(r ApiStopContainer
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -1883,18 +1887,18 @@ func (a *ContainerGroupsAPIService) StopContainerGroupExecute(r ApiStopContainer
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
 
@@ -1902,11 +1906,11 @@ func (a *ContainerGroupsAPIService) StopContainerGroupExecute(r ApiStopContainer
 }
 
 type ApiUpdateContainerGroupRequest struct {
-	ctx context.Context
-	ApiService *ContainerGroupsAPIService
-	organizationName string
-	projectName string
-	containerGroupName string
+	ctx                 context.Context
+	ApiService          *ContainerGroupsAPIService
+	organizationName    string
+	projectName         string
+	containerGroupName  string
 	containerGroupPatch *ContainerGroupPatch
 }
 
@@ -1924,30 +1928,31 @@ UpdateContainerGroup Update Container Group
 
 Updates a container group
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @param containerGroupName The unique container group name
- @return ApiUpdateContainerGroupRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@param containerGroupName The unique container group name
+	@return ApiUpdateContainerGroupRequest
 */
 func (a *ContainerGroupsAPIService) UpdateContainerGroup(ctx context.Context, organizationName string, projectName string, containerGroupName string) ApiUpdateContainerGroupRequest {
 	return ApiUpdateContainerGroupRequest{
-		ApiService: a,
-		ctx: ctx,
-		organizationName: organizationName,
-		projectName: projectName,
+		ApiService:         a,
+		ctx:                ctx,
+		organizationName:   organizationName,
+		projectName:        projectName,
 		containerGroupName: containerGroupName,
 	}
 }
 
 // Execute executes the request
-//  @return ContainerGroup
+//
+//	@return ContainerGroup
 func (a *ContainerGroupsAPIService) UpdateContainerGroupExecute(r ApiUpdateContainerGroupRequest) (*ContainerGroup, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPatch
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ContainerGroup
+		localVarHTTPMethod  = http.MethodPatch
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ContainerGroup
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ContainerGroupsAPIService.UpdateContainerGroup")
@@ -2047,8 +2052,8 @@ func (a *ContainerGroupsAPIService) UpdateContainerGroupExecute(r ApiUpdateConta
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -2058,8 +2063,8 @@ func (a *ContainerGroupsAPIService) UpdateContainerGroupExecute(r ApiUpdateConta
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -2069,8 +2074,8 @@ func (a *ContainerGroupsAPIService) UpdateContainerGroupExecute(r ApiUpdateConta
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -2080,18 +2085,18 @@ func (a *ContainerGroupsAPIService) UpdateContainerGroupExecute(r ApiUpdateConta
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -2108,12 +2113,12 @@ func (a *ContainerGroupsAPIService) UpdateContainerGroupExecute(r ApiUpdateConta
 }
 
 type ApiUpdateContainerGroupInstanceRequest struct {
-	ctx context.Context
-	ApiService *ContainerGroupsAPIService
-	organizationName string
-	projectName string
-	containerGroupName string
-	containerGroupInstanceId string
+	ctx                         context.Context
+	ApiService                  *ContainerGroupsAPIService
+	organizationName            string
+	projectName                 string
+	containerGroupName          string
+	containerGroupInstanceId    string
 	containerGroupInstancePatch *ContainerGroupInstancePatch
 }
 
@@ -2131,32 +2136,33 @@ UpdateContainerGroupInstance Update Container Group Instance
 
 Updates a container group instance
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
- @param containerGroupName The unique container group name
- @param containerGroupInstanceId The unique container group instance identifier
- @return ApiUpdateContainerGroupInstanceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param projectName Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
+	@param containerGroupName The unique container group name
+	@param containerGroupInstanceId The unique container group instance identifier
+	@return ApiUpdateContainerGroupInstanceRequest
 */
 func (a *ContainerGroupsAPIService) UpdateContainerGroupInstance(ctx context.Context, organizationName string, projectName string, containerGroupName string, containerGroupInstanceId string) ApiUpdateContainerGroupInstanceRequest {
 	return ApiUpdateContainerGroupInstanceRequest{
-		ApiService: a,
-		ctx: ctx,
-		organizationName: organizationName,
-		projectName: projectName,
-		containerGroupName: containerGroupName,
+		ApiService:               a,
+		ctx:                      ctx,
+		organizationName:         organizationName,
+		projectName:              projectName,
+		containerGroupName:       containerGroupName,
 		containerGroupInstanceId: containerGroupInstanceId,
 	}
 }
 
 // Execute executes the request
-//  @return ContainerGroupInstance
+//
+//	@return ContainerGroupInstance
 func (a *ContainerGroupsAPIService) UpdateContainerGroupInstanceExecute(r ApiUpdateContainerGroupInstanceRequest) (*ContainerGroupInstance, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPatch
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ContainerGroupInstance
+		localVarHTTPMethod  = http.MethodPatch
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ContainerGroupInstance
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ContainerGroupsAPIService.UpdateContainerGroupInstance")
@@ -2257,8 +2263,8 @@ func (a *ContainerGroupsAPIService) UpdateContainerGroupInstanceExecute(r ApiUpd
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -2268,8 +2274,8 @@ func (a *ContainerGroupsAPIService) UpdateContainerGroupInstanceExecute(r ApiUpd
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -2279,8 +2285,8 @@ func (a *ContainerGroupsAPIService) UpdateContainerGroupInstanceExecute(r ApiUpd
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -2290,18 +2296,18 @@ func (a *ContainerGroupsAPIService) UpdateContainerGroupInstanceExecute(r ApiUpd
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 

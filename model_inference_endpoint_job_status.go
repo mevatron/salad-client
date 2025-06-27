@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -21,11 +21,11 @@ type InferenceEndpointJobStatus string
 
 // List of InferenceEndpointJobStatus
 const (
-	INFERENCEENDPOINTJOBSTATUS_PENDING InferenceEndpointJobStatus = "pending"
-	INFERENCEENDPOINTJOBSTATUS_RUNNING InferenceEndpointJobStatus = "running"
+	INFERENCEENDPOINTJOBSTATUS_PENDING   InferenceEndpointJobStatus = "pending"
+	INFERENCEENDPOINTJOBSTATUS_RUNNING   InferenceEndpointJobStatus = "running"
 	INFERENCEENDPOINTJOBSTATUS_SUCCEEDED InferenceEndpointJobStatus = "succeeded"
 	INFERENCEENDPOINTJOBSTATUS_CANCELLED InferenceEndpointJobStatus = "cancelled"
-	INFERENCEENDPOINTJOBSTATUS_FAILED InferenceEndpointJobStatus = "failed"
+	INFERENCEENDPOINTJOBSTATUS_FAILED    InferenceEndpointJobStatus = "failed"
 )
 
 // All allowed values of InferenceEndpointJobStatus enum
@@ -115,4 +115,3 @@ func (v *NullableInferenceEndpointJobStatus) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-

@@ -12,8 +12,8 @@ Contact: cloud@salad.com
 package saladclient
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -22,7 +22,7 @@ var _ MappedNullable = &CreateContainerRegistryAuthenticationDockerHub{}
 
 // CreateContainerRegistryAuthenticationDockerHub struct for CreateContainerRegistryAuthenticationDockerHub
 type CreateContainerRegistryAuthenticationDockerHub struct {
-	Username string `json:"username"`
+	Username            string `json:"username"`
 	PersonalAccessToken string `json:"personal_access_token"`
 }
 
@@ -96,7 +96,7 @@ func (o *CreateContainerRegistryAuthenticationDockerHub) SetPersonalAccessToken(
 }
 
 func (o CreateContainerRegistryAuthenticationDockerHub) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -124,10 +124,10 @@ func (o *CreateContainerRegistryAuthenticationDockerHub) UnmarshalJSON(data []by
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -183,5 +183,3 @@ func (v *NullableCreateContainerRegistryAuthenticationDockerHub) UnmarshalJSON(s
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

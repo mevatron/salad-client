@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -75,6 +75,7 @@ func (o *QueuePatch) HasDisplayName() bool {
 func (o *QueuePatch) SetDisplayName(v string) {
 	o.DisplayName.Set(&v)
 }
+
 // SetDisplayNameNil sets the value for DisplayName to be an explicit nil
 func (o *QueuePatch) SetDisplayNameNil() {
 	o.DisplayName.Set(nil)
@@ -117,6 +118,7 @@ func (o *QueuePatch) HasDescription() bool {
 func (o *QueuePatch) SetDescription(v string) {
 	o.Description.Set(&v)
 }
+
 // SetDescriptionNil sets the value for Description to be an explicit nil
 func (o *QueuePatch) SetDescriptionNil() {
 	o.Description.Set(nil)
@@ -128,7 +130,7 @@ func (o *QueuePatch) UnsetDescription() {
 }
 
 func (o QueuePatch) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -181,5 +183,3 @@ func (v *NullableQueuePatch) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -43,7 +43,7 @@ import (
 func main() {
 	organizationName := "organizationName_example" // string | Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
 	projectName := "projectName_example" // string | Your project name. This represents a collection of related SaladCloud resources. The project must be created before using the API.
-	containerGroupPrototype := *openapiclient.NewContainerGroupPrototype(false, *openapiclient.NewCreateContainer("Image_example", *openapiclient.NewContainerResourceRequirements(int32(123), int32(123), []string{"GpuClasses_example"})), "Name_example", int32(123), openapiclient.ContainerRestartPolicy("always")) // ContainerGroupPrototype | 
+	containerGroupPrototype := *openapiclient.NewContainerGroupPrototype(false, *openapiclient.NewCreateContainer("Image_example", *openapiclient.NewCreateContainerResourceRequirements(int32(123), int32(123))), "Name_example", int32(123), openapiclient.ContainerRestartPolicy("always")) // ContainerGroupPrototype | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

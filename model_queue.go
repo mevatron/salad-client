@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -12,10 +12,10 @@ Contact: cloud@salad.com
 package saladclient
 
 import (
-	"encoding/json"
-	"time"
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"time"
 )
 
 // checks if the Queue type satisfies the MappedNullable interface at compile time
@@ -241,7 +241,7 @@ func (o *Queue) SetUpdateTime(v time.Time) {
 }
 
 func (o Queue) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -280,10 +280,10 @@ func (o *Queue) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -339,5 +339,3 @@ func (v *NullableQueue) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

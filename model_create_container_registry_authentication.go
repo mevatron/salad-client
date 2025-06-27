@@ -20,11 +20,11 @@ var _ MappedNullable = &CreateContainerRegistryAuthentication{}
 
 // CreateContainerRegistryAuthentication struct for CreateContainerRegistryAuthentication
 type CreateContainerRegistryAuthentication struct {
-	Basic *CreateContainerRegistryAuthenticationBasic `json:"basic,omitempty"`
-	GcpGcr *CreateContainerRegistryAuthenticationGcpGcr `json:"gcp_gcr,omitempty"`
-	AwsEcr *CreateContainerRegistryAuthenticationAwsEcr `json:"aws_ecr,omitempty"`
+	Basic     *CreateContainerRegistryAuthenticationBasic     `json:"basic,omitempty"`
+	GcpGcr    *CreateContainerRegistryAuthenticationGcpGcr    `json:"gcp_gcr,omitempty"`
+	AwsEcr    *CreateContainerRegistryAuthenticationAwsEcr    `json:"aws_ecr,omitempty"`
 	DockerHub *CreateContainerRegistryAuthenticationDockerHub `json:"docker_hub,omitempty"`
-	GcpGar *CreateContainerRegistryAuthenticationGcpGcr `json:"gcp_gar,omitempty"`
+	GcpGar    *CreateContainerRegistryAuthenticationGcpGcr    `json:"gcp_gar,omitempty"`
 }
 
 // NewCreateContainerRegistryAuthentication instantiates a new CreateContainerRegistryAuthentication object
@@ -205,7 +205,7 @@ func (o *CreateContainerRegistryAuthentication) SetGcpGar(v CreateContainerRegis
 }
 
 func (o CreateContainerRegistryAuthentication) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -267,5 +267,3 @@ func (v *NullableCreateContainerRegistryAuthentication) UnmarshalJSON(src []byte
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -20,13 +20,12 @@ import (
 	"strings"
 )
 
-
 // WebhookSecretKeyAPIService WebhookSecretKeyAPI service
 type WebhookSecretKeyAPIService service
 
 type ApiGetWebhookSecretKeyRequest struct {
-	ctx context.Context
-	ApiService *WebhookSecretKeyAPIService
+	ctx              context.Context
+	ApiService       *WebhookSecretKeyAPIService
 	organizationName string
 }
 
@@ -39,26 +38,27 @@ GetWebhookSecretKey Gets the webhook secret key
 
 Gets the webhook secret key
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @return ApiGetWebhookSecretKeyRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@return ApiGetWebhookSecretKeyRequest
 */
 func (a *WebhookSecretKeyAPIService) GetWebhookSecretKey(ctx context.Context, organizationName string) ApiGetWebhookSecretKeyRequest {
 	return ApiGetWebhookSecretKeyRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:       a,
+		ctx:              ctx,
 		organizationName: organizationName,
 	}
 }
 
 // Execute executes the request
-//  @return WebhookSecretKey
+//
+//	@return WebhookSecretKey
 func (a *WebhookSecretKeyAPIService) GetWebhookSecretKeyExecute(r ApiGetWebhookSecretKeyRequest) (*WebhookSecretKey, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *WebhookSecretKey
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *WebhookSecretKey
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WebhookSecretKeyAPIService.GetWebhookSecretKey")
@@ -139,8 +139,8 @@ func (a *WebhookSecretKeyAPIService) GetWebhookSecretKeyExecute(r ApiGetWebhookS
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -150,18 +150,18 @@ func (a *WebhookSecretKeyAPIService) GetWebhookSecretKeyExecute(r ApiGetWebhookS
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -178,8 +178,8 @@ func (a *WebhookSecretKeyAPIService) GetWebhookSecretKeyExecute(r ApiGetWebhookS
 }
 
 type ApiUpdateWebhookSecretKeyRequest struct {
-	ctx context.Context
-	ApiService *WebhookSecretKeyAPIService
+	ctx              context.Context
+	ApiService       *WebhookSecretKeyAPIService
 	organizationName string
 }
 
@@ -192,26 +192,27 @@ UpdateWebhookSecretKey Updates the webhook secret key
 
 Updates the webhook secret key
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @return ApiUpdateWebhookSecretKeyRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@return ApiUpdateWebhookSecretKeyRequest
 */
 func (a *WebhookSecretKeyAPIService) UpdateWebhookSecretKey(ctx context.Context, organizationName string) ApiUpdateWebhookSecretKeyRequest {
 	return ApiUpdateWebhookSecretKeyRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:       a,
+		ctx:              ctx,
 		organizationName: organizationName,
 	}
 }
 
 // Execute executes the request
-//  @return WebhookSecretKey
+//
+//	@return WebhookSecretKey
 func (a *WebhookSecretKeyAPIService) UpdateWebhookSecretKeyExecute(r ApiUpdateWebhookSecretKeyRequest) (*WebhookSecretKey, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *WebhookSecretKey
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *WebhookSecretKey
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "WebhookSecretKeyAPIService.UpdateWebhookSecretKey")
@@ -292,8 +293,8 @@ func (a *WebhookSecretKeyAPIService) UpdateWebhookSecretKeyExecute(r ApiUpdateWe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -303,18 +304,18 @@ func (a *WebhookSecretKeyAPIService) UpdateWebhookSecretKeyExecute(r ApiUpdateWe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 

@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -21,17 +21,17 @@ var _ MappedNullable = &ContainerGroupPatch{}
 // ContainerGroupPatch Represents a request to update a container group
 type ContainerGroupPatch struct {
 	// The display name for the container group. If null is provided, the display name will be set to the container group name.
-	DisplayName NullableString `json:"display_name,omitempty" validate:"regexp=^[ ,-.0-9A-Za-z]+$"`
-	Container *UpdateContainer `json:"container,omitempty"`
+	DisplayName NullableString   `json:"display_name,omitempty" validate:"regexp=^[ ,-.0-9A-Za-z]+$"`
+	Container   *UpdateContainer `json:"container,omitempty"`
 	// The desired number of instances for your container group deployment.
 	Replicas NullableInt32 `json:"replicas,omitempty"`
 	// List of countries nodes must be located in. Remove this field to permit nodes from any country.
-	CountryCodes []CountryCode `json:"country_codes,omitempty"`
-	Networking *UpdateContainerGroupNetworking `json:"networking,omitempty"`
-	LivenessProbe *ContainerGroupLivenessProbe `json:"liveness_probe,omitempty"`
-	ReadinessProbe *ContainerGroupReadinessProbe `json:"readiness_probe,omitempty"`
-	StartupProbe *ContainerGroupStartupProbe `json:"startup_probe,omitempty"`
-	QueueAutoscaler *ContainerGroupQueueAutoscaler `json:"queue_autoscaler,omitempty"`
+	CountryCodes    []CountryCode                   `json:"country_codes,omitempty"`
+	Networking      *UpdateContainerGroupNetworking `json:"networking,omitempty"`
+	LivenessProbe   *ContainerGroupLivenessProbe    `json:"liveness_probe,omitempty"`
+	ReadinessProbe  *ContainerGroupReadinessProbe   `json:"readiness_probe,omitempty"`
+	StartupProbe    *ContainerGroupStartupProbe     `json:"startup_probe,omitempty"`
+	QueueAutoscaler *ContainerGroupQueueAutoscaler  `json:"queue_autoscaler,omitempty"`
 }
 
 // NewContainerGroupPatch instantiates a new ContainerGroupPatch object
@@ -83,6 +83,7 @@ func (o *ContainerGroupPatch) HasDisplayName() bool {
 func (o *ContainerGroupPatch) SetDisplayName(v string) {
 	o.DisplayName.Set(&v)
 }
+
 // SetDisplayNameNil sets the value for DisplayName to be an explicit nil
 func (o *ContainerGroupPatch) SetDisplayNameNil() {
 	o.DisplayName.Set(nil)
@@ -157,6 +158,7 @@ func (o *ContainerGroupPatch) HasReplicas() bool {
 func (o *ContainerGroupPatch) SetReplicas(v int32) {
 	o.Replicas.Set(&v)
 }
+
 // SetReplicasNil sets the value for Replicas to be an explicit nil
 func (o *ContainerGroupPatch) SetReplicasNil() {
 	o.Replicas.Set(nil)
@@ -361,7 +363,7 @@ func (o *ContainerGroupPatch) SetQueueAutoscaler(v ContainerGroupQueueAutoscaler
 }
 
 func (o ContainerGroupPatch) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -435,5 +437,3 @@ func (v *NullableContainerGroupPatch) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -27,11 +27,11 @@ type UpdateContainer struct {
 	// The container image to use.
 	Image NullableString `json:"image,omitempty" validate:"regexp=^.*$"`
 	// The container image caching.
-	ImageCaching *bool `json:"image_caching,omitempty"`
-	Logging *UpdateContainerLogging `json:"logging,omitempty"`
-	Priority NullableContainerGroupPriority `json:"priority,omitempty"`
+	ImageCaching           *bool                            `json:"image_caching,omitempty"`
+	Logging                *UpdateContainerLogging          `json:"logging,omitempty"`
+	Priority               NullableContainerGroupPriority   `json:"priority,omitempty"`
 	RegistryAuthentication *ContainerRegistryAuthentication `json:"registry_authentication,omitempty"`
-	Resources *UpdateContainerResources `json:"resources,omitempty"`
+	Resources              *UpdateContainerResources        `json:"resources,omitempty"`
 }
 
 // NewUpdateContainer instantiates a new UpdateContainer object
@@ -148,6 +148,7 @@ func (o *UpdateContainer) HasImage() bool {
 func (o *UpdateContainer) SetImage(v string) {
 	o.Image.Set(&v)
 }
+
 // SetImageNil sets the value for Image to be an explicit nil
 func (o *UpdateContainer) SetImageNil() {
 	o.Image.Set(nil)
@@ -254,6 +255,7 @@ func (o *UpdateContainer) HasPriority() bool {
 func (o *UpdateContainer) SetPriority(v ContainerGroupPriority) {
 	o.Priority.Set(&v)
 }
+
 // SetPriorityNil sets the value for Priority to be an explicit nil
 func (o *UpdateContainer) SetPriorityNil() {
 	o.Priority.Set(nil)
@@ -329,7 +331,7 @@ func (o *UpdateContainer) SetResources(v UpdateContainerResources) {
 }
 
 func (o UpdateContainer) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -400,5 +402,3 @@ func (v *NullableUpdateContainer) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

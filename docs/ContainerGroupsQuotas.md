@@ -6,9 +6,9 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **ContainerReplicasQuota** | **int32** | The maximum number of replicas that can be created for a container group | 
 **ContainerReplicasUsed** | **int32** | The number of replicas that are currently in use | 
-**MaxContainerGroupReallocationsPerMinute** | Pointer to **int32** | The maximum number of container group reallocations per minute | [optional] [default to 10]
-**MaxContainerGroupRecreatesPerMinute** | Pointer to **int32** | The maximum number of container group recreates per minute | [optional] [default to 10]
-**MaxContainerGroupRestartsPerMinute** | Pointer to **int32** | The maximum number of container group restarts per minute | [optional] [default to 10]
+**MaxContainerGroupReallocationsPerMinute** | Pointer to **int32** | The maximum number of container group reallocations per minute | [optional] 
+**MaxContainerGroupRecreatesPerMinute** | Pointer to **int32** | The maximum number of container group recreates per minute | [optional] 
+**MaxContainerGroupRestartsPerMinute** | Pointer to **int32** | The maximum number of container group restarts per minute | [optional] 
 
 ## Methods
 

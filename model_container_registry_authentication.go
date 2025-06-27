@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -20,11 +20,11 @@ var _ MappedNullable = &ContainerRegistryAuthentication{}
 
 // ContainerRegistryAuthentication Authentication configuration for various container registry types, including AWS ECR, Docker Hub, GCP GAR, GCP GCR, and basic authentication.
 type ContainerRegistryAuthentication struct {
-	AwsEcr *ContainerRegistryAuthenticationAwsEcr `json:"aws_ecr,omitempty"`
-	Basic *ContainerRegistryAuthenticationBasic `json:"basic,omitempty"`
+	AwsEcr    *ContainerRegistryAuthenticationAwsEcr    `json:"aws_ecr,omitempty"`
+	Basic     *ContainerRegistryAuthenticationBasic     `json:"basic,omitempty"`
 	DockerHub *ContainerRegistryAuthenticationDockerHub `json:"docker_hub,omitempty"`
-	GcpGar *ContainerRegistryAuthenticationGcpGar `json:"gcp_gar,omitempty"`
-	GcpGcr *ContainerRegistryAuthenticationGcpGcr `json:"gcp_gcr,omitempty"`
+	GcpGar    *ContainerRegistryAuthenticationGcpGar    `json:"gcp_gar,omitempty"`
+	GcpGcr    *ContainerRegistryAuthenticationGcpGcr    `json:"gcp_gcr,omitempty"`
 }
 
 // NewContainerRegistryAuthentication instantiates a new ContainerRegistryAuthentication object
@@ -205,7 +205,7 @@ func (o *ContainerRegistryAuthentication) SetGcpGcr(v ContainerRegistryAuthentic
 }
 
 func (o ContainerRegistryAuthentication) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -267,5 +267,3 @@ func (v *NullableContainerRegistryAuthentication) UnmarshalJSON(src []byte) erro
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

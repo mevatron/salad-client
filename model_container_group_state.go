@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -12,10 +12,10 @@ Contact: cloud@salad.com
 package saladclient
 
 import (
-	"encoding/json"
-	"time"
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"time"
 )
 
 // checks if the ContainerGroupState type satisfies the MappedNullable interface at compile time
@@ -26,11 +26,11 @@ type ContainerGroupState struct {
 	// Optional textual description or notes about the current state of the container group
 	Description NullableString `json:"description,omitempty" validate:"regexp=^.*$"`
 	// Timestamp when the container group execution finished or is expected to finish
-	FinishTime time.Time `json:"finish_time"`
+	FinishTime           time.Time                         `json:"finish_time"`
 	InstanceStatusCounts ContainerGroupInstanceStatusCount `json:"instance_status_counts"`
 	// Timestamp when the container group execution started
-	StartTime time.Time `json:"start_time"`
-	Status ContainerGroupStatus `json:"status"`
+	StartTime time.Time            `json:"start_time"`
+	Status    ContainerGroupStatus `json:"status"`
 }
 
 type _ContainerGroupState ContainerGroupState
@@ -88,6 +88,7 @@ func (o *ContainerGroupState) HasDescription() bool {
 func (o *ContainerGroupState) SetDescription(v string) {
 	o.Description.Set(&v)
 }
+
 // SetDescriptionNil sets the value for Description to be an explicit nil
 func (o *ContainerGroupState) SetDescriptionNil() {
 	o.Description.Set(nil)
@@ -195,7 +196,7 @@ func (o *ContainerGroupState) SetStatus(v ContainerGroupStatus) {
 }
 
 func (o ContainerGroupState) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -230,10 +231,10 @@ func (o *ContainerGroupState) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -289,5 +290,3 @@ func (v *NullableContainerGroupState) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

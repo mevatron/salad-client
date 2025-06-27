@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -73,6 +73,7 @@ func (o *UpdateContainerGroupNetworking) HasPort() bool {
 func (o *UpdateContainerGroupNetworking) SetPort(v int32) {
 	o.Port.Set(&v)
 }
+
 // SetPortNil sets the value for Port to be an explicit nil
 func (o *UpdateContainerGroupNetworking) SetPortNil() {
 	o.Port.Set(nil)
@@ -84,7 +85,7 @@ func (o *UpdateContainerGroupNetworking) UnsetPort() {
 }
 
 func (o UpdateContainerGroupNetworking) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -134,5 +135,3 @@ func (v *NullableUpdateContainerGroupNetworking) UnmarshalJSON(src []byte) error
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

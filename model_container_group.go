@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -12,10 +12,10 @@ Contact: cloud@salad.com
 package saladclient
 
 import (
-	"encoding/json"
-	"time"
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"time"
 )
 
 // checks if the ContainerGroup type satisfies the MappedNullable interface at compile time
@@ -24,35 +24,35 @@ var _ MappedNullable = &ContainerGroup{}
 // ContainerGroup A container group definition that represents a scalable set of identical containers running as a distributed service
 type ContainerGroup struct {
 	// Defines whether containers in this group should automatically start when deployed (true) or require manual starting (false)
-	AutostartPolicy bool `json:"autostart_policy"`
-	Container Container `json:"container"`
+	AutostartPolicy bool      `json:"autostart_policy"`
+	Container       Container `json:"container"`
 	// List of country codes where container instances are permitted to run. When not specified or empty, containers may run in any available region.
 	CountryCodes []CountryCode `json:"country_codes"`
 	// ISO 8601 timestamp when this container group was initially created
-	CreateTime time.Time `json:"create_time"`
+	CreateTime   time.Time           `json:"create_time"`
 	CurrentState ContainerGroupState `json:"current_state"`
 	// The display-friendly name of the resource.
 	DisplayName string `json:"display_name" validate:"regexp=^[ ,-.0-9A-Za-z]+$"`
 	// The container group identifier.
-	Id string `json:"id"`
+	Id            string                       `json:"id"`
 	LivenessProbe *ContainerGroupLivenessProbe `json:"liveness_probe,omitempty"`
 	// The container group name.
-	Name string `json:"name" validate:"regexp=^[a-z][a-z0-9-]{0,61}[a-z0-9]$"`
+	Name       string                    `json:"name" validate:"regexp=^[a-z][a-z0-9-]{0,61}[a-z0-9]$"`
 	Networking *ContainerGroupNetworking `json:"networking,omitempty"`
 	// The organization name.
 	OrganizationName string `json:"organization_name" validate:"regexp=^[a-z][a-z0-9-]{0,61}[a-z0-9]$"`
 	// Indicates whether a configuration change has been requested but not yet applied to all containers in the group
-	PendingChange bool `json:"pending_change"`
-	Priority NullableContainerGroupPriority `json:"priority"`
+	PendingChange bool                           `json:"pending_change"`
+	Priority      NullableContainerGroupPriority `json:"priority"`
 	// The project name.
-	ProjectName string `json:"project_name" validate:"regexp=^[a-z][a-z0-9-]{0,61}[a-z0-9]$"`
+	ProjectName     string                         `json:"project_name" validate:"regexp=^[a-z][a-z0-9-]{0,61}[a-z0-9]$"`
 	QueueAutoscaler *ContainerGroupQueueAutoscaler `json:"queue_autoscaler,omitempty"`
 	QueueConnection *ContainerGroupQueueConnection `json:"queue_connection,omitempty"`
-	ReadinessProbe *ContainerGroupReadinessProbe `json:"readiness_probe,omitempty"`
+	ReadinessProbe  *ContainerGroupReadinessProbe  `json:"readiness_probe,omitempty"`
 	// The container group replicas.
-	Replicas int32 `json:"replicas"`
-	RestartPolicy ContainerRestartPolicy `json:"restart_policy"`
-	StartupProbe *ContainerGroupStartupProbe `json:"startup_probe,omitempty"`
+	Replicas      int32                       `json:"replicas"`
+	RestartPolicy ContainerRestartPolicy      `json:"restart_policy"`
+	StartupProbe  *ContainerGroupStartupProbe `json:"startup_probe,omitempty"`
 	// ISO 8601 timestamp when this container group was last updated
 	UpdateTime time.Time `json:"update_time"`
 	// Incremental version number that increases with each configuration change to the container group
@@ -673,7 +673,7 @@ func (o *ContainerGroup) SetVersion(v int32) {
 }
 
 func (o ContainerGroup) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -747,10 +747,10 @@ func (o *ContainerGroup) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -806,5 +806,3 @@ func (v *NullableContainerGroup) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

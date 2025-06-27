@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -12,8 +12,8 @@ Contact: cloud@salad.com
 package saladclient
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -24,16 +24,16 @@ var _ MappedNullable = &ContainerGroupReadinessProbe{}
 type ContainerGroupReadinessProbe struct {
 	Exec *ContainerGroupProbeExec `json:"exec,omitempty"`
 	// The number of consecutive failures required to consider the probe failed. After this many consecutive failures, the container is marked as not ready.
-	FailureThreshold int32 `json:"failure_threshold"`
-	Grpc *ContainerGroupProbeGrpc `json:"grpc,omitempty"`
-	Http *ContainerGroupProbeHttp `json:"http,omitempty"`
+	FailureThreshold int32                    `json:"failure_threshold"`
+	Grpc             *ContainerGroupProbeGrpc `json:"grpc,omitempty"`
+	Http             *ContainerGroupProbeHttp `json:"http,omitempty"`
 	// The time in seconds to wait after the container starts before initiating the first probe. This allows time for the application to initialize before being tested.
 	InitialDelaySeconds int32 `json:"initial_delay_seconds"`
 	// How frequently (in seconds) the probe should be executed during the container's lifetime. Specifies the interval between consecutive probe executions.
 	PeriodSeconds int32 `json:"period_seconds"`
 	// The minimum consecutive successes required to consider the probe successful after it has failed. Defines how many successful probe results are needed to transition from failure to success.
-	SuccessThreshold int32 `json:"success_threshold"`
-	Tcp *ContainerGroupProbeTcp `json:"tcp,omitempty"`
+	SuccessThreshold int32                   `json:"success_threshold"`
+	Tcp              *ContainerGroupProbeTcp `json:"tcp,omitempty"`
 	// The maximum time in seconds that the probe has to complete. If the probe doesn't return a result before the timeout, it's considered failed.
 	TimeoutSeconds int32 `json:"timeout_seconds"`
 }
@@ -321,7 +321,7 @@ func (o *ContainerGroupReadinessProbe) SetTimeoutSeconds(v int32) {
 }
 
 func (o ContainerGroupReadinessProbe) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -367,10 +367,10 @@ func (o *ContainerGroupReadinessProbe) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -426,5 +426,3 @@ func (v *NullableContainerGroupReadinessProbe) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-
