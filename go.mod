@@ -1,4 +1,4 @@
-module github.com/SaladTechnologies/salad-client
+module github.com/mevatron/salad-client
 
 go 1.18
 
