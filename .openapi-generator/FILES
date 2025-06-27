@@ -65,6 +65,7 @@ docs/CreateContainer.md
 docs/CreateContainerGroupNetworking.md
 docs/CreateContainerLogging.md
 docs/CreateContainerLoggingHttp.md
+docs/CreateContainerResourceRequirements.md
 docs/GpuClass.md
 docs/GpuClassPrice.md
 docs/GpuClassesList.md
@@ -155,6 +156,7 @@ model_create_container.go
 model_create_container_group_networking.go
 model_create_container_logging.go
 model_create_container_logging_http.go
+model_create_container_resource_requirements.go
 model_gpu_class.go
 model_gpu_class_price.go
 model_gpu_classes_list.go

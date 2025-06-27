@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**DisplayName** | Pointer to **NullableString** | The display name. This may be used as a more human-readable name. | [optional] 
-**Description** | Pointer to **NullableString** | The description. This may be used as a space for notes or other information about the queue. | [optional] 
+**DisplayName** | Pointer to **string** | The display name. This may be used as a more human-readable name. | [optional] 
+**Description** | Pointer to **string** | The description. This may be used as a space for notes or other information about the queue. | [optional] 
 
 ## Methods
 
@@ -51,16 +51,6 @@ SetDisplayName sets DisplayName field to given value.
 
 HasDisplayName returns a boolean if a field has been set.
 
-### SetDisplayNameNil
-
-`func (o *QueuePatch) SetDisplayNameNil(b bool)`
-
- SetDisplayNameNil sets the value for DisplayName to be an explicit nil
-
-### UnsetDisplayName
-`func (o *QueuePatch) UnsetDisplayName()`
-
-UnsetDisplayName ensures that no value is present for DisplayName, not even an explicit nil
 ### GetDescription
 
 `func (o *QueuePatch) GetDescription() string`
@@ -86,16 +76,6 @@ SetDescription sets Description field to given value.
 
 HasDescription returns a boolean if a field has been set.
 
-### SetDescriptionNil
-
-`func (o *QueuePatch) SetDescriptionNil(b bool)`
-
- SetDescriptionNil sets the value for Description to be an explicit nil
-
-### UnsetDescription
-`func (o *QueuePatch) UnsetDescription()`
-
-UnsetDescription ensures that no value is present for Description, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

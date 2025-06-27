@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -27,8 +26,9 @@ type ContainerGroupProbeHttp struct {
 	// The HTTP path that will be probed to check container health.
 	Path string `json:"path" validate:"regexp=^.*$"`
 	// The TCP port number to which the HTTP request will be sent.
-	Port int32 `json:"port"`
-	Scheme NullableContainerProbeHttpScheme `json:"scheme"`
+	Port                 int32                    `json:"port"`
+	Scheme               ContainerProbeHttpScheme `json:"scheme"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ContainerGroupProbeHttp ContainerGroupProbeHttp
@@ -37,7 +37,7 @@ type _ContainerGroupProbeHttp ContainerGroupProbeHttp
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewContainerGroupProbeHttp(headers []ContainerGroupProbeHttpHeader, path string, port int32, scheme NullableContainerProbeHttpScheme) *ContainerGroupProbeHttp {
+func NewContainerGroupProbeHttp(headers []ContainerGroupProbeHttpHeader, path string, port int32, scheme ContainerProbeHttpScheme) *ContainerGroupProbeHttp {
 	this := ContainerGroupProbeHttp{}
 	this.Headers = headers
 	this.Path = path
@@ -127,33 +127,31 @@ func (o *ContainerGroupProbeHttp) SetPort(v int32) {
 }
 
 // GetScheme returns the Scheme field value
-// If the value is explicit nil, the zero value for ContainerProbeHttpScheme will be returned
 func (o *ContainerGroupProbeHttp) GetScheme() ContainerProbeHttpScheme {
-	if o == nil || o.Scheme.Get() == nil {
+	if o == nil {
 		var ret ContainerProbeHttpScheme
 		return ret
 	}
 
-	return *o.Scheme.Get()
+	return o.Scheme
 }
 
 // GetSchemeOk returns a tuple with the Scheme field value
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ContainerGroupProbeHttp) GetSchemeOk() (*ContainerProbeHttpScheme, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return o.Scheme.Get(), o.Scheme.IsSet()
+	return &o.Scheme, true
 }
 
 // SetScheme sets field value
 func (o *ContainerGroupProbeHttp) SetScheme(v ContainerProbeHttpScheme) {
-	o.Scheme.Set(&v)
+	o.Scheme = v
 }
 
 func (o ContainerGroupProbeHttp) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -165,7 +163,12 @@ func (o ContainerGroupProbeHttp) ToMap() (map[string]interface{}, error) {
 	toSerialize["headers"] = o.Headers
 	toSerialize["path"] = o.Path
 	toSerialize["port"] = o.Port
-	toSerialize["scheme"] = o.Scheme.Get()
+	toSerialize["scheme"] = o.Scheme
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -185,10 +188,10 @@ func (o *ContainerGroupProbeHttp) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -196,15 +199,23 @@ func (o *ContainerGroupProbeHttp) UnmarshalJSON(data []byte) (err error) {
 
 	varContainerGroupProbeHttp := _ContainerGroupProbeHttp{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varContainerGroupProbeHttp)
+	err = json.Unmarshal(data, &varContainerGroupProbeHttp)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ContainerGroupProbeHttp(varContainerGroupProbeHttp)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "headers")
+		delete(additionalProperties, "path")
+		delete(additionalProperties, "port")
+		delete(additionalProperties, "scheme")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -244,5 +255,3 @@ func (v *NullableContainerGroupProbeHttp) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

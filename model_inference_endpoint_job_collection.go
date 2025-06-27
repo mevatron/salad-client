@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -29,7 +28,8 @@ type InferenceEndpointJobCollection struct {
 	// The maximum number of items per page.
 	PageSize int32 `json:"page_size"`
 	// The total number of items in the collection.
-	TotalSize int32 `json:"total_size"`
+	TotalSize            int32 `json:"total_size"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _InferenceEndpointJobCollection InferenceEndpointJobCollection
@@ -152,7 +152,7 @@ func (o *InferenceEndpointJobCollection) SetTotalSize(v int32) {
 }
 
 func (o InferenceEndpointJobCollection) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -165,6 +165,11 @@ func (o InferenceEndpointJobCollection) ToMap() (map[string]interface{}, error) 
 	toSerialize["page"] = o.Page
 	toSerialize["page_size"] = o.PageSize
 	toSerialize["total_size"] = o.TotalSize
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -184,10 +189,10 @@ func (o *InferenceEndpointJobCollection) UnmarshalJSON(data []byte) (err error) 
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -195,15 +200,23 @@ func (o *InferenceEndpointJobCollection) UnmarshalJSON(data []byte) (err error) 
 
 	varInferenceEndpointJobCollection := _InferenceEndpointJobCollection{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varInferenceEndpointJobCollection)
+	err = json.Unmarshal(data, &varInferenceEndpointJobCollection)
 
 	if err != nil {
 		return err
 	}
 
 	*o = InferenceEndpointJobCollection(varInferenceEndpointJobCollection)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "items")
+		delete(additionalProperties, "page")
+		delete(additionalProperties, "page_size")
+		delete(additionalProperties, "total_size")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -243,5 +256,3 @@ func (v *NullableInferenceEndpointJobCollection) UnmarshalJSON(src []byte) error
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

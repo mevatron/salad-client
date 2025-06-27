@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -20,15 +20,14 @@ import (
 	"strings"
 )
 
-
 // InferenceEndpointsAPIService InferenceEndpointsAPI service
 type InferenceEndpointsAPIService service
 
 type ApiCreateInferenceEndpointJobRequest struct {
-	ctx context.Context
-	ApiService *InferenceEndpointsAPIService
-	organizationName string
-	inferenceEndpointName string
+	ctx                           context.Context
+	ApiService                    *InferenceEndpointsAPIService
+	organizationName              string
+	inferenceEndpointName         string
 	inferenceEndpointJobPrototype *InferenceEndpointJobPrototype
 }
 
@@ -46,28 +45,29 @@ CreateInferenceEndpointJob Create a New Inference Endpoint Job
 
 Creates a new inference endpoint job.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param inferenceEndpointName The inference endpoint name.
- @return ApiCreateInferenceEndpointJobRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param inferenceEndpointName The inference endpoint name.
+	@return ApiCreateInferenceEndpointJobRequest
 */
 func (a *InferenceEndpointsAPIService) CreateInferenceEndpointJob(ctx context.Context, organizationName string, inferenceEndpointName string) ApiCreateInferenceEndpointJobRequest {
 	return ApiCreateInferenceEndpointJobRequest{
-		ApiService: a,
-		ctx: ctx,
-		organizationName: organizationName,
+		ApiService:            a,
+		ctx:                   ctx,
+		organizationName:      organizationName,
 		inferenceEndpointName: inferenceEndpointName,
 	}
 }
 
 // Execute executes the request
-//  @return InferenceEndpointJob
+//
+//	@return InferenceEndpointJob
 func (a *InferenceEndpointsAPIService) CreateInferenceEndpointJobExecute(r ApiCreateInferenceEndpointJobRequest) (*InferenceEndpointJob, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *InferenceEndpointJob
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *InferenceEndpointJob
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "InferenceEndpointsAPIService.CreateInferenceEndpointJob")
@@ -160,8 +160,8 @@ func (a *InferenceEndpointsAPIService) CreateInferenceEndpointJobExecute(r ApiCr
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -171,8 +171,8 @@ func (a *InferenceEndpointsAPIService) CreateInferenceEndpointJobExecute(r ApiCr
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -182,8 +182,8 @@ func (a *InferenceEndpointsAPIService) CreateInferenceEndpointJobExecute(r ApiCr
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -193,8 +193,8 @@ func (a *InferenceEndpointsAPIService) CreateInferenceEndpointJobExecute(r ApiCr
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -204,18 +204,18 @@ func (a *InferenceEndpointsAPIService) CreateInferenceEndpointJobExecute(r ApiCr
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -232,10 +232,10 @@ func (a *InferenceEndpointsAPIService) CreateInferenceEndpointJobExecute(r ApiCr
 }
 
 type ApiDeleteInferenceEndpointJobRequest struct {
-	ctx context.Context
-	ApiService *InferenceEndpointsAPIService
-	organizationName string
-	inferenceEndpointName string
+	ctx                    context.Context
+	ApiService             *InferenceEndpointsAPIService
+	organizationName       string
+	inferenceEndpointName  string
 	inferenceEndpointJobId string
 }
 
@@ -248,18 +248,18 @@ DeleteInferenceEndpointJob Cancel an Inference Endpoint Job
 
 Cancels an inference endpoint job.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param inferenceEndpointName The inference endpoint name.
- @param inferenceEndpointJobId The inference endpoint job identifier.
- @return ApiDeleteInferenceEndpointJobRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param inferenceEndpointName The inference endpoint name.
+	@param inferenceEndpointJobId The inference endpoint job identifier.
+	@return ApiDeleteInferenceEndpointJobRequest
 */
 func (a *InferenceEndpointsAPIService) DeleteInferenceEndpointJob(ctx context.Context, organizationName string, inferenceEndpointName string, inferenceEndpointJobId string) ApiDeleteInferenceEndpointJobRequest {
 	return ApiDeleteInferenceEndpointJobRequest{
-		ApiService: a,
-		ctx: ctx,
-		organizationName: organizationName,
-		inferenceEndpointName: inferenceEndpointName,
+		ApiService:             a,
+		ctx:                    ctx,
+		organizationName:       organizationName,
+		inferenceEndpointName:  inferenceEndpointName,
 		inferenceEndpointJobId: inferenceEndpointJobId,
 	}
 }
@@ -267,9 +267,9 @@ func (a *InferenceEndpointsAPIService) DeleteInferenceEndpointJob(ctx context.Co
 // Execute executes the request
 func (a *InferenceEndpointsAPIService) DeleteInferenceEndpointJobExecute(r ApiDeleteInferenceEndpointJobRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "InferenceEndpointsAPIService.DeleteInferenceEndpointJob")
@@ -358,8 +358,8 @@ func (a *InferenceEndpointsAPIService) DeleteInferenceEndpointJobExecute(r ApiDe
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -369,8 +369,8 @@ func (a *InferenceEndpointsAPIService) DeleteInferenceEndpointJobExecute(r ApiDe
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -380,8 +380,8 @@ func (a *InferenceEndpointsAPIService) DeleteInferenceEndpointJobExecute(r ApiDe
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -391,8 +391,8 @@ func (a *InferenceEndpointsAPIService) DeleteInferenceEndpointJobExecute(r ApiDe
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -402,18 +402,18 @@ func (a *InferenceEndpointsAPIService) DeleteInferenceEndpointJobExecute(r ApiDe
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
 
@@ -421,9 +421,9 @@ func (a *InferenceEndpointsAPIService) DeleteInferenceEndpointJobExecute(r ApiDe
 }
 
 type ApiGetInferenceEndpointRequest struct {
-	ctx context.Context
-	ApiService *InferenceEndpointsAPIService
-	organizationName string
+	ctx                   context.Context
+	ApiService            *InferenceEndpointsAPIService
+	organizationName      string
 	inferenceEndpointName string
 }
 
@@ -436,28 +436,29 @@ GetInferenceEndpoint Get an Inference Endpoint
 
 Gets an inference endpoint.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param inferenceEndpointName The inference endpoint name.
- @return ApiGetInferenceEndpointRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param inferenceEndpointName The inference endpoint name.
+	@return ApiGetInferenceEndpointRequest
 */
 func (a *InferenceEndpointsAPIService) GetInferenceEndpoint(ctx context.Context, organizationName string, inferenceEndpointName string) ApiGetInferenceEndpointRequest {
 	return ApiGetInferenceEndpointRequest{
-		ApiService: a,
-		ctx: ctx,
-		organizationName: organizationName,
+		ApiService:            a,
+		ctx:                   ctx,
+		organizationName:      organizationName,
 		inferenceEndpointName: inferenceEndpointName,
 	}
 }
 
 // Execute executes the request
-//  @return InferenceEndpoint
+//
+//	@return InferenceEndpoint
 func (a *InferenceEndpointsAPIService) GetInferenceEndpointExecute(r ApiGetInferenceEndpointRequest) (*InferenceEndpoint, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *InferenceEndpoint
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *InferenceEndpoint
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "InferenceEndpointsAPIService.GetInferenceEndpoint")
@@ -545,8 +546,8 @@ func (a *InferenceEndpointsAPIService) GetInferenceEndpointExecute(r ApiGetInfer
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -556,8 +557,8 @@ func (a *InferenceEndpointsAPIService) GetInferenceEndpointExecute(r ApiGetInfer
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -567,8 +568,8 @@ func (a *InferenceEndpointsAPIService) GetInferenceEndpointExecute(r ApiGetInfer
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -578,18 +579,18 @@ func (a *InferenceEndpointsAPIService) GetInferenceEndpointExecute(r ApiGetInfer
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -606,10 +607,10 @@ func (a *InferenceEndpointsAPIService) GetInferenceEndpointExecute(r ApiGetInfer
 }
 
 type ApiGetInferenceEndpointJobRequest struct {
-	ctx context.Context
-	ApiService *InferenceEndpointsAPIService
-	organizationName string
-	inferenceEndpointName string
+	ctx                    context.Context
+	ApiService             *InferenceEndpointsAPIService
+	organizationName       string
+	inferenceEndpointName  string
 	inferenceEndpointJobId string
 }
 
@@ -622,30 +623,31 @@ GetInferenceEndpointJob Get an Inference Endpoint Job
 
 Gets an inference endpoint job.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param inferenceEndpointName The inference endpoint name.
- @param inferenceEndpointJobId The inference endpoint job identifier.
- @return ApiGetInferenceEndpointJobRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param inferenceEndpointName The inference endpoint name.
+	@param inferenceEndpointJobId The inference endpoint job identifier.
+	@return ApiGetInferenceEndpointJobRequest
 */
 func (a *InferenceEndpointsAPIService) GetInferenceEndpointJob(ctx context.Context, organizationName string, inferenceEndpointName string, inferenceEndpointJobId string) ApiGetInferenceEndpointJobRequest {
 	return ApiGetInferenceEndpointJobRequest{
-		ApiService: a,
-		ctx: ctx,
-		organizationName: organizationName,
-		inferenceEndpointName: inferenceEndpointName,
+		ApiService:             a,
+		ctx:                    ctx,
+		organizationName:       organizationName,
+		inferenceEndpointName:  inferenceEndpointName,
 		inferenceEndpointJobId: inferenceEndpointJobId,
 	}
 }
 
 // Execute executes the request
-//  @return InferenceEndpointJob
+//
+//	@return InferenceEndpointJob
 func (a *InferenceEndpointsAPIService) GetInferenceEndpointJobExecute(r ApiGetInferenceEndpointJobRequest) (*InferenceEndpointJob, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *InferenceEndpointJob
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *InferenceEndpointJob
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "InferenceEndpointsAPIService.GetInferenceEndpointJob")
@@ -734,8 +736,8 @@ func (a *InferenceEndpointsAPIService) GetInferenceEndpointJobExecute(r ApiGetIn
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -745,8 +747,8 @@ func (a *InferenceEndpointsAPIService) GetInferenceEndpointJobExecute(r ApiGetIn
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -756,8 +758,8 @@ func (a *InferenceEndpointsAPIService) GetInferenceEndpointJobExecute(r ApiGetIn
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -767,18 +769,18 @@ func (a *InferenceEndpointsAPIService) GetInferenceEndpointJobExecute(r ApiGetIn
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -795,12 +797,12 @@ func (a *InferenceEndpointsAPIService) GetInferenceEndpointJobExecute(r ApiGetIn
 }
 
 type ApiListInferenceEndpointJobsRequest struct {
-	ctx context.Context
-	ApiService *InferenceEndpointsAPIService
-	organizationName string
+	ctx                   context.Context
+	ApiService            *InferenceEndpointsAPIService
+	organizationName      string
 	inferenceEndpointName string
-	page *int32
-	pageSize *int32
+	page                  *int32
+	pageSize              *int32
 }
 
 // The page number.
@@ -824,28 +826,29 @@ ListInferenceEndpointJobs List Inference Endpoint Jobs
 
 Lists inference endpoint jobs.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @param inferenceEndpointName The inference endpoint name.
- @return ApiListInferenceEndpointJobsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@param inferenceEndpointName The inference endpoint name.
+	@return ApiListInferenceEndpointJobsRequest
 */
 func (a *InferenceEndpointsAPIService) ListInferenceEndpointJobs(ctx context.Context, organizationName string, inferenceEndpointName string) ApiListInferenceEndpointJobsRequest {
 	return ApiListInferenceEndpointJobsRequest{
-		ApiService: a,
-		ctx: ctx,
-		organizationName: organizationName,
+		ApiService:            a,
+		ctx:                   ctx,
+		organizationName:      organizationName,
 		inferenceEndpointName: inferenceEndpointName,
 	}
 }
 
 // Execute executes the request
-//  @return InferenceEndpointJobCollection
+//
+//	@return InferenceEndpointJobCollection
 func (a *InferenceEndpointsAPIService) ListInferenceEndpointJobsExecute(r ApiListInferenceEndpointJobsRequest) (*InferenceEndpointJobCollection, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *InferenceEndpointJobCollection
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *InferenceEndpointJobCollection
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "InferenceEndpointsAPIService.ListInferenceEndpointJobs")
@@ -939,8 +942,8 @@ func (a *InferenceEndpointsAPIService) ListInferenceEndpointJobsExecute(r ApiLis
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -950,8 +953,8 @@ func (a *InferenceEndpointsAPIService) ListInferenceEndpointJobsExecute(r ApiLis
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -961,8 +964,8 @@ func (a *InferenceEndpointsAPIService) ListInferenceEndpointJobsExecute(r ApiLis
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -972,8 +975,8 @@ func (a *InferenceEndpointsAPIService) ListInferenceEndpointJobsExecute(r ApiLis
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -983,18 +986,18 @@ func (a *InferenceEndpointsAPIService) ListInferenceEndpointJobsExecute(r ApiLis
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -1011,11 +1014,11 @@ func (a *InferenceEndpointsAPIService) ListInferenceEndpointJobsExecute(r ApiLis
 }
 
 type ApiListInferenceEndpointsRequest struct {
-	ctx context.Context
-	ApiService *InferenceEndpointsAPIService
+	ctx              context.Context
+	ApiService       *InferenceEndpointsAPIService
 	organizationName string
-	page *int32
-	pageSize *int32
+	page             *int32
+	pageSize         *int32
 }
 
 // The page number.
@@ -1039,26 +1042,27 @@ ListInferenceEndpoints List Inference Endpoints
 
 Lists inference endpoints.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
- @return ApiListInferenceEndpointsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organizationName Your organization name. This identifies the billing context for the API operation and represents a security boundary for SaladCloud resources. The organization must be created before using the API, and you must be a member of the organization.
+	@return ApiListInferenceEndpointsRequest
 */
 func (a *InferenceEndpointsAPIService) ListInferenceEndpoints(ctx context.Context, organizationName string) ApiListInferenceEndpointsRequest {
 	return ApiListInferenceEndpointsRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:       a,
+		ctx:              ctx,
 		organizationName: organizationName,
 	}
 }
 
 // Execute executes the request
-//  @return InferenceEndpointCollection
+//
+//	@return InferenceEndpointCollection
 func (a *InferenceEndpointsAPIService) ListInferenceEndpointsExecute(r ApiListInferenceEndpointsRequest) (*InferenceEndpointCollection, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *InferenceEndpointCollection
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *InferenceEndpointCollection
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "InferenceEndpointsAPIService.ListInferenceEndpoints")
@@ -1145,8 +1149,8 @@ func (a *InferenceEndpointsAPIService) ListInferenceEndpointsExecute(r ApiListIn
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -1156,8 +1160,8 @@ func (a *InferenceEndpointsAPIService) ListInferenceEndpointsExecute(r ApiListIn
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1167,8 +1171,8 @@ func (a *InferenceEndpointsAPIService) ListInferenceEndpointsExecute(r ApiListIn
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1178,8 +1182,8 @@ func (a *InferenceEndpointsAPIService) ListInferenceEndpointsExecute(r ApiListIn
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 429 {
@@ -1189,18 +1193,18 @@ func (a *InferenceEndpointsAPIService) ListInferenceEndpointsExecute(r ApiListIn
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ProblemDetails
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+		var v ProblemDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 

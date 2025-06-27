@@ -12,8 +12,8 @@ Contact: cloud@salad.com
 package saladclient
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -106,6 +106,7 @@ func (o *CreateQueue) HasDisplayName() bool {
 func (o *CreateQueue) SetDisplayName(v string) {
 	o.DisplayName.Set(&v)
 }
+
 // SetDisplayNameNil sets the value for DisplayName to be an explicit nil
 func (o *CreateQueue) SetDisplayNameNil() {
 	o.DisplayName.Set(nil)
@@ -148,6 +149,7 @@ func (o *CreateQueue) HasDescription() bool {
 func (o *CreateQueue) SetDescription(v string) {
 	o.Description.Set(&v)
 }
+
 // SetDescriptionNil sets the value for Description to be an explicit nil
 func (o *CreateQueue) SetDescriptionNil() {
 	o.Description.Set(nil)
@@ -159,7 +161,7 @@ func (o *CreateQueue) UnsetDescription() {
 }
 
 func (o CreateQueue) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -191,10 +193,10 @@ func (o *CreateQueue) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -250,5 +252,3 @@ func (v *NullableCreateQueue) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,9 +13,8 @@ package saladclient
 
 import (
 	"encoding/json"
-	"time"
-	"bytes"
 	"fmt"
+	"time"
 )
 
 // checks if the InferenceEndpointJobEvent type satisfies the MappedNullable interface at compile time
@@ -25,7 +24,8 @@ var _ MappedNullable = &InferenceEndpointJobEvent{}
 type InferenceEndpointJobEvent struct {
 	Action InferenceEndpointJobEventAction `json:"action"`
 	// The time the event occurred.
-	Time time.Time `json:"time"`
+	Time                 time.Time `json:"time"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _InferenceEndpointJobEvent InferenceEndpointJobEvent
@@ -98,7 +98,7 @@ func (o *InferenceEndpointJobEvent) SetTime(v time.Time) {
 }
 
 func (o InferenceEndpointJobEvent) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -109,6 +109,11 @@ func (o InferenceEndpointJobEvent) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["action"] = o.Action
 	toSerialize["time"] = o.Time
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -126,10 +131,10 @@ func (o *InferenceEndpointJobEvent) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -137,15 +142,21 @@ func (o *InferenceEndpointJobEvent) UnmarshalJSON(data []byte) (err error) {
 
 	varInferenceEndpointJobEvent := _InferenceEndpointJobEvent{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varInferenceEndpointJobEvent)
+	err = json.Unmarshal(data, &varInferenceEndpointJobEvent)
 
 	if err != nil {
 		return err
 	}
 
 	*o = InferenceEndpointJobEvent(varInferenceEndpointJobEvent)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "action")
+		delete(additionalProperties, "time")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -185,5 +196,3 @@ func (v *NullableInferenceEndpointJobEvent) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

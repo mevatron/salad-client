@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Port** | Pointer to **NullableInt32** | The port number to expose on the container group | [optional] 
+**Port** | Pointer to **int32** | The port number to expose on the container group | [optional] 
 
 ## Methods
 
@@ -50,16 +50,6 @@ SetPort sets Port field to given value.
 
 HasPort returns a boolean if a field has been set.
 
-### SetPortNil
-
-`func (o *UpdateContainerGroupNetworking) SetPortNil(b bool)`
-
- SetPortNil sets the value for Port to be an explicit nil
-
-### UnsetPort
-`func (o *UpdateContainerGroupNetworking) UnsetPort()`
-
-UnsetPort ensures that no value is present for Port, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

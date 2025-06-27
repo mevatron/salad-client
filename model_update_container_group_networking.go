@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -21,8 +21,11 @@ var _ MappedNullable = &UpdateContainerGroupNetworking{}
 // UpdateContainerGroupNetworking Represents update container group networking parameters
 type UpdateContainerGroupNetworking struct {
 	// The port number to expose on the container group
-	Port NullableInt32 `json:"port,omitempty"`
+	Port                 *int32 `json:"port,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _UpdateContainerGroupNetworking UpdateContainerGroupNetworking
 
 // NewUpdateContainerGroupNetworking instantiates a new UpdateContainerGroupNetworking object
 // This constructor will assign default values to properties that have it defined,
@@ -41,50 +44,40 @@ func NewUpdateContainerGroupNetworkingWithDefaults() *UpdateContainerGroupNetwor
 	return &this
 }
 
-// GetPort returns the Port field value if set, zero value otherwise (both if not set or set to explicit null).
+// GetPort returns the Port field value if set, zero value otherwise.
 func (o *UpdateContainerGroupNetworking) GetPort() int32 {
-	if o == nil || IsNil(o.Port.Get()) {
+	if o == nil || IsNil(o.Port) {
 		var ret int32
 		return ret
 	}
-	return *o.Port.Get()
+	return *o.Port
 }
 
 // GetPortOk returns a tuple with the Port field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *UpdateContainerGroupNetworking) GetPortOk() (*int32, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Port) {
 		return nil, false
 	}
-	return o.Port.Get(), o.Port.IsSet()
+	return o.Port, true
 }
 
 // HasPort returns a boolean if a field has been set.
 func (o *UpdateContainerGroupNetworking) HasPort() bool {
-	if o != nil && o.Port.IsSet() {
+	if o != nil && !IsNil(o.Port) {
 		return true
 	}
 
 	return false
 }
 
-// SetPort gets a reference to the given NullableInt32 and assigns it to the Port field.
+// SetPort gets a reference to the given int32 and assigns it to the Port field.
 func (o *UpdateContainerGroupNetworking) SetPort(v int32) {
-	o.Port.Set(&v)
-}
-// SetPortNil sets the value for Port to be an explicit nil
-func (o *UpdateContainerGroupNetworking) SetPortNil() {
-	o.Port.Set(nil)
-}
-
-// UnsetPort ensures that no value is present for Port, not even an explicit nil
-func (o *UpdateContainerGroupNetworking) UnsetPort() {
-	o.Port.Unset()
+	o.Port = &v
 }
 
 func (o UpdateContainerGroupNetworking) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -93,10 +86,36 @@ func (o UpdateContainerGroupNetworking) MarshalJSON() ([]byte, error) {
 
 func (o UpdateContainerGroupNetworking) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Port.IsSet() {
-		toSerialize["port"] = o.Port.Get()
+	if !IsNil(o.Port) {
+		toSerialize["port"] = o.Port
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *UpdateContainerGroupNetworking) UnmarshalJSON(data []byte) (err error) {
+	varUpdateContainerGroupNetworking := _UpdateContainerGroupNetworking{}
+
+	err = json.Unmarshal(data, &varUpdateContainerGroupNetworking)
+
+	if err != nil {
+		return err
+	}
+
+	*o = UpdateContainerGroupNetworking(varUpdateContainerGroupNetworking)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "port")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableUpdateContainerGroupNetworking struct {
@@ -134,5 +153,3 @@ func (v *NullableUpdateContainerGroupNetworking) UnmarshalJSON(src []byte) error
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

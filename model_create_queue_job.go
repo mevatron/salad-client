@@ -12,8 +12,8 @@ Contact: cloud@salad.com
 package saladclient
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -22,9 +22,9 @@ var _ MappedNullable = &CreateQueueJob{}
 
 // CreateQueueJob Represents a request to create a queue job
 type CreateQueueJob struct {
-	Input interface{} `json:"input"`
+	Input    interface{}            `json:"input"`
 	Metadata map[string]interface{} `json:"metadata,omitempty"`
-	Webhook NullableString `json:"webhook,omitempty"`
+	Webhook  NullableString         `json:"webhook,omitempty"`
 }
 
 type _CreateQueueJob CreateQueueJob
@@ -138,6 +138,7 @@ func (o *CreateQueueJob) HasWebhook() bool {
 func (o *CreateQueueJob) SetWebhook(v string) {
 	o.Webhook.Set(&v)
 }
+
 // SetWebhookNil sets the value for Webhook to be an explicit nil
 func (o *CreateQueueJob) SetWebhookNil() {
 	o.Webhook.Set(nil)
@@ -149,7 +150,7 @@ func (o *CreateQueueJob) UnsetWebhook() {
 }
 
 func (o CreateQueueJob) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -183,10 +184,10 @@ func (o *CreateQueueJob) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -242,5 +243,3 @@ func (v *NullableCreateQueueJob) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

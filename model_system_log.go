@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,9 +13,8 @@ package saladclient
 
 import (
 	"encoding/json"
-	"time"
-	"bytes"
 	"fmt"
+	"time"
 )
 
 // checks if the SystemLog type satisfies the MappedNullable interface at compile time
@@ -32,15 +31,16 @@ type SystemLog struct {
 	// The container group machine identifier.
 	MachineId *string `json:"machine_id,omitempty"`
 	// The number of CPUs
-	ResourceCpu NullableInt32 `json:"resource_cpu"`
+	ResourceCpu int32 `json:"resource_cpu"`
 	// The GPU class name
 	ResourceGpuClass string `json:"resource_gpu_class"`
 	// The memory amount in MB
-	ResourceMemory NullableInt32 `json:"resource_memory"`
+	ResourceMemory int32 `json:"resource_memory"`
 	// The storage amount in bytes
-	ResourceStorageAmount NullableInt64 `json:"resource_storage_amount"`
+	ResourceStorageAmount int64 `json:"resource_storage_amount"`
 	// The version instance ID
-	Version string `json:"version"`
+	Version              string `json:"version"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _SystemLog SystemLog
@@ -49,7 +49,7 @@ type _SystemLog SystemLog
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewSystemLog(eventName string, eventTime time.Time, resourceCpu NullableInt32, resourceGpuClass string, resourceMemory NullableInt32, resourceStorageAmount NullableInt64, version string) *SystemLog {
+func NewSystemLog(eventName string, eventTime time.Time, resourceCpu int32, resourceGpuClass string, resourceMemory int32, resourceStorageAmount int64, version string) *SystemLog {
 	this := SystemLog{}
 	this.EventName = eventName
 	this.EventTime = eventTime
@@ -182,29 +182,27 @@ func (o *SystemLog) SetMachineId(v string) {
 }
 
 // GetResourceCpu returns the ResourceCpu field value
-// If the value is explicit nil, the zero value for int32 will be returned
 func (o *SystemLog) GetResourceCpu() int32 {
-	if o == nil || o.ResourceCpu.Get() == nil {
+	if o == nil {
 		var ret int32
 		return ret
 	}
 
-	return *o.ResourceCpu.Get()
+	return o.ResourceCpu
 }
 
 // GetResourceCpuOk returns a tuple with the ResourceCpu field value
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *SystemLog) GetResourceCpuOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return o.ResourceCpu.Get(), o.ResourceCpu.IsSet()
+	return &o.ResourceCpu, true
 }
 
 // SetResourceCpu sets field value
 func (o *SystemLog) SetResourceCpu(v int32) {
-	o.ResourceCpu.Set(&v)
+	o.ResourceCpu = v
 }
 
 // GetResourceGpuClass returns the ResourceGpuClass field value
@@ -232,55 +230,51 @@ func (o *SystemLog) SetResourceGpuClass(v string) {
 }
 
 // GetResourceMemory returns the ResourceMemory field value
-// If the value is explicit nil, the zero value for int32 will be returned
 func (o *SystemLog) GetResourceMemory() int32 {
-	if o == nil || o.ResourceMemory.Get() == nil {
+	if o == nil {
 		var ret int32
 		return ret
 	}
 
-	return *o.ResourceMemory.Get()
+	return o.ResourceMemory
 }
 
 // GetResourceMemoryOk returns a tuple with the ResourceMemory field value
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *SystemLog) GetResourceMemoryOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return o.ResourceMemory.Get(), o.ResourceMemory.IsSet()
+	return &o.ResourceMemory, true
 }
 
 // SetResourceMemory sets field value
 func (o *SystemLog) SetResourceMemory(v int32) {
-	o.ResourceMemory.Set(&v)
+	o.ResourceMemory = v
 }
 
 // GetResourceStorageAmount returns the ResourceStorageAmount field value
-// If the value is explicit nil, the zero value for int64 will be returned
 func (o *SystemLog) GetResourceStorageAmount() int64 {
-	if o == nil || o.ResourceStorageAmount.Get() == nil {
+	if o == nil {
 		var ret int64
 		return ret
 	}
 
-	return *o.ResourceStorageAmount.Get()
+	return o.ResourceStorageAmount
 }
 
 // GetResourceStorageAmountOk returns a tuple with the ResourceStorageAmount field value
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *SystemLog) GetResourceStorageAmountOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return o.ResourceStorageAmount.Get(), o.ResourceStorageAmount.IsSet()
+	return &o.ResourceStorageAmount, true
 }
 
 // SetResourceStorageAmount sets field value
 func (o *SystemLog) SetResourceStorageAmount(v int64) {
-	o.ResourceStorageAmount.Set(&v)
+	o.ResourceStorageAmount = v
 }
 
 // GetVersion returns the Version field value
@@ -308,7 +302,7 @@ func (o *SystemLog) SetVersion(v string) {
 }
 
 func (o SystemLog) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -325,11 +319,16 @@ func (o SystemLog) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.MachineId) {
 		toSerialize["machine_id"] = o.MachineId
 	}
-	toSerialize["resource_cpu"] = o.ResourceCpu.Get()
+	toSerialize["resource_cpu"] = o.ResourceCpu
 	toSerialize["resource_gpu_class"] = o.ResourceGpuClass
-	toSerialize["resource_memory"] = o.ResourceMemory.Get()
-	toSerialize["resource_storage_amount"] = o.ResourceStorageAmount.Get()
+	toSerialize["resource_memory"] = o.ResourceMemory
+	toSerialize["resource_storage_amount"] = o.ResourceStorageAmount
 	toSerialize["version"] = o.Version
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -352,10 +351,10 @@ func (o *SystemLog) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -363,15 +362,28 @@ func (o *SystemLog) UnmarshalJSON(data []byte) (err error) {
 
 	varSystemLog := _SystemLog{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varSystemLog)
+	err = json.Unmarshal(data, &varSystemLog)
 
 	if err != nil {
 		return err
 	}
 
 	*o = SystemLog(varSystemLog)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "event_name")
+		delete(additionalProperties, "event_time")
+		delete(additionalProperties, "instance_id")
+		delete(additionalProperties, "machine_id")
+		delete(additionalProperties, "resource_cpu")
+		delete(additionalProperties, "resource_gpu_class")
+		delete(additionalProperties, "resource_memory")
+		delete(additionalProperties, "resource_storage_amount")
+		delete(additionalProperties, "version")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -411,5 +423,3 @@ func (v *NullableSystemLog) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -29,7 +28,8 @@ type ContainerGroupInstanceStatusCount struct {
 	// The number of container instances that are currently running and operational
 	RunningCount int32 `json:"running_count"`
 	// The number of container instances that are in the process of stopping
-	StoppingCount int32 `json:"stopping_count"`
+	StoppingCount        int32 `json:"stopping_count"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ContainerGroupInstanceStatusCount ContainerGroupInstanceStatusCount
@@ -152,7 +152,7 @@ func (o *ContainerGroupInstanceStatusCount) SetStoppingCount(v int32) {
 }
 
 func (o ContainerGroupInstanceStatusCount) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -165,6 +165,11 @@ func (o ContainerGroupInstanceStatusCount) ToMap() (map[string]interface{}, erro
 	toSerialize["creating_count"] = o.CreatingCount
 	toSerialize["running_count"] = o.RunningCount
 	toSerialize["stopping_count"] = o.StoppingCount
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -184,10 +189,10 @@ func (o *ContainerGroupInstanceStatusCount) UnmarshalJSON(data []byte) (err erro
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -195,15 +200,23 @@ func (o *ContainerGroupInstanceStatusCount) UnmarshalJSON(data []byte) (err erro
 
 	varContainerGroupInstanceStatusCount := _ContainerGroupInstanceStatusCount{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varContainerGroupInstanceStatusCount)
+	err = json.Unmarshal(data, &varContainerGroupInstanceStatusCount)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ContainerGroupInstanceStatusCount(varContainerGroupInstanceStatusCount)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "allocating_count")
+		delete(additionalProperties, "creating_count")
+		delete(additionalProperties, "running_count")
+		delete(additionalProperties, "stopping_count")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -243,5 +256,3 @@ func (v *NullableContainerGroupInstanceStatusCount) UnmarshalJSON(src []byte) er
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

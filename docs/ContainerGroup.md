@@ -16,7 +16,7 @@ Name | Type | Description | Notes
 **Networking** | Pointer to [**ContainerGroupNetworking**](ContainerGroupNetworking.md) |  | [optional] 
 **OrganizationName** | **string** | The organization name. | 
 **PendingChange** | **bool** | Indicates whether a configuration change has been requested but not yet applied to all containers in the group | 
-**Priority** | [**NullableContainerGroupPriority**](ContainerGroupPriority.md) |  | 
+**Priority** | [**ContainerGroupPriority**](ContainerGroupPriority.md) |  | 
 **ProjectName** | **string** | The project name. | 
 **QueueAutoscaler** | Pointer to [**ContainerGroupQueueAutoscaler**](ContainerGroupQueueAutoscaler.md) |  | [optional] 
 **QueueConnection** | Pointer to [**ContainerGroupQueueConnection**](ContainerGroupQueueConnection.md) |  | [optional] 
@@ -31,7 +31,7 @@ Name | Type | Description | Notes
 
 ### NewContainerGroup
 
-`func NewContainerGroup(autostartPolicy bool, container Container, countryCodes []CountryCode, createTime time.Time, currentState ContainerGroupState, displayName string, id string, name string, organizationName string, pendingChange bool, priority NullableContainerGroupPriority, projectName string, replicas int32, restartPolicy ContainerRestartPolicy, updateTime time.Time, version int32, ) *ContainerGroup`
+`func NewContainerGroup(autostartPolicy bool, container Container, countryCodes []CountryCode, createTime time.Time, currentState ContainerGroupState, displayName string, id string, name string, organizationName string, pendingChange bool, priority ContainerGroupPriority, projectName string, replicas int32, restartPolicy ContainerRestartPolicy, updateTime time.Time, version int32, ) *ContainerGroup`
 
 NewContainerGroup instantiates a new ContainerGroup object
 This constructor will assign default values to properties that have it defined,
@@ -316,16 +316,6 @@ and a boolean to check if the value has been set.
 SetPriority sets Priority field to given value.
 
 
-### SetPriorityNil
-
-`func (o *ContainerGroup) SetPriorityNil(b bool)`
-
- SetPriorityNil sets the value for Priority to be an explicit nil
-
-### UnsetPriority
-`func (o *ContainerGroup) UnsetPriority()`
-
-UnsetPriority ensures that no value is present for Priority, not even an explicit nil
 ### GetProjectName
 
 `func (o *ContainerGroup) GetProjectName() string`

@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -25,7 +24,8 @@ type ContainerLoggingNewRelic struct {
 	// The New Relic endpoint host for log ingestion (e.g., log-api.newrelic.com).
 	Host string `json:"host" validate:"regexp=^.*$"`
 	// The New Relic license or ingestion key used for authentication and data routing.
-	IngestionKey string `json:"ingestion_key" validate:"regexp=^.*$"`
+	IngestionKey         string `json:"ingestion_key" validate:"regexp=^.*$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ContainerLoggingNewRelic ContainerLoggingNewRelic
@@ -98,7 +98,7 @@ func (o *ContainerLoggingNewRelic) SetIngestionKey(v string) {
 }
 
 func (o ContainerLoggingNewRelic) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -109,6 +109,11 @@ func (o ContainerLoggingNewRelic) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["host"] = o.Host
 	toSerialize["ingestion_key"] = o.IngestionKey
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -126,10 +131,10 @@ func (o *ContainerLoggingNewRelic) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -137,15 +142,21 @@ func (o *ContainerLoggingNewRelic) UnmarshalJSON(data []byte) (err error) {
 
 	varContainerLoggingNewRelic := _ContainerLoggingNewRelic{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varContainerLoggingNewRelic)
+	err = json.Unmarshal(data, &varContainerLoggingNewRelic)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ContainerLoggingNewRelic(varContainerLoggingNewRelic)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "host")
+		delete(additionalProperties, "ingestion_key")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -185,5 +196,3 @@ func (v *NullableContainerLoggingNewRelic) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

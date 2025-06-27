@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -29,7 +28,8 @@ type GpuClass struct {
 	// The list of prices for each container group priority
 	Prices []GpuClassPrice `json:"prices"`
 	// Whether the GPU class is in high demand
-	IsHighDemand *bool `json:"is_high_demand,omitempty"`
+	IsHighDemand         *bool `json:"is_high_demand,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _GpuClass GpuClass
@@ -159,7 +159,7 @@ func (o *GpuClass) SetIsHighDemand(v bool) {
 }
 
 func (o GpuClass) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -174,6 +174,11 @@ func (o GpuClass) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.IsHighDemand) {
 		toSerialize["is_high_demand"] = o.IsHighDemand
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -192,10 +197,10 @@ func (o *GpuClass) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -203,15 +208,23 @@ func (o *GpuClass) UnmarshalJSON(data []byte) (err error) {
 
 	varGpuClass := _GpuClass{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varGpuClass)
+	err = json.Unmarshal(data, &varGpuClass)
 
 	if err != nil {
 		return err
 	}
 
 	*o = GpuClass(varGpuClass)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "prices")
+		delete(additionalProperties, "is_high_demand")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -251,5 +264,3 @@ func (v *NullableGpuClass) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

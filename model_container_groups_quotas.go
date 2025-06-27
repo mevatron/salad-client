@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -32,6 +31,7 @@ type ContainerGroupsQuotas struct {
 	MaxContainerGroupRecreatesPerMinute *int32 `json:"max_container_group_recreates_per_minute,omitempty"`
 	// The maximum number of container group restarts per minute
 	MaxContainerGroupRestartsPerMinute *int32 `json:"max_container_group_restarts_per_minute,omitempty"`
+	AdditionalProperties               map[string]interface{}
 }
 
 type _ContainerGroupsQuotas ContainerGroupsQuotas
@@ -44,12 +44,6 @@ func NewContainerGroupsQuotas(containerReplicasQuota int32, containerReplicasUse
 	this := ContainerGroupsQuotas{}
 	this.ContainerReplicasQuota = containerReplicasQuota
 	this.ContainerReplicasUsed = containerReplicasUsed
-	var maxContainerGroupReallocationsPerMinute int32 = 10
-	this.MaxContainerGroupReallocationsPerMinute = &maxContainerGroupReallocationsPerMinute
-	var maxContainerGroupRecreatesPerMinute int32 = 10
-	this.MaxContainerGroupRecreatesPerMinute = &maxContainerGroupRecreatesPerMinute
-	var maxContainerGroupRestartsPerMinute int32 = 10
-	this.MaxContainerGroupRestartsPerMinute = &maxContainerGroupRestartsPerMinute
 	return &this
 }
 
@@ -58,12 +52,6 @@ func NewContainerGroupsQuotas(containerReplicasQuota int32, containerReplicasUse
 // but it doesn't guarantee that properties required by API are set
 func NewContainerGroupsQuotasWithDefaults() *ContainerGroupsQuotas {
 	this := ContainerGroupsQuotas{}
-	var maxContainerGroupReallocationsPerMinute int32 = 10
-	this.MaxContainerGroupReallocationsPerMinute = &maxContainerGroupReallocationsPerMinute
-	var maxContainerGroupRecreatesPerMinute int32 = 10
-	this.MaxContainerGroupRecreatesPerMinute = &maxContainerGroupRecreatesPerMinute
-	var maxContainerGroupRestartsPerMinute int32 = 10
-	this.MaxContainerGroupRestartsPerMinute = &maxContainerGroupRestartsPerMinute
 	return &this
 }
 
@@ -212,7 +200,7 @@ func (o *ContainerGroupsQuotas) SetMaxContainerGroupRestartsPerMinute(v int32) {
 }
 
 func (o ContainerGroupsQuotas) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -232,6 +220,11 @@ func (o ContainerGroupsQuotas) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.MaxContainerGroupRestartsPerMinute) {
 		toSerialize["max_container_group_restarts_per_minute"] = o.MaxContainerGroupRestartsPerMinute
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -249,10 +242,10 @@ func (o *ContainerGroupsQuotas) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -260,15 +253,24 @@ func (o *ContainerGroupsQuotas) UnmarshalJSON(data []byte) (err error) {
 
 	varContainerGroupsQuotas := _ContainerGroupsQuotas{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varContainerGroupsQuotas)
+	err = json.Unmarshal(data, &varContainerGroupsQuotas)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ContainerGroupsQuotas(varContainerGroupsQuotas)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "container_replicas_quota")
+		delete(additionalProperties, "container_replicas_used")
+		delete(additionalProperties, "max_container_group_reallocations_per_minute")
+		delete(additionalProperties, "max_container_group_recreates_per_minute")
+		delete(additionalProperties, "max_container_group_restarts_per_minute")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -308,5 +310,3 @@ func (v *NullableContainerGroupsQuotas) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

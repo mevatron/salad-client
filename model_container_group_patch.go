@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -21,18 +21,21 @@ var _ MappedNullable = &ContainerGroupPatch{}
 // ContainerGroupPatch Represents a request to update a container group
 type ContainerGroupPatch struct {
 	// The display name for the container group. If null is provided, the display name will be set to the container group name.
-	DisplayName NullableString `json:"display_name,omitempty" validate:"regexp=^[ ,-.0-9A-Za-z]+$"`
-	Container *UpdateContainer `json:"container,omitempty"`
+	DisplayName *string          `json:"display_name,omitempty" validate:"regexp=^[ ,-.0-9A-Za-z]+$"`
+	Container   *UpdateContainer `json:"container,omitempty"`
 	// The desired number of instances for your container group deployment.
-	Replicas NullableInt32 `json:"replicas,omitempty"`
+	Replicas *int32 `json:"replicas,omitempty"`
 	// List of countries nodes must be located in. Remove this field to permit nodes from any country.
-	CountryCodes []CountryCode `json:"country_codes,omitempty"`
-	Networking *UpdateContainerGroupNetworking `json:"networking,omitempty"`
-	LivenessProbe *ContainerGroupLivenessProbe `json:"liveness_probe,omitempty"`
-	ReadinessProbe *ContainerGroupReadinessProbe `json:"readiness_probe,omitempty"`
-	StartupProbe *ContainerGroupStartupProbe `json:"startup_probe,omitempty"`
-	QueueAutoscaler *ContainerGroupQueueAutoscaler `json:"queue_autoscaler,omitempty"`
+	CountryCodes         []CountryCode                   `json:"country_codes,omitempty"`
+	Networking           *UpdateContainerGroupNetworking `json:"networking,omitempty"`
+	LivenessProbe        *ContainerGroupLivenessProbe    `json:"liveness_probe,omitempty"`
+	ReadinessProbe       *ContainerGroupReadinessProbe   `json:"readiness_probe,omitempty"`
+	StartupProbe         *ContainerGroupStartupProbe     `json:"startup_probe,omitempty"`
+	QueueAutoscaler      *ContainerGroupQueueAutoscaler  `json:"queue_autoscaler,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ContainerGroupPatch ContainerGroupPatch
 
 // NewContainerGroupPatch instantiates a new ContainerGroupPatch object
 // This constructor will assign default values to properties that have it defined,
@@ -51,46 +54,36 @@ func NewContainerGroupPatchWithDefaults() *ContainerGroupPatch {
 	return &this
 }
 
-// GetDisplayName returns the DisplayName field value if set, zero value otherwise (both if not set or set to explicit null).
+// GetDisplayName returns the DisplayName field value if set, zero value otherwise.
 func (o *ContainerGroupPatch) GetDisplayName() string {
-	if o == nil || IsNil(o.DisplayName.Get()) {
+	if o == nil || IsNil(o.DisplayName) {
 		var ret string
 		return ret
 	}
-	return *o.DisplayName.Get()
+	return *o.DisplayName
 }
 
 // GetDisplayNameOk returns a tuple with the DisplayName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ContainerGroupPatch) GetDisplayNameOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.DisplayName) {
 		return nil, false
 	}
-	return o.DisplayName.Get(), o.DisplayName.IsSet()
+	return o.DisplayName, true
 }
 
 // HasDisplayName returns a boolean if a field has been set.
 func (o *ContainerGroupPatch) HasDisplayName() bool {
-	if o != nil && o.DisplayName.IsSet() {
+	if o != nil && !IsNil(o.DisplayName) {
 		return true
 	}
 
 	return false
 }
 
-// SetDisplayName gets a reference to the given NullableString and assigns it to the DisplayName field.
+// SetDisplayName gets a reference to the given string and assigns it to the DisplayName field.
 func (o *ContainerGroupPatch) SetDisplayName(v string) {
-	o.DisplayName.Set(&v)
-}
-// SetDisplayNameNil sets the value for DisplayName to be an explicit nil
-func (o *ContainerGroupPatch) SetDisplayNameNil() {
-	o.DisplayName.Set(nil)
-}
-
-// UnsetDisplayName ensures that no value is present for DisplayName, not even an explicit nil
-func (o *ContainerGroupPatch) UnsetDisplayName() {
-	o.DisplayName.Unset()
+	o.DisplayName = &v
 }
 
 // GetContainer returns the Container field value if set, zero value otherwise.
@@ -125,51 +118,41 @@ func (o *ContainerGroupPatch) SetContainer(v UpdateContainer) {
 	o.Container = &v
 }
 
-// GetReplicas returns the Replicas field value if set, zero value otherwise (both if not set or set to explicit null).
+// GetReplicas returns the Replicas field value if set, zero value otherwise.
 func (o *ContainerGroupPatch) GetReplicas() int32 {
-	if o == nil || IsNil(o.Replicas.Get()) {
+	if o == nil || IsNil(o.Replicas) {
 		var ret int32
 		return ret
 	}
-	return *o.Replicas.Get()
+	return *o.Replicas
 }
 
 // GetReplicasOk returns a tuple with the Replicas field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ContainerGroupPatch) GetReplicasOk() (*int32, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Replicas) {
 		return nil, false
 	}
-	return o.Replicas.Get(), o.Replicas.IsSet()
+	return o.Replicas, true
 }
 
 // HasReplicas returns a boolean if a field has been set.
 func (o *ContainerGroupPatch) HasReplicas() bool {
-	if o != nil && o.Replicas.IsSet() {
+	if o != nil && !IsNil(o.Replicas) {
 		return true
 	}
 
 	return false
 }
 
-// SetReplicas gets a reference to the given NullableInt32 and assigns it to the Replicas field.
+// SetReplicas gets a reference to the given int32 and assigns it to the Replicas field.
 func (o *ContainerGroupPatch) SetReplicas(v int32) {
-	o.Replicas.Set(&v)
-}
-// SetReplicasNil sets the value for Replicas to be an explicit nil
-func (o *ContainerGroupPatch) SetReplicasNil() {
-	o.Replicas.Set(nil)
+	o.Replicas = &v
 }
 
-// UnsetReplicas ensures that no value is present for Replicas, not even an explicit nil
-func (o *ContainerGroupPatch) UnsetReplicas() {
-	o.Replicas.Unset()
-}
-
-// GetCountryCodes returns the CountryCodes field value if set, zero value otherwise (both if not set or set to explicit null).
+// GetCountryCodes returns the CountryCodes field value if set, zero value otherwise.
 func (o *ContainerGroupPatch) GetCountryCodes() []CountryCode {
-	if o == nil {
+	if o == nil || IsNil(o.CountryCodes) {
 		var ret []CountryCode
 		return ret
 	}
@@ -178,7 +161,6 @@ func (o *ContainerGroupPatch) GetCountryCodes() []CountryCode {
 
 // GetCountryCodesOk returns a tuple with the CountryCodes field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-// NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *ContainerGroupPatch) GetCountryCodesOk() ([]CountryCode, bool) {
 	if o == nil || IsNil(o.CountryCodes) {
 		return nil, false
@@ -361,7 +343,7 @@ func (o *ContainerGroupPatch) SetQueueAutoscaler(v ContainerGroupQueueAutoscaler
 }
 
 func (o ContainerGroupPatch) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -370,16 +352,16 @@ func (o ContainerGroupPatch) MarshalJSON() ([]byte, error) {
 
 func (o ContainerGroupPatch) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if o.DisplayName.IsSet() {
-		toSerialize["display_name"] = o.DisplayName.Get()
+	if !IsNil(o.DisplayName) {
+		toSerialize["display_name"] = o.DisplayName
 	}
 	if !IsNil(o.Container) {
 		toSerialize["container"] = o.Container
 	}
-	if o.Replicas.IsSet() {
-		toSerialize["replicas"] = o.Replicas.Get()
+	if !IsNil(o.Replicas) {
+		toSerialize["replicas"] = o.Replicas
 	}
-	if o.CountryCodes != nil {
+	if !IsNil(o.CountryCodes) {
 		toSerialize["country_codes"] = o.CountryCodes
 	}
 	if !IsNil(o.Networking) {
@@ -397,7 +379,41 @@ func (o ContainerGroupPatch) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.QueueAutoscaler) {
 		toSerialize["queue_autoscaler"] = o.QueueAutoscaler
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ContainerGroupPatch) UnmarshalJSON(data []byte) (err error) {
+	varContainerGroupPatch := _ContainerGroupPatch{}
+
+	err = json.Unmarshal(data, &varContainerGroupPatch)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ContainerGroupPatch(varContainerGroupPatch)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "display_name")
+		delete(additionalProperties, "container")
+		delete(additionalProperties, "replicas")
+		delete(additionalProperties, "country_codes")
+		delete(additionalProperties, "networking")
+		delete(additionalProperties, "liveness_probe")
+		delete(additionalProperties, "readiness_probe")
+		delete(additionalProperties, "startup_probe")
+		delete(additionalProperties, "queue_autoscaler")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableContainerGroupPatch struct {
@@ -435,5 +451,3 @@ func (v *NullableContainerGroupPatch) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

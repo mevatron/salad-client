@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -41,7 +40,8 @@ type InferenceEndpoint struct {
 	// The input schema
 	InputSchema string `json:"input_schema" validate:"regexp=^.*$"`
 	// The output schema
-	OutputSchema string `json:"output_schema" validate:"regexp=^.*$"`
+	OutputSchema         string `json:"output_schema" validate:"regexp=^.*$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _InferenceEndpoint InferenceEndpoint
@@ -314,7 +314,7 @@ func (o *InferenceEndpoint) SetOutputSchema(v string) {
 }
 
 func (o InferenceEndpoint) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -333,6 +333,11 @@ func (o InferenceEndpoint) ToMap() (map[string]interface{}, error) {
 	toSerialize["icon_url"] = o.IconUrl
 	toSerialize["input_schema"] = o.InputSchema
 	toSerialize["output_schema"] = o.OutputSchema
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -358,10 +363,10 @@ func (o *InferenceEndpoint) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -369,15 +374,29 @@ func (o *InferenceEndpoint) UnmarshalJSON(data []byte) (err error) {
 
 	varInferenceEndpoint := _InferenceEndpoint{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varInferenceEndpoint)
+	err = json.Unmarshal(data, &varInferenceEndpoint)
 
 	if err != nil {
 		return err
 	}
 
 	*o = InferenceEndpoint(varInferenceEndpoint)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "organization_name")
+		delete(additionalProperties, "display_name")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "readme")
+		delete(additionalProperties, "price_description")
+		delete(additionalProperties, "icon_url")
+		delete(additionalProperties, "input_schema")
+		delete(additionalProperties, "output_schema")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -417,5 +436,3 @@ func (v *NullableInferenceEndpoint) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

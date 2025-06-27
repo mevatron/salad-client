@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**DeletionCost** | Pointer to **NullableInt32** | The cost of deleting the container group instance | [optional] 
+**DeletionCost** | Pointer to **int32** | The cost of deleting the container group instance | [optional] 
 
 ## Methods
 
@@ -50,16 +50,6 @@ SetDeletionCost sets DeletionCost field to given value.
 
 HasDeletionCost returns a boolean if a field has been set.
 
-### SetDeletionCostNil
-
-`func (o *ContainerGroupInstancePatch) SetDeletionCostNil(b bool)`
-
- SetDeletionCostNil sets the value for DeletionCost to be an explicit nil
-
-### UnsetDeletionCost
-`func (o *ContainerGroupInstancePatch) UnsetDeletionCost()`
-
-UnsetDeletionCost ensures that no value is present for DeletionCost, not even an explicit nil
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

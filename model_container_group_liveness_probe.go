@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -24,18 +23,19 @@ var _ MappedNullable = &ContainerGroupLivenessProbe{}
 type ContainerGroupLivenessProbe struct {
 	Exec *ContainerGroupProbeExec `json:"exec,omitempty"`
 	// Number of consecutive failures required to consider the probe as failed
-	FailureThreshold int32 `json:"failure_threshold"`
-	Grpc *ContainerGroupProbeGrpc `json:"grpc,omitempty"`
-	Http *ContainerGroupProbeHttp `json:"http,omitempty"`
+	FailureThreshold int32                    `json:"failure_threshold"`
+	Grpc             *ContainerGroupProbeGrpc `json:"grpc,omitempty"`
+	Http             *ContainerGroupProbeHttp `json:"http,omitempty"`
 	// Number of seconds to wait after container start before initiating liveness probes
 	InitialDelaySeconds int32 `json:"initial_delay_seconds"`
 	// Frequency in seconds at which the probe should be executed
 	PeriodSeconds int32 `json:"period_seconds"`
 	// Number of consecutive successes required to consider the probe successful
-	SuccessThreshold int32 `json:"success_threshold"`
-	Tcp *ContainerGroupProbeTcp `json:"tcp,omitempty"`
+	SuccessThreshold int32                   `json:"success_threshold"`
+	Tcp              *ContainerGroupProbeTcp `json:"tcp,omitempty"`
 	// Number of seconds after which the probe times out if no response is received
-	TimeoutSeconds int32 `json:"timeout_seconds"`
+	TimeoutSeconds       int32 `json:"timeout_seconds"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ContainerGroupLivenessProbe ContainerGroupLivenessProbe
@@ -321,7 +321,7 @@ func (o *ContainerGroupLivenessProbe) SetTimeoutSeconds(v int32) {
 }
 
 func (o ContainerGroupLivenessProbe) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -347,6 +347,11 @@ func (o ContainerGroupLivenessProbe) ToMap() (map[string]interface{}, error) {
 		toSerialize["tcp"] = o.Tcp
 	}
 	toSerialize["timeout_seconds"] = o.TimeoutSeconds
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -367,10 +372,10 @@ func (o *ContainerGroupLivenessProbe) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -378,15 +383,28 @@ func (o *ContainerGroupLivenessProbe) UnmarshalJSON(data []byte) (err error) {
 
 	varContainerGroupLivenessProbe := _ContainerGroupLivenessProbe{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varContainerGroupLivenessProbe)
+	err = json.Unmarshal(data, &varContainerGroupLivenessProbe)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ContainerGroupLivenessProbe(varContainerGroupLivenessProbe)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "exec")
+		delete(additionalProperties, "failure_threshold")
+		delete(additionalProperties, "grpc")
+		delete(additionalProperties, "http")
+		delete(additionalProperties, "initial_delay_seconds")
+		delete(additionalProperties, "period_seconds")
+		delete(additionalProperties, "success_threshold")
+		delete(additionalProperties, "tcp")
+		delete(additionalProperties, "timeout_seconds")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -426,5 +444,3 @@ func (v *NullableContainerGroupLivenessProbe) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

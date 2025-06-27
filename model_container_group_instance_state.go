@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -21,11 +21,11 @@ type ContainerGroupInstanceState string
 
 // List of ContainerGroupInstanceState
 const (
-	CONTAINERGROUPINSTANCESTATE_ALLOCATING ContainerGroupInstanceState = "allocating"
+	CONTAINERGROUPINSTANCESTATE_ALLOCATING  ContainerGroupInstanceState = "allocating"
 	CONTAINERGROUPINSTANCESTATE_DOWNLOADING ContainerGroupInstanceState = "downloading"
-	CONTAINERGROUPINSTANCESTATE_CREATING ContainerGroupInstanceState = "creating"
-	CONTAINERGROUPINSTANCESTATE_RUNNING ContainerGroupInstanceState = "running"
-	CONTAINERGROUPINSTANCESTATE_STOPPING ContainerGroupInstanceState = "stopping"
+	CONTAINERGROUPINSTANCESTATE_CREATING    ContainerGroupInstanceState = "creating"
+	CONTAINERGROUPINSTANCESTATE_RUNNING     ContainerGroupInstanceState = "running"
+	CONTAINERGROUPINSTANCESTATE_STOPPING    ContainerGroupInstanceState = "stopping"
 )
 
 // All allowed values of ContainerGroupInstanceState enum
@@ -115,4 +115,3 @@ func (v *NullableContainerGroupInstanceState) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-

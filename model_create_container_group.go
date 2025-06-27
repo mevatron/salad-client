@@ -12,8 +12,8 @@ Contact: cloud@salad.com
 package saladclient
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -22,20 +22,20 @@ var _ MappedNullable = &CreateContainerGroup{}
 
 // CreateContainerGroup Represents a request to create a container group
 type CreateContainerGroup struct {
-	Name string `json:"name" validate:"regexp=^[a-z][a-z0-9-]{0,61}[a-z0-9]$"`
-	DisplayName NullableString `json:"display_name,omitempty" validate:"regexp=^[ ,-.0-9A-Za-z]+$"`
-	Container CreateContainer `json:"container"`
-	AutostartPolicy bool `json:"autostart_policy"`
-	RestartPolicy ContainerRestartPolicy `json:"restart_policy"`
-	Replicas int32 `json:"replicas"`
+	Name            string                 `json:"name" validate:"regexp=^[a-z][a-z0-9-]{0,61}[a-z0-9]$"`
+	DisplayName     NullableString         `json:"display_name,omitempty" validate:"regexp=^[ ,-.0-9A-Za-z]+$"`
+	Container       CreateContainer        `json:"container"`
+	AutostartPolicy bool                   `json:"autostart_policy"`
+	RestartPolicy   ContainerRestartPolicy `json:"restart_policy"`
+	Replicas        int32                  `json:"replicas"`
 	// List of countries nodes must be located in. Remove this field to permit nodes from any country.
-	CountryCodes []CountryCode `json:"country_codes,omitempty"`
-	Networking *CreateContainerGroupNetworking `json:"networking,omitempty"`
-	LivenessProbe *ContainerGroupLivenessProbe `json:"liveness_probe,omitempty"`
-	ReadinessProbe *ContainerGroupReadinessProbe `json:"readiness_probe,omitempty"`
-	StartupProbe *ContainerGroupStartupProbe `json:"startup_probe,omitempty"`
-	QueueConnection *ContainerGroupQueueConnection `json:"queue_connection,omitempty"`
-	QueueAutoscaler *QueueAutoscaler `json:"queue_autoscaler,omitempty"`
+	CountryCodes    []CountryCode                   `json:"country_codes,omitempty"`
+	Networking      *CreateContainerGroupNetworking `json:"networking,omitempty"`
+	LivenessProbe   *ContainerGroupLivenessProbe    `json:"liveness_probe,omitempty"`
+	ReadinessProbe  *ContainerGroupReadinessProbe   `json:"readiness_probe,omitempty"`
+	StartupProbe    *ContainerGroupStartupProbe     `json:"startup_probe,omitempty"`
+	QueueConnection *ContainerGroupQueueConnection  `json:"queue_connection,omitempty"`
+	QueueAutoscaler *QueueAutoscaler                `json:"queue_autoscaler,omitempty"`
 }
 
 type _CreateContainerGroup CreateContainerGroup
@@ -118,6 +118,7 @@ func (o *CreateContainerGroup) HasDisplayName() bool {
 func (o *CreateContainerGroup) SetDisplayName(v string) {
 	o.DisplayName.Set(&v)
 }
+
 // SetDisplayNameNil sets the value for DisplayName to be an explicit nil
 func (o *CreateContainerGroup) SetDisplayNameNil() {
 	o.DisplayName.Set(nil)
@@ -449,7 +450,7 @@ func (o *CreateContainerGroup) SetQueueAutoscaler(v QueueAutoscaler) {
 }
 
 func (o CreateContainerGroup) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -507,10 +508,10 @@ func (o *CreateContainerGroup) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -566,5 +567,3 @@ func (v *NullableCreateContainerGroup) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

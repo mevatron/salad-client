@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -24,18 +23,19 @@ var _ MappedNullable = &ContainerGroupStartupProbe{}
 type ContainerGroupStartupProbe struct {
 	Exec *ContainerGroupProbeExec `json:"exec,omitempty"`
 	// Number of times the probe must fail before considering the container not started
-	FailureThreshold int32 `json:"failure_threshold"`
-	Grpc *ContainerGroupProbeGrpc `json:"grpc,omitempty"`
-	Http *ContainerGroupProbeHttp `json:"http,omitempty"`
+	FailureThreshold int32                    `json:"failure_threshold"`
+	Grpc             *ContainerGroupProbeGrpc `json:"grpc,omitempty"`
+	Http             *ContainerGroupProbeHttp `json:"http,omitempty"`
 	// Number of seconds to wait after container startup before the first probe is executed
-	InitialDelaySeconds int32 `json:"initial_delay_seconds"`
-	Tcp *ContainerGroupProbeTcp `json:"tcp,omitempty"`
+	InitialDelaySeconds int32                   `json:"initial_delay_seconds"`
+	Tcp                 *ContainerGroupProbeTcp `json:"tcp,omitempty"`
 	// How frequently (in seconds) to perform the probe
 	PeriodSeconds int32 `json:"period_seconds"`
 	// Minimum consecutive successes required for the probe to be considered successful
 	SuccessThreshold int32 `json:"success_threshold"`
 	// Maximum time (in seconds) to wait for a probe response before considering it failed
-	TimeoutSeconds int32 `json:"timeout_seconds"`
+	TimeoutSeconds       int32 `json:"timeout_seconds"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ContainerGroupStartupProbe ContainerGroupStartupProbe
@@ -321,7 +321,7 @@ func (o *ContainerGroupStartupProbe) SetTimeoutSeconds(v int32) {
 }
 
 func (o ContainerGroupStartupProbe) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -347,6 +347,11 @@ func (o ContainerGroupStartupProbe) ToMap() (map[string]interface{}, error) {
 	toSerialize["period_seconds"] = o.PeriodSeconds
 	toSerialize["success_threshold"] = o.SuccessThreshold
 	toSerialize["timeout_seconds"] = o.TimeoutSeconds
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -367,10 +372,10 @@ func (o *ContainerGroupStartupProbe) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -378,15 +383,28 @@ func (o *ContainerGroupStartupProbe) UnmarshalJSON(data []byte) (err error) {
 
 	varContainerGroupStartupProbe := _ContainerGroupStartupProbe{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varContainerGroupStartupProbe)
+	err = json.Unmarshal(data, &varContainerGroupStartupProbe)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ContainerGroupStartupProbe(varContainerGroupStartupProbe)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "exec")
+		delete(additionalProperties, "failure_threshold")
+		delete(additionalProperties, "grpc")
+		delete(additionalProperties, "http")
+		delete(additionalProperties, "initial_delay_seconds")
+		delete(additionalProperties, "tcp")
+		delete(additionalProperties, "period_seconds")
+		delete(additionalProperties, "success_threshold")
+		delete(additionalProperties, "timeout_seconds")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -426,5 +444,3 @@ func (v *NullableContainerGroupStartupProbe) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

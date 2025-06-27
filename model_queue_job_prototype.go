@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -26,7 +25,8 @@ type QueueJobPrototype struct {
 	// Additional metadata for the job
 	Metadata map[string]interface{} `json:"metadata,omitempty"`
 	// The webhook to call when the job completes
-	Webhook *string `json:"webhook,omitempty" validate:"regexp=^.*$"`
+	Webhook              *string `json:"webhook,omitempty" validate:"regexp=^.*$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _QueueJobPrototype QueueJobPrototype
@@ -140,7 +140,7 @@ func (o *QueueJobPrototype) SetWebhook(v string) {
 }
 
 func (o QueueJobPrototype) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -158,6 +158,11 @@ func (o QueueJobPrototype) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Webhook) {
 		toSerialize["webhook"] = o.Webhook
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -174,10 +179,10 @@ func (o *QueueJobPrototype) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -185,15 +190,22 @@ func (o *QueueJobPrototype) UnmarshalJSON(data []byte) (err error) {
 
 	varQueueJobPrototype := _QueueJobPrototype{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varQueueJobPrototype)
+	err = json.Unmarshal(data, &varQueueJobPrototype)
 
 	if err != nil {
 		return err
 	}
 
 	*o = QueueJobPrototype(varQueueJobPrototype)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "input")
+		delete(additionalProperties, "metadata")
+		delete(additionalProperties, "webhook")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -233,5 +245,3 @@ func (v *NullableQueueJobPrototype) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

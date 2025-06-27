@@ -3,7 +3,7 @@ SaladCloud API
 
 The SaladCloud REST API. Please refer to the [SaladCloud API Documentation](https://docs.salad.com/api-reference) for more details.
 
-API version: 0.9.0-alpha.11
+API version: 0.9.0-alpha.13
 Contact: cloud@salad.com
 */
 
@@ -13,7 +13,6 @@ package saladclient
 
 import (
 	"encoding/json"
-	"bytes"
 	"fmt"
 )
 
@@ -27,7 +26,8 @@ type ContainerLoggingAxiom struct {
 	// Authentication token for the Axiom API with appropriate write permissions
 	ApiToken string `json:"api_token" validate:"regexp=^.*$"`
 	// Name of the Axiom dataset where the container logs will be stored and indexed
-	Dataset string `json:"dataset" validate:"regexp=^.*$"`
+	Dataset              string `json:"dataset" validate:"regexp=^.*$"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ContainerLoggingAxiom ContainerLoggingAxiom
@@ -125,7 +125,7 @@ func (o *ContainerLoggingAxiom) SetDataset(v string) {
 }
 
 func (o ContainerLoggingAxiom) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -137,6 +137,11 @@ func (o ContainerLoggingAxiom) ToMap() (map[string]interface{}, error) {
 	toSerialize["host"] = o.Host
 	toSerialize["api_token"] = o.ApiToken
 	toSerialize["dataset"] = o.Dataset
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -155,10 +160,10 @@ func (o *ContainerLoggingAxiom) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -166,15 +171,22 @@ func (o *ContainerLoggingAxiom) UnmarshalJSON(data []byte) (err error) {
 
 	varContainerLoggingAxiom := _ContainerLoggingAxiom{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varContainerLoggingAxiom)
+	err = json.Unmarshal(data, &varContainerLoggingAxiom)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ContainerLoggingAxiom(varContainerLoggingAxiom)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "host")
+		delete(additionalProperties, "api_token")
+		delete(additionalProperties, "dataset")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }
@@ -214,5 +226,3 @@ func (v *NullableContainerLoggingAxiom) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-
